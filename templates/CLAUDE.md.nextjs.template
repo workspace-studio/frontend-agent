@@ -20,44 +20,7 @@ Pre-commit: Husky runs `yarn lint` on every commit.
 
 ## Folder Structure
 
-```
-src/
-├── app/
-│   ├── [locale]/
-│   │   ├── layout.tsx
-│   │   ├── providers.tsx
-│   │   ├── (home)/
-│   │   │   ├── layout.tsx
-│   │   │   └── page.tsx
-│   │   └── (public)/
-│   │       └── layout.tsx
-│   ├── api/
-│   ├── robots.ts
-│   └── sitemap.ts
-├── components/
-├── views/
-├── i18n/
-│   ├── routing.ts
-│   ├── request.ts
-│   └── navigation.ts
-├── config/
-├── styles/
-│   ├── index.scss
-│   ├── globals/
-│   ├── mixins/
-│   ├── settings/
-│   ├── utils/
-│   └── themes/
-├── types/
-└── utils/
-    ├── hooks/
-    └── static/
-messages/
-├── en/
-└── hr/
-```
-
-**IMPORTANT:** Keep this tree updated as you add new files/folders.
+See @docs/folder-structure.md for the complete project tree. **Update it when adding new files/folders.**
 
 ## Architecture
 

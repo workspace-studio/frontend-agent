@@ -184,20 +184,14 @@ Tests:       X passed, Y failed
 
 **Update CLAUDE.md after EVERY structural change.** The CLAUDE.md must contain a `## Folder Structure` section with a complete tree of the project. This is the single source of truth for project structure.
 
-**When to update the Folder Structure tree:**
-- New page/route → add to `src/app/[locale]/` tree
-- New component → add to `src/components/` tree
-- New view → add to `src/views/` tree
-- New i18n namespace → add to `messages/` tree
-- New config file → add to `src/config/` tree
-- New utility/hook → add to `src/utils/` tree
+**Folder Structure** lives in `docs/folder-structure.md` (referenced from CLAUDE.md via `@docs/folder-structure.md`). Update it when:
+- New page/route, component, view, i18n namespace, config, utility, or hook is added
 
 **Other CLAUDE.md updates:**
 - New locale → update i18n section
 - New dependency → note in overview
-- New API route → add to API section
 
-READ → EDIT the Folder Structure tree and affected sections → keep tree accurate and complete.
+Keep CLAUDE.md under 200 lines — move details to `docs/` and reference with `@`.
 
 If CLAUDE.md does not exist, use `/bootstrap-nextjs` skill or create from `@templates/CLAUDE.md.nextjs.template`.
 
