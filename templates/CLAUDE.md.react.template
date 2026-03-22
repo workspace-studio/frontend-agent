@@ -17,6 +17,41 @@ yarn test:ct      # Run Playwright component tests
 
 Pre-commit: Husky runs `yarn lint` on every commit.
 
+## Folder Structure
+
+```
+src/
+├── components/
+├── views/
+├── routers/
+│   └── AppRouter.tsx
+├── valtio/
+├── services/
+├── config/
+│   ├── axios.config.ts
+│   ├── constants.config.ts
+│   └── forms/
+├── i18n/
+│   └── i18n.ts
+├── locales/
+│   ├── en/
+│   └── hr/
+├── models/
+├── styles/
+│   ├── index.scss
+│   ├── globals/
+│   ├── mixins/
+│   ├── settings/
+│   ├── utils/
+│   └── themes/
+├── types/
+└── utils/
+    ├── hooks/
+    └── context/
+```
+
+**IMPORTANT:** Keep this tree updated as you add new files/folders.
+
 ## Architecture
 
 ### Key Directories

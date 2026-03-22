@@ -173,13 +173,22 @@ Tests:       X passed, Y failed
 
 ## CLAUDE.md Maintenance
 
-**Update CLAUDE.md IF** structural changes were made:
-- New view → add to route structure + view list
-- New Valtio store → add to state management section
+**Update CLAUDE.md after EVERY structural change.** The CLAUDE.md must contain a `## Folder Structure` section with a complete tree of the project. This is the single source of truth for project structure.
+
+**When to update the Folder Structure tree:**
+- New view → add to `src/views/` tree
+- New component → add to `src/components/` tree
+- New Valtio store → add to `src/valtio/` tree
+- New service → add to `src/services/` tree
+- New route → update `src/routers/` section
+- New i18n namespace → add to `src/locales/` tree
+- New config file → add to `src/config/` tree
+
+**Other CLAUDE.md updates:**
 - New locale → update i18n section
 - New dependency → note in overview
 
-READ → EDIT affected sections only → keep concise.
+READ → EDIT the Folder Structure tree and affected sections → keep tree accurate and complete.
 
 If CLAUDE.md does not exist, use `/bootstrap-react` skill or create from `@templates/CLAUDE.md.react.template`.
 
