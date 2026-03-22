@@ -1,0 +1,50 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+
+.root {
+  height: rem-calc(24);
+
+  &.error {
+    background-color: $red-50;
+    color: $red-600;
+  }
+
+  &.warning {
+    background-color: $yellow-50;
+    color: $yellow-700;
+  }
+
+  &.success {
+    background-color: $green-50;
+    color: $green-600;
+  }
+
+  &.info {
+    background-color: $gray-blue-50;
+    color: $gray-blue-600;
+  }
+
+  &.primary {
+    background-color: $blue-50;
+    color: $blue-700;
+  }
+
+  &.secondary {
+    background-color: $orange-50;
+    color: $orange-500;
+  }
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+  max-width: 100%;
+  line-height: 1.05;
+
+  @include media('lg') {
+    max-width: rem-calc(264);
+  }
+}

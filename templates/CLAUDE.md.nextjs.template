@@ -1,0 +1,71 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code when working with code in this repository.
+
+## Project Overview
+
+{PROJECT_NAME} — a Next.js + TypeScript frontend. Material-UI, SCSS Modules, next-intl.
+
+## Development Commands
+
+```bash
+yarn dev          # Start development server
+yarn build        # Build for production
+yarn lint         # Run all linters (ESLint, next lint)
+yarn stylelint    # SCSS lint
+yarn test:ct      # Run Playwright component tests
+```
+
+Pre-commit: Husky runs `yarn lint` on every commit.
+
+## Architecture
+
+### App Router with Internationalization
+
+```
+src/app/[locale]/
+├── layout.tsx        # Root layout (providers, metadata, JSON-LD)
+├── (home)/           # Home layout group
+├── (public)/         # Public pages layout group
+└── (simple)/         # Minimal layout group
+```
+
+### Key Directories
+
+- `src/components/` — Reusable UI components
+- `src/views/` — Page-level view components
+- `src/i18n/` — next-intl configuration (routing, request, navigation)
+- `src/styles/themes/` — MUI theme (colors, breakpoints, palette, typography, components)
+- `src/config/` — Configuration files
+- `src/types/` — TypeScript definitions
+- `src/utils/` — Hooks and utility functions
+
+## Import Rules
+
+**ALWAYS use `@/` alias (never `../`):**
+
+```typescript
+import Component from '@/components/Component';   // ✅
+import Component from '../components/Component';  // ❌
+```
+
+## Important Rules
+
+1. **NEVER use `any` or `unknown`** — always define proper types
+2. **NEVER use `React.memo`, `useMemo`, or `useCallback`**
+3. **NEVER use MUI `sx` prop for styling** — use SCSS modules + MUI component props
+4. **NEVER mix `sx` and SCSS** in same component
+5. **Server components by default** — only add `'use client'` when needed
+6. **ALWAYS create `index.ts`** for component folders: `import X from './X'; export default X;`
+7. **SCSS module only when needed** — skip if MUI components + props are sufficient
+8. **ALWAYS use `useTranslations`** — never hardcode user-facing text
+9. **ALWAYS add translations to ALL locales**
+10. **Use `Link` from `@/i18n/navigation`** — not `next/link`
+11. **Use `next/image`** — not `<img>` tag
+
+## Naming Conventions
+
+- Components/Files: PascalCase (`HeroSection.tsx`)
+- SCSS Modules: PascalCase + `.module.scss`
+- Hooks: camelCase + `use` prefix (`useToggleState`)
+- Named exports only (except pages/layouts)

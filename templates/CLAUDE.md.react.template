@@ -1,0 +1,67 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code when working with code in this repository.
+
+## Project Overview
+
+{PROJECT_NAME} — a React + TypeScript + Vite application. Material-UI, SCSS Modules, Valtio, i18next, Axios.
+
+## Development Commands
+
+```bash
+yarn dev          # Start development server
+yarn build        # Build for production
+yarn lint         # Run all linters (ESLint, Prettier, Stylelint — auto-fix)
+yarn test:ct      # Run Playwright component tests
+```
+
+Pre-commit: Husky runs `yarn lint` on every commit.
+
+## Architecture
+
+### Key Directories
+
+- `src/components/` — Reusable UI components
+- `src/views/` — Page-level view components
+- `src/routers/` — React Router with AppRoute wrapper
+- `src/valtio/` — Valtio state stores (`.store.ts` + `.actions.ts`)
+- `src/services/` — Axios service classes (static methods)
+- `src/config/` — Axios config, constants, form models
+- `src/i18n/` — i18next configuration
+- `src/locales/` — Translation JSON files per locale
+- `src/styles/themes/` — MUI theme (colors, breakpoints, palette, typography, components)
+- `src/models/` — Data model interfaces
+- `src/types/` — TypeScript definitions
+- `src/utils/` — Hooks and utility functions
+
+## Import Rules
+
+**ALWAYS use `@/` alias (never `../`):**
+
+```typescript
+import Component from '@/components/Component';   // ✅
+import Component from '../components/Component';  // ❌
+```
+
+## Important Rules
+
+1. **NEVER use `any` or `unknown`** — always define proper types
+2. **NEVER use `React.memo`, `useMemo`, or `useCallback`**
+3. **NEVER use MUI `sx` prop for styling** — use SCSS modules + MUI component props
+4. **NEVER mix `sx` and SCSS** in same component
+5. **ALWAYS use Valtio** for state management (not Redux/Context)
+6. **ALWAYS use `@/` alias** — never relative imports (`../`)
+7. **ALWAYS create `index.ts`** for component folders: `import X from './X'; export default X;`
+8. **SCSS module only when needed** — skip if MUI components + props are sufficient
+9. **ALWAYS use translation keys** — never hardcode user-facing text
+10. **ALWAYS add translations to ALL locales**
+11. **ALWAYS use `Form + FormInput`** for forms
+12. **ALWAYS use `ModalRoot`** for modals
+13. **ALWAYS use axios instance** from `@/config/axios.config.ts`
+
+## Naming Conventions
+
+- Components/Files: PascalCase (`StatusChip.tsx`)
+- SCSS Modules: PascalCase + `.module.scss`
+- Hooks: camelCase + `use` prefix (`useAuth`)
+- Named exports only

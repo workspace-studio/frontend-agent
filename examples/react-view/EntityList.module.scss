@@ -1,0 +1,14 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(16);
+  padding-block: rem-calc(24);
+
+  @include media(0, 'md') {
+    padding-block: rem-calc(16);
+  }
+}
