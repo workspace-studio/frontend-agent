@@ -126,6 +126,7 @@ src/
 - **React.lazy()** for ALL view imports in AppRouter
 - **Form + FormInput** wrapper pattern for forms with `validate={FormValidator.required()}`
 - **ModalRoot** for centralized modal management
+- **View sections start with Container**: Every view section MUST use `<Container component="section">` as root element
 - **SCSS modules + MUI props PREFERRED over sx** — sx only for one-off spacing (mt, gap, p)
 - **SCSS module only when needed** — skip if MUI components + props are sufficient
 - **index.ts pattern**: Every component folder MUST have:

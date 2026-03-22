@@ -91,6 +91,18 @@ const AboutPage = () => <AboutView />;
 export default AboutPage;
 ```
 
+## View Section Pattern
+
+Every view section MUST start with a `Container` component using `component="section"`:
+
+```tsx
+<Container component="section" className={styles.container}>
+  <Container disableGutters maxWidth="xl">
+    {/* section content */}
+  </Container>
+</Container>
+```
+
 ## Server vs Client Components
 
 **Server (default)** — no directive needed:

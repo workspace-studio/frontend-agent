@@ -1,6 +1,6 @@
 ---
 name: create-pr
-description: Create branch, commit changes, push, and open a pull request
+description: Create branch, commit changes, push, and open a pull request with reviewer assignment
 disable-model-invocation: true
 ---
 
@@ -12,17 +12,15 @@ Create a PR for the current changes. Usage: `/create-pr`
 
 ### Step 1: Determine Branch Name
 
-Based on the type of change:
-- `feature/` — new functionality
-- `fix/` — bug fix
-- `refactor/` — code restructuring
-- `chore/` — maintenance, dependencies
-- `docs/` — documentation only
+If working on a GitHub issue, use: `{issue_number}-{issue-name}`
+Example: `42-fix-header-scroll`, `15-add-pricing-page`
+
+If no issue, use descriptive name: `add-pricing-page`, `fix-header-scroll`
 
 ### Step 2: Create Branch (if not already on feature branch)
 
 ```bash
-git checkout -b {type}/{short-description}
+git checkout -b {branch-name}
 ```
 
 ### Step 3: Validate Before Commit
@@ -49,24 +47,67 @@ NEVER use `git add -A` or `git add .` — always stage specific files.
 git commit -m "{type}: {description}"
 ```
 
+If related to an issue, reference it: `fix: resolve header scroll bug (#42)`
+
 ### Step 6: Push
 
 ```bash
 git push -u origin {branch-name}
 ```
 
-### Step 7: Create PR
+### Step 7: Ask for Reviewer
+
+Use the AskUserQuestion tool to ask: "Koga želiš za review ovog PR-a? (GitHub usernames, odvojeni zarezom)"
+
+- First username → assign as reviewer with `--reviewer`
+- Additional usernames → mention in PR body as "Additional reviewers"
+
+### Step 8: Create PR
+
+Write a DETAILED PR body describing ALL changes made:
 
 ```bash
-gh pr create --title "{type}: {description}" --body "## Summary
-- {change 1}
-- {change 2}
+gh pr create \
+  --title "Resolves #{issueNumber}: {issue name}" \
+  --reviewer {first_reviewer_username} \
+  --body "$(cat <<'EOF'
+Resolves #{issueNumber}: {issue name}
+
+## Summary
+
+Detailed description of what was done and why.
+
+## Changes
+
+- **{file/component 1}**: {what was changed and why}
+- **{file/component 2}**: {what was changed and why}
+- **{file/component 3}**: {what was changed and why}
+
+## Files Modified
+
+- `src/components/Header/Header.tsx` — added mobile drawer
+- `src/components/Header/Header.module.scss` — responsive styles
+- `messages/en/navigation.json` — new translation keys
+- `messages/hr/navigation.json` — Croatian translations
+
+## Additional Reviewers
+
+@username2, @username3
 
 ## Test Plan
-- [ ] Build passes
-- [ ] Lint passes
-- [ ] Component tests pass
-- [ ] Manual verification"
+
+- [x] Build passes (`yarn build`)
+- [x] Lint passes (`yarn lint`)
+- [x] Component tests pass (`yarn test:ct`)
+- [ ] Manual verification of {specific scenario}
+EOF
+)"
+```
+
+If NOT related to an issue, use descriptive title without `Resolves #`:
+
+```bash
+gh pr create --title "{type}: {description}" --reviewer {reviewer} --body "..."
 ```
 
 ## Rules
@@ -75,3 +116,6 @@ gh pr create --title "{type}: {description}" --body "## Summary
 - NEVER push to main/master directly
 - Stage specific files only
 - Validate build + lint + tests before committing
+- ALWAYS ask for reviewer before creating PR
+- ALWAYS write detailed PR body with all changes listed
+- Branch name format: `{issue_number}-{issue-name}` when linked to issue

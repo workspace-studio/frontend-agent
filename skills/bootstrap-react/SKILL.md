@@ -1,6 +1,6 @@
 ---
 name: bootstrap-react
-description: Bootstrap a new React+Vite project with MUI, SCSS, Valtio, i18next, and Axios from scratch
+description: Bootstrap a new React+Vite project from the workspace-studio boilerplate with MUI, SCSS, Valtio, i18next, and Axios
 ---
 
 # Bootstrap React+Vite Project
@@ -9,70 +9,69 @@ Bootstrap a new React+Vite project. Usage: `/bootstrap-react project-name — de
 
 ## Steps
 
-### Step 1: Create Project
+### Step 1: Clone Boilerplate
 
 ```bash
-npm create vite@latest {project-name} -- --template react-ts
+git clone https://github.com/workspace-studio/react-vite-boilerplate.git {project-name}
 cd {project-name}
+rm -rf .git
+git init
 ```
 
 ### Step 2: Install Dependencies
 
+The boilerplate includes React, TypeScript, Sass, React Router, ESLint, Stylelint, Prettier, Husky, clsx. Install additional packages:
+
 ```bash
-yarn add @mui/material @emotion/react @emotion/styled react-router-dom valtio i18next react-i18next i18next-browser-languagedetector axios react-hook-form sass
-yarn add -D @playwright/experimental-ct-react stylelint stylelint-config-standard-scss
+yarn install
+yarn add @mui/material @emotion/react @emotion/styled valtio i18next react-i18next i18next-browser-languagedetector axios react-hook-form
+yarn add -D @playwright/experimental-ct-react
 ```
 
-### Step 3: Set Up Path Alias
+### Step 3: Set Up MUI Theme
 
-Configure `@/` alias in `vite.config.ts` (resolve.alias) and `tsconfig.json` (paths).
+Create `src/styles/themes/` with 6 files (colors, breakpoints, palette, typography, components, index).
 
-### Step 4: Set Up MUI Theme
-
-Create `src/styles/themes/` with 6 files.
-
-### Step 5: Set Up SCSS Structure
-
-Same as Next.js: globals, mixins, settings, utils.
-
-### Step 6: Set Up i18n
+### Step 4: Set Up i18n
 
 Create `src/i18n/i18n.ts` with LanguageDetector. Create `src/locales/{locale}/` with JSON files.
 
-### Step 7: Set Up Valtio Auth Store
+### Step 5: Set Up Valtio Auth Store
 
 Create `src/valtio/auth/auth.store.ts` + `auth.actions.ts` with token management.
 
-### Step 8: Set Up Axios
+### Step 6: Set Up Axios
 
 Create `src/config/axios.config.ts` with token interceptor and refresh queue.
 
-### Step 9: Create Router
+### Step 7: Configure Router
 
-Create `src/routers/AppRouter.tsx` with login (anonymous) and home (protected) routes.
+Update `src/routers/AppRouter.tsx` with login (anonymous) and home (protected) routes using AppRoute wrapper.
 
-### Step 10: Set Up Linting
-
-Configure ESLint, Stylelint, Prettier, Husky.
-
-### Step 11: Configure vite.config.ts
-
-Add path alias, SCSS modern API, chunkSizeWarningLimit.
-
-### Step 12: Generate CLAUDE.md
+### Step 8: Generate CLAUDE.md
 
 Create from `@templates/CLAUDE.md.react.template`.
 
-### Step 13: Validate
+### Step 9: Validate
 
 ```bash
 yarn build && yarn lint
 ```
 
-### Step 14: Commit
+### Step 10: Commit
 
 ```bash
-git checkout -b chore/bootstrap-project
 git add .
-git commit -m "chore: bootstrap React+Vite project with MUI, Valtio, i18n, and Axios"
+git commit -m "chore: bootstrap React+Vite project from workspace-studio boilerplate"
 ```
+
+## Boilerplate Reference
+
+The [react-vite-boilerplate](https://github.com/workspace-studio/react-vite-boilerplate) includes:
+- React with TypeScript and Vite
+- React Router for routing
+- Sass with organized styles (settings, mixins, utils)
+- ESLint (Airbnb) + Stylelint + Prettier
+- Husky pre-commit hooks
+- clsx for conditional classNames
+- Project structure (components, views, routers, services, config, utils, types, models)

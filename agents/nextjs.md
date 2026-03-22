@@ -134,6 +134,7 @@ src/
 - **react-hook-form**: For all forms with validation
 - **Navigation**: Use `Link` from `@/i18n/navigation` (NOT `next/link`) for locale-aware routing
 - **Images**: Always use `next/image` with `sizes` prop and configured `remotePatterns`
+- **View sections start with Container**: Every view section MUST use `<Container component="section">` as root element
 - **Layout groups**: `(home)`, `(public)`, `(simple)` for different layout structures
 - **index.ts pattern**: Every component folder MUST have index.ts:
   ```typescript

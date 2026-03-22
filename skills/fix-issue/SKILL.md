@@ -15,6 +15,8 @@ Fix a GitHub issue. Usage: `/fix-issue 42`
 gh issue view $ARGUMENTS --json title,body,labels,comments
 ```
 
+Extract the issue number and title for branch naming.
+
 ### Step 2: Analyze the Problem
 
 - Understand the bug or feature request
@@ -23,9 +25,14 @@ gh issue view $ARGUMENTS --json title,body,labels,comments
 
 ### Step 3: Create Branch
 
+Use `{issue_number}-{issue-name}` format:
+
 ```bash
-git checkout -b fix/issue-$ARGUMENTS
+gh issue view $ARGUMENTS --json title -q '.title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | head -c 50
+git checkout -b $ARGUMENTS-{issue-name-slug}
 ```
+
+Example: `42-fix-header-scroll-on-mobile`
 
 ### Step 4: Implement Fix
 
@@ -47,11 +54,8 @@ yarn test:ct
 
 ### Step 7: Commit and PR
 
-Use `/create-pr` skill or manually:
-
-```bash
-git add <specific-files>
-git commit -m "fix: <description> (closes #$ARGUMENTS)"
-```
-
-Then create PR referencing the issue.
+Use `/create-pr` skill which will:
+- Stage specific files
+- Commit with descriptive message referencing the issue
+- Ask for reviewer
+- Create PR with `Resolves #{issue_number}: {issue title}` and detailed description

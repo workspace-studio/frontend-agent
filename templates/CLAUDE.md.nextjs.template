@@ -62,6 +62,7 @@ import Component from '../components/Component';  // ❌
 9. **ALWAYS add translations to ALL locales**
 10. **Use `Link` from `@/i18n/navigation`** — not `next/link`
 11. **Use `next/image`** — not `<img>` tag
+12. **View sections start with `Container`** — `<Container component="section">`
 
 ## Naming Conventions
 

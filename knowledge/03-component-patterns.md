@@ -100,6 +100,42 @@ views/
     └── index.ts                # Barrel export
 ```
 
+## View Section Pattern
+
+Every view section component MUST start with a `Container` component:
+
+```tsx
+import { Container, Stack, Typography } from '@mui/material';
+import { useTranslations } from 'next-intl';
+
+import styles from './FeaturesSection.module.scss';
+
+const FeaturesSection = () => {
+  const t = useTranslations('home.features');
+
+  return (
+    <Container component="section" className={styles.container}>
+      <Container disableGutters maxWidth="xl">
+        <Stack textAlign="center">
+          <Typography component="h2" variant="h2">
+            {t('section.title')}
+          </Typography>
+          <Typography variant="body1">
+            {t('section.description')}
+          </Typography>
+        </Stack>
+      </Container>
+    </Container>
+  );
+};
+```
+
+Key rules:
+- Use `component="section"` for semantic HTML
+- Outer `Container` controls full-width background/padding
+- Inner `Container` with `maxWidth="xl"` constrains content width
+- Always use `disableGutters` on inner Container when needed
+
 ## Props Interface
 
 Always define and export a props interface:

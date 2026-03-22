@@ -58,6 +58,7 @@ import Component from '../components/Component';  // ❌
 11. **ALWAYS use `Form + FormInput`** for forms
 12. **ALWAYS use `ModalRoot`** for modals
 13. **ALWAYS use axios instance** from `@/config/axios.config.ts`
+14. **View sections start with `Container`** — `<Container component="section">`
 
 ## Naming Conventions
 

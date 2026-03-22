@@ -69,22 +69,26 @@ Bootstrap a new React+Vite project called "my-app" with:
 
 The agent will scaffold the entire project, install dependencies, configure everything, and verify it builds.
 
-### Option B: Manual Setup
+### Option B: Manual Setup (Using Boilerplate)
 
 **Next.js:**
 ```bash
-npx create-next-app@latest my-landing --typescript --eslint --app --src-dir
+git clone https://github.com/workspace-studio/nextjs-boilerplate.git my-landing
 cd my-landing
-yarn add @mui/material @emotion/react @emotion/styled next-intl react-hook-form sass
+rm -rf .git && git init
+yarn install
+yarn add @mui/material @emotion/react @emotion/styled next-intl react-hook-form
 # Install the agent
 curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
 ```
 
 **React+Vite:**
 ```bash
-npm create vite@latest my-app -- --template react-ts
+git clone https://github.com/workspace-studio/react-vite-boilerplate.git my-app
 cd my-app
-yarn add @mui/material @emotion/react @emotion/styled react-router-dom valtio i18next react-i18next i18next-browser-languagedetector axios react-hook-form sass
+rm -rf .git && git init
+yarn install
+yarn add @mui/material @emotion/react @emotion/styled valtio i18next react-i18next i18next-browser-languagedetector axios react-hook-form
 # Install the agent
 curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
 ```
