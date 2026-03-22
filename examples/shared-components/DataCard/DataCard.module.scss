@@ -1,0 +1,27 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+
+.container {
+  height: 100%;
+  border: rem-calc(1) solid $gray-blue-200;
+  border-radius: rem-calc(16);
+  padding: rem-calc(12);
+  cursor: pointer;
+  transition: border-color $animation-duration-normal $timing-function;
+  position: relative;
+
+  &:hover {
+    border-color: $gray-blue-500;
+  }
+
+  .divider {
+    border-color: $gray-blue-200;
+    margin: rem-calc(12 -12);
+  }
+
+  .date {
+    position: absolute;
+    bottom: rem-calc(12);
+    right: rem-calc(12);
+  }
+}

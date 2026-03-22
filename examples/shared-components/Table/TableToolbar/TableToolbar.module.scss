@@ -1,0 +1,13 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+
+.container {
+  position: absolute;
+  z-index: 11;
+  width: 100%;
+  padding: rem-calc(0 9 0 2);
+  height: rem-calc(42);
+  background-color: $orange-50;
+  border-top-left-radius: rem-calc(12);
+  border-top-right-radius: rem-calc(12);
+}

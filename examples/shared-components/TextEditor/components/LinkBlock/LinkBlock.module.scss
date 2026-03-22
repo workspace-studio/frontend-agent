@@ -1,0 +1,17 @@
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+@use '@/styles/settings/variables' as *;
+
+.popover {
+  padding: rem-calc(20);
+}
+
+.title {
+  margin-bottom: rem-calc(8);
+  font-weight: 600;
+}
+
+.input {
+  height: rem-calc(42);
+  width: rem-calc(240);
+}

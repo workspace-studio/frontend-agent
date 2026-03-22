@@ -1,0 +1,21 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+
+.root {
+  &.container {
+    .summary {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: rem-calc(12);
+      color: $gray-blue-600;
+      height: rem-calc(24);
+
+      svg {
+        width: rem-calc(20);
+        height: rem-calc(20);
+        fill: $gray-blue-600;
+      }
+    }
+  }
+}

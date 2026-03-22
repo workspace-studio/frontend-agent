@@ -1,0 +1,32 @@
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/settings/variables' as *;
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: rem-calc(8);
+  padding: rem-calc(8);
+  min-width: auto;
+  height: auto;
+  transition: background-color $animation-duration-normal ease-in-out;
+  cursor: pointer;
+  margin-bottom: rem-calc(8);
+  width: 100%;
+
+  &:hover {
+    background-color: $gray-blue-50;
+  }
+
+  &:active {
+    background-color: rgba($orange-500, 0.05);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.active {
+    background-color: rgba($orange-500, 0.05);
+  }
+}

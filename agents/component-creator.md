@@ -23,6 +23,7 @@ Read these for reference standards:
 
 ## Process
 
+0. **Check shared components first** — before creating anything new, check if it already exists in `@examples/shared-components/`. If it does, copy it to the project and let the user adjust SCSS style. Use `/add-shared-components` skill.
 1. **Detect stack** from package.json (`next` → Next.js, `vite` → React+Vite)
 2. **Read 2-3 existing components** from `src/components/` to match patterns
 3. **Create component folder** `src/components/ComponentName/`

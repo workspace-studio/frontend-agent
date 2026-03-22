@@ -1,0 +1,111 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+
+.container {
+  font-variant-numeric: normal;
+  scrollbar-color: $gray-blue-200 $white;
+  max-height: calc(100dvh - rem-calc(244));
+  overflow-y: auto;
+  overscroll-behavior: auto;
+  border: rem-calc(1) solid $gray-blue-100;
+  border-radius: rem-calc(12);
+
+  @include media(0, 'sm') {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  thead {
+    background-color: $gray-blue-50;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+
+    @include media(0, 'sm') {
+      position: static;
+    }
+
+    th {
+      border-right: rem-calc(1) solid $gray-blue-100;
+      border-bottom: rem-calc(1) solid $gray-blue-100;
+      padding: rem-calc(0 8);
+      height: rem-calc(40);
+      white-space: nowrap;
+
+      &:first-child {
+        border-top-left-radius: rem-calc(8);
+      }
+
+      &:last-child {
+        border-top-right-radius: rem-calc(8);
+        border-right: none;
+      }
+
+      &.checkbox {
+        padding-inline: rem-calc(1);
+        width: rem-calc(1);
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      &.clickable {
+        cursor: pointer;
+
+        &:hover {
+          background-color: $gray-blue-50;
+        }
+
+        &:active {
+          background-color: $black-50;
+        }
+      }
+
+      .group {
+        background-color: $gray-blue-100;
+        color: $gray-blue-600;
+        height: rem-calc(30);
+      }
+    }
+
+    td {
+      border-right: rem-calc(1) solid $gray-blue-100;
+      border-bottom: rem-calc(1) solid $gray-blue-100;
+      padding: rem-calc(0 8);
+      height: rem-calc(40);
+      white-space: nowrap;
+
+      &:last-child {
+        border-right: none;
+      }
+
+      &.checkbox {
+        padding-inline: rem-calc(1);
+        width: rem-calc(1);
+      }
+    }
+
+    &.basic td {
+      padding: rem-calc(0 8);
+    }
+
+    &.noResults td {
+      padding: rem-calc(12 0);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+  }
+
+  &.usersDisplay {
+    max-height: calc(100dvh - rem-calc(308));
+
+    @include media(0, 'sm') {
+      max-height: none;
+      overflow-y: visible;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+@use '@/styles/settings/variables' as *;
+
+.headingButton {
+  padding-inline: rem-calc(8);
+  width: rem-calc(120);
+  height: rem-calc(32);
+  border-radius: rem-calc(12);
+  font-size: rem-calc(14);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: rem-calc(1) solid $black-200;
+  color: $gray-blue-400;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    border-color: $gray-blue-400;
+  }
+
+  &:active {
+    border-color: $gray-blue-600;
+    color: $gray-blue-600;
+  }
+
+  .icon {
+    font-size: rem-calc(16);
+  }
+
+  .menuPaper {
+    width: rem-calc(120);
+  }
+}

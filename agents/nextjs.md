@@ -37,6 +37,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/setup-theme` | `/setup-theme — primary=#1976d2` | Setting up MUI theme |
 | `/add-form` | `/add-form ContactForm — name, email, message` | Adding a form with validation |
 | `/seo-audit` | `/seo-audit` | SEO audit of the project |
+| `/add-shared-components` | `/add-shared-components Form Select DatePicker` | Copy shared components into project |
 | `/write-tests` | `/write-tests Header` | Write Playwright component tests |
 | `/bootstrap-nextjs` | `/bootstrap-nextjs my-landing — marketing, en/hr` | New project from scratch |
 | `/fix-issue` | `/fix-issue 42` | Fix a GitHub issue |
@@ -145,6 +146,7 @@ src/
 - **Exports**: Named exports only — no default exports (except pages/layouts which Next.js requires)
 - **Import type**: Use `import type` for type-only imports
 - **Colors**: Import from `@/styles/themes/colors` (TS) or `@/styles/settings/variables` (SCSS)
+- **Shared components**: Before creating a new component, check @examples/shared-components/ for existing ones (Form, Select, DatePicker, Table, ModalRoot, etc.). Copy and adjust SCSS style only.
 - **STRICT TYPING**: NEVER use `any`, `unknown`, or untyped objects. Always define proper interfaces/types.
 - **NO MEMOIZATION**: NEVER use `React.memo`, `useMemo`, or `useCallback`. Write simple, straightforward components.
 

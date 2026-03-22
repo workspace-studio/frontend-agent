@@ -1,0 +1,18 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+
+.puller {
+  position: absolute;
+  top: rem-calc(5);
+  left: 50%;
+  transform: translateX(-50%);
+  width: rem-calc(36);
+  height: rem-calc(5);
+  background-color: $black-200;
+  border-radius: rem-calc(2);
+}
+
+.swipeableContainer {
+  padding: rem-calc(16);
+}

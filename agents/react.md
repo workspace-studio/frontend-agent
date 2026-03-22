@@ -37,6 +37,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/setup-i18n` | `/setup-i18n add-locale ba` | Adding locale or translation keys |
 | `/setup-theme` | `/setup-theme — primary=#fa541c` | Setting up MUI theme |
 | `/add-form` | `/add-form CreateCustomerForm — name, email, phone` | Adding a form with validation |
+| `/add-shared-components` | `/add-shared-components Form FormInput Select` | Copy shared components into project |
 | `/write-tests` | `/write-tests StatusChip` | Write Playwright component tests |
 | `/bootstrap-react` | `/bootstrap-react my-app — dashboard, en/hr` | New project from scratch |
 | `/fix-issue` | `/fix-issue 42` | Fix a GitHub issue |
@@ -138,6 +139,7 @@ src/
 - **STRICT TYPING**: NEVER use `any`, `unknown`, or untyped objects. Always define proper interfaces/types.
 - **NO MEMOIZATION**: NEVER use `React.memo`, `useMemo`, or `useCallback`.
 - **Translation keys always** — never hardcode user-facing text, add to ALL locales
+- **Shared components**: Before creating a new component, check @examples/shared-components/ for existing ones (Form, FormInput, Select, Table, ModalRoot, etc.). Copy and adjust SCSS style only.
 
 ---
 

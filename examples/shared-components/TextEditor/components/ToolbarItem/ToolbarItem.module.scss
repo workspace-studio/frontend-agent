@@ -1,0 +1,67 @@
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+@use '@/styles/settings/variables' as *;
+
+.toolbarItem {
+  padding-inline: rem-calc(6);
+  width: rem-calc(28);
+  height: rem-calc(28);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: background $animation-duration-normal ease-in-out;
+
+  &:hover {
+    background: rgb(28 37 46 / 5%);
+  }
+
+  &.active {
+    background: rgb(28 37 46 / 10%);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
+
+  .icon {
+    font-size: rem-calc(18);
+    color: $gray-blue-400;
+  }
+
+  .label {
+    line-height: 1;
+  }
+}
+
+.menuItem {
+  width: 100%;
+  border-radius: rem-calc(8);
+  padding: rem-calc(8);
+  min-width: auto;
+  height: auto;
+  justify-content: flex-start;
+  transition: background-color $animation-duration-normal ease-in-out;
+
+  &:hover {
+    background-color: $gray-blue-50;
+  }
+
+  &.active {
+    background-color: rgba($orange-500, 0.08);
+
+    &:hover {
+      background-color: rgba($orange-500, 0.08);
+    }
+  }
+
+  .label {
+    line-height: 1;
+    color: $black;
+  }
+}

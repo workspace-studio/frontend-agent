@@ -1,0 +1,24 @@
+@use '@/styles/settings/variables' as *;
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/mixins/breakpoints' as *;
+
+.cardContainer {
+  max-height: calc(100dvh - rem-calc(244));
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: $gray-blue-200 $white;
+
+  @include media(0, 'sm') {
+    max-height: none;
+    overflow: visible;
+  }
+
+  &.usersDisplay {
+    max-height: calc(100dvh - rem-calc(308));
+
+    @include media(0, 'sm') {
+      max-height: none;
+      overflow: visible;
+    }
+  }
+}

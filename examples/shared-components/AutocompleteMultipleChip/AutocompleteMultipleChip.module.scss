@@ -1,0 +1,114 @@
+/* stylelint-disable selector-pseudo-class-no-unknown */
+@use '@/styles/utils/rem-calc' as *;
+@use '@/styles/settings/variables' as *;
+
+.root {
+  flex: 1;
+
+  :global(.MuiFormControl-root) {
+    position: relative;
+    height: 100%;
+    padding-inline: 0;
+    flex: 1;
+  }
+
+  :global(.MuiFilledInput-root) {
+    position: relative;
+    height: 100%;
+    flex-wrap: nowrap;
+    padding-block: rem-calc(10);
+    padding-inline: rem-calc(12);
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: transparent;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    :global(.MuiAutocomplete-input) {
+      height: 100%;
+
+      &::placeholder {
+        font-size: rem-calc(16);
+        color: $gray-blue-400;
+        opacity: 1;
+      }
+    }
+  }
+
+  :global(span.MuiAutocomplete-tag) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: rem-calc(23);
+    padding-inline: rem-calc(6);
+    border-radius: rem-calc(12);
+    background-color: $gray-blue-100;
+    color: $gray-blue-600;
+    font-size: rem-calc(14);
+    white-space: nowrap;
+  }
+
+  &:global(.Mui-disabled) {
+    :global(.MuiFormControl-root),
+    :global(.MuiFilledInput-root),
+    :global(.MuiAutocomplete-input) {
+      cursor: default;
+    }
+
+    :global(.MuiAutocomplete-input)::placeholder {
+      opacity: 0.5;
+    }
+  }
+}
+
+.paper {
+  margin-top: rem-calc(8);
+  min-width: rem-calc(348);
+}
+
+.formControl {
+  position: relative;
+}
+
+.clearButton {
+  position: absolute;
+  right: 0;
+  top: rem-calc(24);
+  bottom: 0;
+  height: fit-content;
+  max-height: rem-calc(58);
+  z-index: 9;
+  width: fit-content;
+  padding-inline: rem-calc(8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &.noLabel {
+    top: 0;
+    height: 100%;
+  }
+}
+
+.iconButton {
+  background: transparent;
+  color: $gray-blue-400;
+}
+
+.wrapChips {
+  :global(.MuiFilledInput-root) {
+    height: auto;
+    min-height: 100%;
+    flex-wrap: wrap;
+    overflow-x: visible;
+    align-content: center;
+
+    :global(.MuiChip-root) {
+      flex-shrink: 0;
+      margin: rem-calc(2);
+    }
+  }
+}
