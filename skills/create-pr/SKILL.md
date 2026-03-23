@@ -17,6 +17,8 @@ Example: `42-fix-header-scroll`, `15-add-pricing-page`
 
 If no issue, use descriptive name: `add-pricing-page`, `fix-header-scroll`
 
+**NEVER** use prefixes like `feature/`, `fix/`, `chore/` — branch names are flat.
+
 ### Step 2: Create Branch (if not already on feature branch)
 
 ```bash

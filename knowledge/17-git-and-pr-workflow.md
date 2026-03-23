@@ -2,12 +2,15 @@
 
 ## Branch Naming
 
+**NEVER** use prefixes like `feature/`, `fix/`, `chore/`, `bugfix/` — branch names are flat.
+
 When working on a GitHub issue, use `{issue_number}-{issue-name}` format:
 
 ```
-42-fix-header-scroll
-15-add-pricing-page
-8-refactor-card-component
+42-fix-header-scroll        ✅
+15-add-pricing-page          ✅
+feature/15-add-pricing-page  ❌ WRONG
+fix/42-fix-header-scroll     ❌ WRONG
 ```
 
 When NOT linked to an issue, use descriptive names:

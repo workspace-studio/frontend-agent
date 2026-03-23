@@ -25,7 +25,7 @@ Extract the issue number and title for branch naming.
 
 ### Step 3: Create Branch
 
-Use `{issue_number}-{issue-name}` format:
+Use `{issue_number}-{issue-name}` format (NO `feature/`, `fix/` prefixes — flat names only):
 
 ```bash
 gh issue view $ARGUMENTS --json title -q '.title' | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | head -c 50
