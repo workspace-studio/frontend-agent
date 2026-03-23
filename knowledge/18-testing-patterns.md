@@ -149,10 +149,77 @@ describe('createQueryParams', () => {
 });
 ```
 
+## E2E Testing with Playwright (Pages & Flows)
+
+E2E tests live in `tests/e2e/` at the project root. They test full pages and user flows.
+
+```typescript
+import { test, expect } from '@playwright/test';
+
+test.describe('Customers Page', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/login');
+    await page.fill('[name="email"]', 'admin@test.com');
+    await page.fill('[name="password"]', 'password');
+    await page.click('button[type="submit"]');
+    await page.waitForURL('/');
+  });
+
+  test('displays customer list', async ({ page }) => {
+    await page.goto('/customers');
+    await expect(page.getByRole('heading', { name: /customers/i })).toBeVisible();
+    await expect(page.locator('table')).toBeVisible();
+  });
+
+  test('creates new customer', async ({ page }) => {
+    await page.goto('/customers');
+    await page.click('button:has-text("Create")');
+    await page.fill('[name="name"]', 'Test Customer');
+    await page.click('button:has-text("Save")');
+    await expect(page.getByText('Test Customer')).toBeVisible();
+  });
+});
+```
+
+### Responsive E2E Tests
+
+```typescript
+const viewports = [
+  { name: 'mobile', width: 375, height: 812 },
+  { name: 'tablet', width: 768, height: 1024 },
+  { name: 'desktop', width: 1280, height: 800 },
+];
+
+for (const viewport of viewports) {
+  test(`pricing page on ${viewport.name}`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto('/pricing');
+    // Assert layout
+  });
+}
+```
+
+### E2E Test Structure
+
+```
+tests/
+├── e2e/
+│   ├── auth.spec.ts           # Auth flows
+│   ├── navigation.spec.ts     # Page navigation
+│   ├── {feature}.spec.ts      # Feature CRUD flow
+│   └── responsive.spec.ts     # Viewport tests
+├── fixtures/
+│   └── test-data.ts           # Mock data
+└── playwright.config.ts
+```
+
+Use `/test-page` for page-level tests, `/test-flow` for user flow tests.
+
 ## Run Commands
 
 ```bash
-yarn test:ct          # Playwright component tests
+yarn test:ct          # Playwright component tests (co-located .spec.tsx)
+yarn test:e2e         # Playwright E2E tests (tests/e2e/)
 yarn test             # Vitest unit tests (if configured)
 ```
 

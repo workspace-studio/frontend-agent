@@ -39,6 +39,8 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/add-form` | `/add-form CreateCustomerForm — name, email, phone` | Adding a form with validation |
 | `/add-shared-components` | `/add-shared-components Form FormInput Select` | Copy shared components into project |
 | `/write-tests` | `/write-tests StatusChip` | Write Playwright component tests |
+| `/test-page` | `/test-page /customers` | E2E test for a specific page |
+| `/test-flow` | `/test-flow create-customer` | E2E test for a user flow |
 | `/bootstrap-react` | `/bootstrap-react my-app — dashboard, en/hr` | New project from scratch |
 | `/fix-issue` | `/fix-issue 42` | Fix a GitHub issue |
 | `/create-pr` | `/create-pr` | Branch, commit, push, open PR |
@@ -50,6 +52,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 - **theme-implementor** — Sets up and maintains MUI theme with all 6 files
 - **i18n-specialist** — Sets up and manages i18next translations
 - **code-reviewer** — Reviews code for quality, accessibility, performance. Read-only.
+- **qa-tester** — Writes Playwright E2E tests for pages and user flows. Test plans, responsive testing, accessibility audits.
 
 ---
 
