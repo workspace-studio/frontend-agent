@@ -43,11 +43,19 @@ NEVER use `git add -A` or `git add .` — always stage specific files.
 
 ### Step 5: Commit
 
+When linked to an issue, use `#{issueNumber}: {description}` format:
+
+```bash
+git commit -m "#{issueNumber}: {description}"
+```
+
+Example: `#42: Fix header scroll bug`
+
+When NOT linked to an issue, use conventional commit format:
+
 ```bash
 git commit -m "{type}: {description}"
 ```
-
-If related to an issue, reference it: `fix: resolve header scroll bug (#42)`
 
 ### Step 6: Push
 

@@ -56,6 +56,6 @@ yarn test:ct
 
 Use `/create-pr` skill which will:
 - Stage specific files
-- Commit with descriptive message referencing the issue
+- Commit with `#{issue_number}: {description}` format
 - Ask for reviewer
 - Create PR with `Resolves #{issue_number}: {issue title}` and detailed description

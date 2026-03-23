@@ -20,12 +20,19 @@ refactor-card-component
 
 ## Commit Messages
 
-Use conventional commit format. Reference issue number when applicable:
+When linked to an issue, use `#{issue_number}: {description}` format:
 
 ```
-feat: add pricing page with plan cards (#15)
-fix: resolve header scroll issue on mobile (#42)
-refactor: extract shared StatusChip component (#8)
+#15: Add pricing page with plan cards
+#42: Fix header scroll issue on mobile
+#8: Refactor extract shared StatusChip component
+```
+
+When NOT linked to an issue, use conventional commit format:
+
+```
+feat: add pricing page with plan cards
+fix: resolve header scroll issue on mobile
 chore: update MUI to v7.4
 test: add Playwright tests for Header
 docs: update CLAUDE.md with new routes
