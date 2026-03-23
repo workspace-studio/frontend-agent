@@ -16,15 +16,11 @@ paths:
 
 ## MUI Theme
 - All colors defined in `colors.ts` — no hex in component files
+- Use explicit color imports: `color={colors.primary}` — NEVER use string references like `color="primary"`
 - Typography variants from `typography.ts`
 - Component overrides in `components.ts`
 - Breakpoints from `breakpoints.ts`
 - NEVER override theme values inline — update theme file
-
-## Dark Mode
-- Dark mode FIRST, light mode via overrides
-- Use theme palette tokens — no hardcoded colors
-- Test both modes when modifying styles
 
 ## Naming
 - BEM-style class names: `.component`, `.component__element`, `.component--modifier`
