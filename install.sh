@@ -34,7 +34,7 @@ fi
 echo "Detected stack: $STACK"
 
 # --- Create directory structure ---
-mkdir -p .claude/{agents,knowledge,examples}
+mkdir -p .claude/{agents,knowledge,examples,rules}
 for skill in create-component create-view add-store setup-i18n setup-theme add-form seo-audit bootstrap-nextjs bootstrap-react write-tests fix-issue create-pr refactor deploy; do
     mkdir -p ".claude/skills/$skill"
 done
@@ -48,9 +48,10 @@ for skill_dir in "$SOURCE_DIR/skills/"*/; do
     cp "$skill_dir"SKILL.md ".claude/skills/$skill_name/SKILL.md" 2>/dev/null || true
 done
 
-# --- Copy knowledge + examples ---
+# --- Copy knowledge + examples + rules ---
 cp "$SOURCE_DIR/knowledge/"*.md .claude/knowledge/
 cp -r "$SOURCE_DIR/examples/"* .claude/examples/ 2>/dev/null || true
+cp "$SOURCE_DIR/rules/"*.md .claude/rules/ 2>/dev/null || true
 
 # --- Install settings.json with hooks (only if not exists) ---
 if [ ! -f ".claude/settings.json" ]; then
@@ -64,6 +65,20 @@ if [ ! -f ".claude/settings.json" ]; then
           "type": "command",
           "command": "npx eslint --fix $FILEPATH 2>/dev/null || true"
         }]
+      },
+      {
+        "matcher": { "tool": "Edit|Write" },
+        "hooks": [{
+          "type": "command",
+          "command": "npx tsc --noEmit --pretty false 2>&1 | head -20 || true"
+        }]
+      },
+      {
+        "matcher": { "tool": "Edit|Write" },
+        "hooks": [{
+          "type": "command",
+          "command": "grep -n 'console\\.log' $FILEPATH 2>/dev/null && echo 'WARNING: console.log found — remove before committing' || true"
+        }]
       }
     ],
     "PreToolUse": [
@@ -72,6 +87,13 @@ if [ ! -f ".claude/settings.json" ]; then
         "hooks": [{
           "type": "command",
           "command": "yarn build --quiet 2>/dev/null && yarn lint --quiet 2>/dev/null"
+        }]
+      },
+      {
+        "matcher": { "tool": "Bash", "command": "--no-verify" },
+        "hooks": [{
+          "type": "command",
+          "command": "echo 'BLOCKED: --no-verify is not allowed. Always run hooks.' && exit 2"
         }]
       }
     ]
@@ -98,6 +120,7 @@ echo "  Agents:    $(ls .claude/agents/*.md 2>/dev/null | wc -l | tr -d ' ') fil
 echo "  Skills:    $(find .claude/skills -name 'SKILL.md' 2>/dev/null | wc -l | tr -d ' ') skills"
 echo "  Knowledge: $(ls .claude/knowledge/*.md 2>/dev/null | wc -l | tr -d ' ') files"
 echo "  Examples:  $(find .claude/examples -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ') directories"
+echo "  Rules:     $(ls .claude/rules/*.md 2>/dev/null | wc -l | tr -d ' ') files"
 echo "  Hooks:     $([ -f .claude/settings.json ] && echo 'yes' || echo 'no')"
 echo "  CLAUDE.md: $([ -f CLAUDE.md ] && echo "present ($STACK)" || echo 'skipped')"
 echo ""
