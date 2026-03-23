@@ -35,7 +35,7 @@ echo "Detected stack: $STACK"
 
 # --- Create directory structure ---
 mkdir -p .claude/{agents,knowledge,examples}
-for skill in create-component create-view add-store setup-i18n setup-theme add-form seo-audit bootstrap-nextjs bootstrap-react write-tests fix-issue create-pr refactor; do
+for skill in create-component create-view add-store setup-i18n setup-theme add-form seo-audit bootstrap-nextjs bootstrap-react write-tests fix-issue create-pr refactor deploy; do
     mkdir -p ".claude/skills/$skill"
 done
 
@@ -102,9 +102,9 @@ echo "  Hooks:     $([ -f .claude/settings.json ] && echo 'yes' || echo 'no')"
 echo "  CLAUDE.md: $([ -f CLAUDE.md ] && echo "present ($STACK)" || echo 'skipped')"
 echo ""
 if [ "$STACK" = "nextjs" ]; then
-    echo "  Skills: /create-component /create-view /setup-i18n /setup-theme /add-form /seo-audit /write-tests /bootstrap-nextjs /fix-issue /create-pr /refactor"
+    echo "  Skills: /create-component /create-view /setup-i18n /setup-theme /add-form /seo-audit /write-tests /bootstrap-nextjs /fix-issue /create-pr /refactor /deploy"
 else
-    echo "  Skills: /create-component /create-view /add-store /setup-i18n /setup-theme /add-form /write-tests /bootstrap-react /fix-issue /create-pr /refactor"
+    echo "  Skills: /create-component /create-view /add-store /setup-i18n /setup-theme /add-form /write-tests /bootstrap-react /fix-issue /create-pr /refactor /deploy"
 fi
 echo ""
 echo "  Usage: cd $(pwd) && claude"
