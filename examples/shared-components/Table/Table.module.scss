@@ -4,11 +4,11 @@
 
 .container {
   font-variant-numeric: normal;
-  scrollbar-color: $gray-blue-200 $white;
+  scrollbar-color: $border-color $white;
   max-height: calc(100dvh - rem-calc(244));
   overflow-y: auto;
   overscroll-behavior: auto;
-  border: rem-calc(1) solid $gray-blue-100;
+  border: rem-calc(1) solid $bg-subtle;
   border-radius: rem-calc(12);
 
   @include media(0, 'sm') {
@@ -17,7 +17,7 @@
   }
 
   thead {
-    background-color: $gray-blue-50;
+    background-color: $bg-hover;
     position: sticky;
     top: 0;
     z-index: 10;
@@ -27,8 +27,8 @@
     }
 
     th {
-      border-right: rem-calc(1) solid $gray-blue-100;
-      border-bottom: rem-calc(1) solid $gray-blue-100;
+      border-right: rem-calc(1) solid $bg-subtle;
+      border-bottom: rem-calc(1) solid $bg-subtle;
       padding: rem-calc(0 8);
       height: rem-calc(40);
       white-space: nowrap;
@@ -55,24 +55,24 @@
         cursor: pointer;
 
         &:hover {
-          background-color: $gray-blue-50;
+          background-color: $bg-hover;
         }
 
         &:active {
-          background-color: $black-50;
+          background-color: $bg-active;
         }
       }
 
       .group {
-        background-color: $gray-blue-100;
-        color: $gray-blue-600;
+        background-color: $bg-subtle;
+        color: $text-secondary;
         height: rem-calc(30);
       }
     }
 
     td {
-      border-right: rem-calc(1) solid $gray-blue-100;
-      border-bottom: rem-calc(1) solid $gray-blue-100;
+      border-right: rem-calc(1) solid $bg-subtle;
+      border-bottom: rem-calc(1) solid $bg-subtle;
       padding: rem-calc(0 8);
       height: rem-calc(40);
       white-space: nowrap;

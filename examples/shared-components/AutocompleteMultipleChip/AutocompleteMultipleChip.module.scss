@@ -31,7 +31,7 @@
 
       &::placeholder {
         font-size: rem-calc(16);
-        color: $gray-blue-400;
+        color: $text-placeholder;
         opacity: 1;
       }
     }
@@ -44,8 +44,8 @@
     height: rem-calc(23);
     padding-inline: rem-calc(6);
     border-radius: rem-calc(12);
-    background-color: $gray-blue-100;
-    color: $gray-blue-600;
+    background-color: $bg-subtle;
+    color: $text-secondary;
     font-size: rem-calc(14);
     white-space: nowrap;
   }
@@ -95,7 +95,7 @@
 
 .iconButton {
   background: transparent;
-  color: $gray-blue-400;
+  color: $text-placeholder;
 }
 
 .wrapChips {

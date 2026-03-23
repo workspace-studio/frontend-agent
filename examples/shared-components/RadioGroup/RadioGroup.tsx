@@ -36,7 +36,7 @@ const RadioGroup = ({ options, onChange, value, label, labelPlacement, disabled 
     <FormControl fullWidth disabled={disabled}>
       {label && (
         <FormLabel>
-          <Typography variant="body2" color="#888">
+          <Typography variant="body2" color={colors.textPlaceholder}>
             {label}
           </Typography>
         </FormLabel>
@@ -47,7 +47,7 @@ const RadioGroup = ({ options, onChange, value, label, labelPlacement, disabled 
             key={option.value}
             value={option.value}
             label={
-              <Typography variant="body2" color={colors.grayBlue500}>
+              <Typography variant="body2" color={colors.textTertiary}>
                 {option.label}
               </Typography>
             }

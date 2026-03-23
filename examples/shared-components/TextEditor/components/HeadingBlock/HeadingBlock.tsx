@@ -84,8 +84,8 @@ const HeadingBlock = ({ editor, levels = [1, 2, 3, 4, 5, 6] }: HeadingBlockProps
         className={styles.headingButton}
         sx={{
           padding: '16px 12px',
-          color: isOpen ? colors.grayBlue600 : colors.grayBlue400,
-          border: `1px solid ${isOpen ? colors.grayBlue600 : colors.grayBlue200}`,
+          color: isOpen ? colors.textSecondary : colors.textPlaceholder,
+          border: `1px solid ${isOpen ? colors.textSecondary : colors.borderColor}`,
           borderRadius: '4px',
           display: 'flex',
           alignItems: 'center',
@@ -94,8 +94,8 @@ const HeadingBlock = ({ editor, levels = [1, 2, 3, 4, 5, 6] }: HeadingBlockProps
           justifyContent: 'space-between',
           transition: 'all 0.2s',
           '&:hover': {
-            borderColor: colors.grayBlue400,
-            color: colors.grayBlue600,
+            borderColor: colors.textPlaceholder,
+            color: colors.textSecondary,
           },
         }}
       >
@@ -134,12 +134,12 @@ const HeadingBlock = ({ editor, levels = [1, 2, 3, 4, 5, 6] }: HeadingBlockProps
                 justifyContent: 'flex-start',
                 transition: 'background-color 0.2s',
                 '&:hover': {
-                  backgroundColor: colors.grayBlue50,
+                  backgroundColor: colors.bgHover,
                 },
                 '&.Mui-selected': {
-                  backgroundColor: colors.grayBlue100,
+                  backgroundColor: colors.bgSubtle,
                   '&:hover': {
-                    backgroundColor: colors.grayBlue100,
+                    backgroundColor: colors.bgSubtle,
                   },
                 },
               },

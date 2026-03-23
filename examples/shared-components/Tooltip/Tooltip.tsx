@@ -23,7 +23,7 @@ const Tooltip = ({ title }: TooltipProps) => {
   return (
     <ClickAwayListener onClickAway={handleTooltipClose}>
       <MuiTooltip onClose={handleTooltipClose} open={open} title={title}>
-        <IconButton sx={{ color: colors.grayBlue400 }}>
+        <IconButton sx={{ color: colors.textPlaceholder }}>
           <InfoOutlined onClick={handleTooltipOpen} />
         </IconButton>
       </MuiTooltip>

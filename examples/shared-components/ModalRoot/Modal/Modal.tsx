@@ -90,7 +90,7 @@ const Modal = ({
           {title}
         </Typography>
         {description && (
-          <Typography variant="body1" color={colors.grayBlue500}>
+          <Typography variant="body1" color={colors.textTertiary}>
             {description}
           </Typography>
         )}
@@ -101,7 +101,7 @@ const Modal = ({
           size="large"
           onClick={onClose}
           sx={{
-            color: noTitle ? colors.white : colors.grayBlue400,
+            color: noTitle ? colors.white : colors.textPlaceholder,
             ...closeButtonSx,
           }}
         >

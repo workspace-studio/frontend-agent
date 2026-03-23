@@ -25,14 +25,14 @@ const FilterItem = ({ keyId, label, isSelected, onClick }: FilterItemProps) => (
     key={keyId}
     onClick={onClick}
     sx={{
-      backgroundColor: isSelected ? colors.grayBlue100 : colors.white,
-      color: colors.grayBlue950,
+      backgroundColor: isSelected ? colors.bgSubtle : colors.white,
+      color: colors.textPrimary,
       borderRadius: '10px',
       cursor: 'pointer',
       padding: '12px 8px',
-      '&:hover': { backgroundColor: colors.grayBlue50 },
-      '&:active': { backgroundColor: colors.grayBlue100 },
-      '&:disabled': { backgroundColor: colors.grayBlue50 },
+      '&:hover': { backgroundColor: colors.bgHover },
+      '&:active': { backgroundColor: colors.bgSubtle },
+      '&:disabled': { backgroundColor: colors.bgHover },
     }}
   >
     <Typography variant="body2">{label}</Typography>

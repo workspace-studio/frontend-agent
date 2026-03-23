@@ -22,7 +22,7 @@ const SearchOptionItem = ({ label, selected, icon: Icon, props }: SearchOptionIt
         {Icon && Icon}
         <Typography variant="body2">{label}</Typography>
       </Stack>
-      {selected && <Check height={20} width={20} fill={colors.orange500} />}
+      {selected && <Check height={20} width={20} fill={colors.accentColor} />}
     </Box>
   );
 };

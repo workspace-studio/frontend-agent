@@ -10,10 +10,10 @@
   transition:
     border-color 0.3s ease,
     box-shadow 0.3s ease;
-  border: rem-calc(1) solid $gray-blue-200;
+  border: rem-calc(1) solid $border-color;
 
   &.error {
-    border-color: $red-500;
+    border-color: $error-color;
   }
 
   &.disabled {
@@ -22,7 +22,7 @@
   }
 
   &:hover {
-    border-color: $gray-blue-400;
+    border-color: $text-placeholder;
   }
 
   &.fullScreen {
@@ -37,11 +37,11 @@
 
   &:focus-within {
     &.error {
-      border-color: $red-500;
+      border-color: $error-color;
     }
 
     &:not(.error) {
-      border-color: $gray-blue-600;
+      border-color: $text-secondary;
     }
   }
 }
@@ -65,7 +65,7 @@
     outline: none;
     font-size: rem-calc(16);
     line-height: 1.2;
-    color: $gray-blue-600;
+    color: $text-secondary;
 
     & > * + * {
       margin-top: rem-calc(12);
@@ -137,17 +137,17 @@
     }
 
     blockquote {
-      border-left: rem-calc(4) solid $gray-blue-200;
+      border-left: rem-calc(4) solid $border-color;
       padding-left: rem-calc(16);
       margin-left: 0;
       margin-right: 0;
       font-style: italic;
-      color: $gray-blue-600;
+      color: $text-secondary;
     }
 
     code {
-      background-color: $gray-blue-50;
-      color: $orange-500;
+      background-color: $bg-hover;
+      color: $accent-color;
       padding: rem-calc(6);
       border-radius: rem-calc(2);
       font-size: rem-calc(14);
@@ -155,7 +155,7 @@
     }
 
     pre {
-      background-color: $gray-blue-400;
+      background-color: $text-placeholder;
       color: $white;
       padding: rem-calc(16);
       border-radius: rem-calc(2);
@@ -173,12 +173,12 @@
     }
 
     a {
-      color: $orange-500;
+      color: $accent-color;
       text-decoration: underline;
       cursor: pointer;
 
       &:hover {
-        color: $orange-700;
+        color: $accent-dark;
       }
     }
 
@@ -192,7 +192,7 @@
 
     hr {
       border: none;
-      border-top: rem-calc(1) solid $gray-blue-200;
+      border-top: rem-calc(1) solid $border-color;
       margin-block: rem-calc(24);
     }
 
@@ -203,7 +203,7 @@
     :global(.is-editor-empty::before) {
       content: attr(data-placeholder);
       float: left;
-      color: $gray-blue-400;
+      color: $text-placeholder;
       pointer-events: none;
       height: 0;
     }

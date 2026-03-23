@@ -93,9 +93,9 @@ const CustomDay = ({
 
     if (!startDate && isHoverEnd) return 'transparent';
 
-    if (isStart || isEnd || (isHoverEnd && startDate)) return colors.orange500;
+    if (isStart || isEnd || (isHoverEnd && startDate)) return colors.accentColor;
 
-    if (isInRange) return colors.orange100;
+    if (isInRange) return colors.accentLight;
 
     return 'transparent';
   };
@@ -112,20 +112,20 @@ const CustomDay = ({
 
   const getTextColor = () => {
     if (hasHover) {
-      if (isDisabled && !outsideCurrentMonth) return colors.black300;
+      if (isDisabled && !outsideCurrentMonth) return colors.textDisabled;
 
-      if (!startDate && isHoverEnd) return colors.black900;
+      if (!startDate && isHoverEnd) return colors.textPrimary;
 
       if (isStart || isEnd || (isHoverEnd && startDate)) return colors.white;
 
-      if (isInRange) return colors.black900;
+      if (isInRange) return colors.textPrimary;
 
-      return colors.black900;
+      return colors.textPrimary;
     }
 
     if (isStart || isEnd) return colors.white;
 
-    return isInRange ? colors.black : colors.black600;
+    return isInRange ? colors.black : colors.textLabel;
   };
 
   const showRangeBg = hasHover
@@ -141,7 +141,7 @@ const CustomDay = ({
           left: isStart ? '50%' : '-50%',
           height: '100%',
           width: '100%',
-          backgroundColor: colors.orange100,
+          backgroundColor: colors.accentLight,
           zIndex: 0,
           borderTopLeftRadius: 0,
           borderBottomLeftRadius: 0,
@@ -160,15 +160,15 @@ const CustomDay = ({
     !(startDate && endDate);
 
   const getHoverStyles = () => {
-    if (!hasHover) return { backgroundColor: colors.orange200 };
+    if (!hasHover) return { backgroundColor: colors.accentHover };
 
-    if (shouldShowHover) return { backgroundColor: colors.orange200, color: colors.black900 };
+    if (shouldShowHover) return { backgroundColor: colors.accentHover, color: colors.textPrimary };
 
     return {};
   };
 
   const getSelectedHoverStyles = () => {
-    if (hasHover && shouldShowHover) return { backgroundColor: colors.orange200, color: colors.black900 };
+    if (hasHover && shouldShowHover) return { backgroundColor: colors.accentHover, color: colors.textPrimary };
 
     return { backgroundColor: getBackgroundColor(), color: getTextColor() };
   };
@@ -207,7 +207,7 @@ const CustomDay = ({
             ...(hasHover && {
               '&.Mui-disabled': {
                 backgroundColor: getBackgroundColor(),
-                color: colors.black900,
+                color: colors.textPrimary,
                 fontWeight: 700,
                 opacity: '1 !important',
                 cursor: 'not-allowed',
@@ -217,7 +217,7 @@ const CustomDay = ({
           },
           '&.Mui-selected.MuiPickersDay-dayOutsideMonth': {
             backgroundColor: 'transparent',
-            color: colors.black200,
+            color: colors.textDisabled,
             pointerEvents: 'none',
           },
         }}

@@ -3,7 +3,7 @@
 
 .container {
   height: 100%;
-  border: rem-calc(1) solid $gray-blue-200;
+  border: rem-calc(1) solid $border-color;
   border-radius: rem-calc(16);
   padding: rem-calc(12);
   cursor: pointer;
@@ -11,11 +11,11 @@
   position: relative;
 
   &:hover {
-    border-color: $gray-blue-500;
+    border-color: $text-tertiary;
   }
 
   .divider {
-    border-color: $gray-blue-200;
+    border-color: $border-color;
     margin: rem-calc(12 -12);
   }
 

@@ -38,7 +38,7 @@ const compactCalendarStyles: SxProps<Theme> = {
     flex: 1,
     fontSize: '12px',
     fontWeight: 600,
-    color: colors.black600,
+    color: colors.textLabel,
     margin: 'auto',
     p: '6px',
     minWidth: '22px',
@@ -80,7 +80,7 @@ const defaultCalendarStyles: SxProps<Theme> = {
   '& .MuiDayCalendar-header > *': {
     flex: 1,
     ...typography.body2,
-    color: colors.black600,
+    color: colors.textLabel,
     margin: 'auto',
     p: { xs: '4px', sm: '6px' },
     minWidth: { xs: '18px', sm: '22px' },
@@ -165,7 +165,7 @@ const defaultHeaderStyles: SxProps<Theme> = {
     fontSize: { xs: '16px', sm: '18px' },
     fontWeight: 600,
     whiteSpace: 'nowrap',
-    color: colors.black900,
+    color: colors.textPrimary,
     margin: 0,
     cursor: 'default',
   },
@@ -177,7 +177,7 @@ const defaultHeaderStyles: SxProps<Theme> = {
   '& .MuiPickersArrowSwitcher-button': {
     padding: { xs: '2px', sm: '4px' },
     '&:hover': {
-      backgroundColor: colors.orange50,
+      backgroundColor: colors.accentLightest,
     },
   },
   '& .MuiPickersArrowSwitcher-spacer': {

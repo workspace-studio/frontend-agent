@@ -31,7 +31,7 @@
 
   .icon {
     font-size: rem-calc(18);
-    color: $gray-blue-400;
+    color: $text-placeholder;
   }
 
   .label {
@@ -49,14 +49,14 @@
   transition: background-color $animation-duration-normal ease-in-out;
 
   &:hover {
-    background-color: $gray-blue-50;
+    background-color: $bg-hover;
   }
 
   &.active {
-    background-color: rgba($orange-500, 0.08);
+    background-color: rgba($accent-color, 0.08);
 
     &:hover {
-      background-color: rgba($orange-500, 0.08);
+      background-color: rgba($accent-color, 0.08);
     }
   }
 

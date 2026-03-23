@@ -59,17 +59,17 @@ const DateRangePicker = ({ startDate, endDate, handleDateChange, filters, months
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
         variant="outlined"
-        endIcon={<Calendar fill={colors.grayBlue950} size={20} />}
+        endIcon={<Calendar fill={colors.textPrimary} size={20} />}
         fullWidth={customBreakpoint}
         sx={{
           justifyContent: customBreakpoint ? 'space-between' : 'center',
-          borderColor: colors.grayBlue200,
+          borderColor: colors.borderColor,
         }}
       >
         <Typography
           variant="body2"
           fontWeight={600}
-          color={startDate && endDate ? colors.grayBlue600 : colors.black100}
+          color={startDate && endDate ? colors.textSecondary : colors.textMuted}
         >
           {startDate && endDate
             ? `${DateTime.formatHR(startDate)} - ${DateTime.formatHR(endDate)}`
@@ -112,8 +112,8 @@ const DateRangePicker = ({ startDate, endDate, handleDateChange, filters, months
         >
           {filters && (
             <Stack
-              borderRight={customBreakpoint ? 'none' : `1px solid ${colors.grayBlue200}`}
-              borderBottom={customBreakpoint ? `1px solid ${colors.grayBlue200}` : 'none'}
+              borderRight={customBreakpoint ? 'none' : `1px solid ${colors.borderColor}`}
+              borderBottom={customBreakpoint ? `1px solid ${colors.borderColor}` : 'none'}
               paddingRight={customBreakpoint ? 0 : 2}
               paddingBottom={customBreakpoint ? 2 : 0}
               flex={1}
@@ -142,11 +142,11 @@ const DateRangePicker = ({ startDate, endDate, handleDateChange, filters, months
           >
             <Stack width="100%" position="relative" height="100%">
               <IconButton onClick={handlePrevMonth} sx={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}>
-                <ChevronLeft sx={{ fontSize: 24, color: colors.grayBlue400 }} />
+                <ChevronLeft sx={{ fontSize: 24, color: colors.textPlaceholder }} />
               </IconButton>
               {monthsShown === 1 && (
                 <IconButton onClick={handleNextMonth} sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}>
-                  <ChevronRight sx={{ fontSize: 24, color: colors.grayBlue400 }} />
+                  <ChevronRight sx={{ fontSize: 24, color: colors.textPlaceholder }} />
                 </IconButton>
               )}
               <CustomDateCalendar
@@ -159,7 +159,7 @@ const DateRangePicker = ({ startDate, endDate, handleDateChange, filters, months
             {monthsShown === 2 && (
               <Stack width="100%" position="relative" height="100%">
                 <IconButton onClick={handleNextMonth} sx={{ position: 'absolute', top: 0, right: 0, zIndex: 1 }}>
-                  <ChevronRight sx={{ fontSize: 24, color: colors.grayBlue400 }} />
+                  <ChevronRight sx={{ fontSize: 24, color: colors.textPlaceholder }} />
                 </IconButton>
                 <CustomDateCalendar
                   currentMonth={currentMonth.add(1, 'month')}

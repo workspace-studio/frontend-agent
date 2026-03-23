@@ -64,19 +64,19 @@ const DataCard = ({
         <Stack key={text} direction="row" alignItems="center" gap={1}>
           {Icon && (
             <Box sx={{ flexShrink: 0, width: '16px', height: '16px' }}>
-              <Icon width={16} height={16} fill={colors.grayBlue400} />
+              <Icon width={16} height={16} fill={colors.textPlaceholder} />
             </Box>
           )}
           {avatar && <Box sx={{ flexShrink: 0 }}>{avatar}</Box>}
-          <Typography variant="body2" color={colors.grayBlue800}>
+          <Typography variant="body2" color={colors.textSecondary}>
             {text}
           </Typography>
           {index === items.length - 1 && date && (
             <Stack className={styles.date} gap={0.5}>
-              <Typography variant="body2" color={colors.grayBlue500} textAlign="end">
+              <Typography variant="body2" color={colors.textTertiary} textAlign="end">
                 {t('start-date')}
               </Typography>
-              <Typography variant="body2" color={colors.grayBlue800}>
+              <Typography variant="body2" color={colors.textSecondary}>
                 {date}
               </Typography>
             </Stack>
@@ -93,7 +93,7 @@ const DataCard = ({
         if (isAssigneeGrid && assignees) {
           return (
             <Stack key={index} spacing={1} direction="row" justifyContent="space-between">
-              <Typography variant="body2" color={colors.grayBlue500} width="40%">
+              <Typography variant="body2" color={colors.textTertiary} width="40%">
                 {label}
               </Typography>
               {assignees.length > 0 ? (
@@ -104,7 +104,7 @@ const DataCard = ({
                       <Grid size={12} key={`${assignee}-${assigneeIndex}`}>
                         <Stack direction="row" alignItems="center" spacing={1}>
                           <Avatar name={assignee.name} size="small" />
-                          <Typography variant="body2" color={colors.grayBlue800}>
+                          <Typography variant="body2" color={colors.textSecondary}>
                             {assignee.name}
                           </Typography>
                           {assignee.isLead && <StatusChip label="Lead" color="primary" />}
@@ -113,7 +113,7 @@ const DataCard = ({
                     ))}
                 </Grid>
               ) : (
-                <Typography variant="body2" color={colors.grayBlue800}>
+                <Typography variant="body2" color={colors.textSecondary}>
                   -
                 </Typography>
               )}
@@ -123,13 +123,13 @@ const DataCard = ({
 
         return (
           <Stack key={index} direction="row" spacing={1}>
-            <Typography variant="body2" color={colors.grayBlue500} width="40%">
+            <Typography variant="body2" color={colors.textTertiary} width="40%">
               {label || '-'}
             </Typography>
             <Stack direction="row" alignItems="center" gap={1} width="60%" flexWrap="wrap">
               {avatar && <Box>{avatar}</Box>}
               {content ?? (
-                <Typography variant="body2" color={colors.grayBlue800}>
+                <Typography variant="body2" color={colors.textSecondary}>
                   {text || '-'}
                 </Typography>
               )}
@@ -149,7 +149,7 @@ const DataCard = ({
     >
       <Stack direction="row" justifyContent="space-between" alignItems="flex-start">
         {titleWithoutChip ? (
-          <Typography variant="body1" fontWeight={600} color={colors.grayBlue900} sx={{ wordBreak: 'break-word' }}>
+          <Typography variant="body1" fontWeight={600} color={colors.textPrimary} sx={{ wordBreak: 'break-word' }}>
             {title}
           </Typography>
         ) : (
@@ -176,7 +176,7 @@ const DataCard = ({
         )}
       </Stack>
       {!titleWithoutChip && (
-        <Typography variant="body1" fontWeight={600} color={colors.grayBlue900} sx={{ wordBreak: 'break-word' }} mt={1}>
+        <Typography variant="body1" fontWeight={600} color={colors.textPrimary} sx={{ wordBreak: 'break-word' }} mt={1}>
           {title}
         </Typography>
       )}
@@ -184,10 +184,10 @@ const DataCard = ({
       {twoColumnLayout ? renderTwoColumnItems() : renderSingleColumnItems()}
       {date && twoColumnLayout && (
         <Stack gap={0.5} sx={{ mt: 'auto', pt: 2 }}>
-          <Typography variant="body2" color={colors.grayBlue500}>
+          <Typography variant="body2" color={colors.textTertiary}>
             {t('start-date')}
           </Typography>
-          <Typography variant="body2" color={colors.grayBlue800} textAlign="start">
+          <Typography variant="body2" color={colors.textSecondary} textAlign="start">
             {date}
           </Typography>
         </Stack>

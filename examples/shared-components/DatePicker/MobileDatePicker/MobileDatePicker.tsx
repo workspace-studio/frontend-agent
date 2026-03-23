@@ -53,13 +53,13 @@ const MobileDatePicker = ({
           }}
           slotProps={{
             mobilePaper: { sx: { margin: 0 } },
-            openPickerIcon: { fill: disabled ? colors.grayBlue200 : colors.grayBlue600 },
+            openPickerIcon: { fill: disabled ? colors.borderColor : colors.textSecondary },
             toolbar: {
               ...(toolbarFormat && { toolbarFormat }),
               sx: {
                 '& .MuiDatePickerToolbar-title': {
                   ...typography.h3,
-                  color: colors.black900,
+                  color: colors.textPrimary,
                 },
               },
             },
@@ -75,7 +75,7 @@ const MobileDatePicker = ({
             textField: {
               sx: {
                 '& .MuiPickersInputBase-sectionsContainer': {
-                  color: disabled ? colors.grayBlue200 : colors.grayBlue600,
+                  color: disabled ? colors.borderColor : colors.textSecondary,
                 },
               },
             },

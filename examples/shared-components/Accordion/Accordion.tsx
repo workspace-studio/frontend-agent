@@ -27,11 +27,11 @@ const Accordion = ({ title, children, mt, icon }: AccordionProps) => {
     >
       <AccordionSummary
         classes={{ content: styles.summary }}
-        expandIcon={<ExpandMoreOutlined sx={{ color: colors.grayBlue600 }} />}
+        expandIcon={<ExpandMoreOutlined sx={{ color: colors.textSecondary }} />}
       >
         {IconComponent &&
           React.createElement(IconComponent, {
-            fill: colors.grayBlue600,
+            fill: colors.textSecondary,
             size: 20,
           })}
         <Typography variant="h3" fontWeight={600}>

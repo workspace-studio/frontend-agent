@@ -14,7 +14,7 @@ const gridBaseSx = {
   '& .MuiDayCalendar-header > *': {
     flex: 1,
     ...typography.body2,
-    color: colors.black600,
+    color: colors.textLabel,
     fontWeight: 600,
     margin: 'auto',
     textTransform: 'capitalize',
@@ -33,7 +33,7 @@ const popperSx = {
 const layoutSx = {
   '& .MuiDayCalendar-weekDayLabel': {
     ...typography.body2,
-    color: colors.black600,
+    color: colors.textLabel,
     fontWeight: 600,
     textTransform: 'capitalize',
   },
@@ -80,12 +80,12 @@ const DesktopDatePicker = ({
           referenceDate={referenceDate}
           slots={{ openPickerIcon: Calendar, day: CustomDaySlot }}
           slotProps={{
-            openPickerIcon: { fill: disabled ? colors.grayBlue200 : colors.grayBlue600 },
+            openPickerIcon: { fill: disabled ? colors.borderColor : colors.textSecondary },
             field: { clearable: true },
             textField: {
               sx: {
                 '& .MuiPickersInputBase-sectionsContainer': {
-                  color: disabled ? colors.grayBlue200 : colors.grayBlue600,
+                  color: disabled ? colors.borderColor : colors.textSecondary,
                 },
               },
             },

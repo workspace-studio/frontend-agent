@@ -35,7 +35,7 @@ export const calendarHeaderSx = {
     transform: 'translateX(-50%)',
     fontSize: '16px',
     fontWeight: 700,
-    color: colors.grayBlue950,
+    color: colors.textPrimary,
     margin: 0,
     textTransform: 'capitalize' as const,
     pointerEvents: 'none' as const,
@@ -43,30 +43,30 @@ export const calendarHeaderSx = {
   '& .MuiPickersCalendarHeader-switchViewButton': { display: 'none' },
   '& .MuiPickersArrowSwitcher-root': { width: '100%', display: 'flex', justifyContent: 'space-between' },
   '& .MuiPickersArrowSwitcher-spacer': { display: 'none' },
-  '& .MuiPickersArrowSwitcher-button': { padding: '4px', color: colors.grayBlue400 },
+  '& .MuiPickersArrowSwitcher-button': { padding: '4px', color: colors.textPlaceholder },
 };
 
 export const pickerDaySx = {
   borderRadius: '50%',
   ...typography.body2,
   fontWeight: 600,
-  color: colors.grayBlue950,
+  color: colors.textPrimary,
   minWidth: 36,
   minHeight: 36,
   margin: 'auto',
   p: '6px',
-  '&:hover': { backgroundColor: colors.orange200 },
+  '&:hover': { backgroundColor: colors.accentHover },
   '&.Mui-selected': {
-    backgroundColor: colors.orange500,
+    backgroundColor: colors.accentColor,
     color: colors.white,
-    '&:hover': { backgroundColor: colors.orange600 },
+    '&:hover': { backgroundColor: colors.accentActive },
   },
   '&.MuiPickersDay-today:not(.Mui-selected)': {
-    backgroundColor: colors.grayBlue50,
-    color: colors.grayBlue950,
+    backgroundColor: colors.bgHover,
+    color: colors.textPrimary,
     border: 'none',
   },
-  '&.Mui-disabled': { backgroundColor: 'transparent', color: colors.black200, fontWeight: 400, pointerEvents: 'none' },
+  '&.Mui-disabled': { backgroundColor: 'transparent', color: colors.textDisabled, fontWeight: 400, pointerEvents: 'none' },
 };
 
 export const getHeaderSlotProps = (calendarHeaderFormat?: string) => ({
@@ -128,13 +128,13 @@ const DatePicker = ({
           }}
           slotProps={{
             mobilePaper: { sx: { margin: 0 } },
-            openPickerIcon: { fill: disabled ? colors.grayBlue200 : colors.grayBlue600 },
+            openPickerIcon: { fill: disabled ? colors.borderColor : colors.textSecondary },
             toolbar: {
               ...(toolbarFormat && { toolbarFormat }),
               sx: {
                 '& .MuiDatePickerToolbar-title': {
                   ...typography.h3,
-                  color: colors.black900,
+                  color: colors.textPrimary,
                 },
               },
             },
@@ -150,7 +150,7 @@ const DatePicker = ({
             textField: {
               sx: {
                 '& .MuiPickersInputBase-sectionsContainer': {
-                  color: disabled ? colors.grayBlue200 : colors.grayBlue600,
+                  color: disabled ? colors.borderColor : colors.textSecondary,
                 },
               },
             },
@@ -167,7 +167,7 @@ const DatePicker = ({
               sx: {
                 '& .MuiDayCalendar-weekDayLabel': {
                   ...typography.body2,
-                  color: colors.black600,
+                  color: colors.textLabel,
                   fontWeight: 600,
                   textTransform: 'capitalize',
                 },

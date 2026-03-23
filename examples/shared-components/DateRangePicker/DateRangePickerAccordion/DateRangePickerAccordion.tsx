@@ -22,21 +22,21 @@ const DateRangePickerAccordion = ({ title, children }: DateRangePickerAccordionP
     <AccordionSummary
       sx={{
         backgroundColor: colors.white,
-        color: colors.grayBlue950,
+        color: colors.textPrimary,
         borderRadius: '10px',
         cursor: 'pointer',
         padding: '12px 8px',
 
         '&:hover': {
-          backgroundColor: colors.grayBlue50,
+          backgroundColor: colors.bgHover,
         },
         '&[aria-expanded="true"]': {
-          backgroundColor: colors.grayBlue100,
+          backgroundColor: colors.bgSubtle,
         },
       }}
-      expandIcon={<ExpandMoreOutlined sx={{ color: colors.grayBlue400, fontSize: '24px' }} />}
+      expandIcon={<ExpandMoreOutlined sx={{ color: colors.textPlaceholder, fontSize: '24px' }} />}
     >
-      <Typography variant="body2" color={colors.grayBlue950}>
+      <Typography variant="body2" color={colors.textPrimary}>
         {title}
       </Typography>
     </AccordionSummary>

@@ -38,6 +38,8 @@ Copy shared components into the project. Usage: `/add-shared-components Form For
 | TextEditor | Tiptap rich text editor |
 | Toast | MUI Snackbar/Alert wrapper |
 | Tooltip | MUI Tooltip wrapper |
+| MeatballsMenu | Vertical dots (3-dots) menu |
+| SvgIcons | Shared SVG icon components |
 
 ## Steps
 
@@ -55,7 +57,8 @@ For each requested component:
 
 1. Read the source from `@examples/shared-components/{ComponentName}/`
 2. Copy ALL files (.tsx, .module.scss if exists, index.ts) to `src/components/{ComponentName}/`
-3. Update import paths if project uses different aliases
+3. Copy required SvgIcons from `@examples/shared-components/SvgIcons/` to `src/components/SvgIcons/`
+4. Update import paths if project uses different aliases
 
 ### Step 3: Install Dependencies (if needed)
 

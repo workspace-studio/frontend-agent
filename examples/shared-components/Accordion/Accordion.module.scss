@@ -8,13 +8,13 @@
       flex-direction: row;
       align-items: center;
       gap: rem-calc(12);
-      color: $gray-blue-600;
+      color: $text-secondary;
       height: rem-calc(24);
 
       svg {
         width: rem-calc(20);
         height: rem-calc(20);
-        fill: $gray-blue-600;
+        fill: $text-secondary;
       }
     }
   }

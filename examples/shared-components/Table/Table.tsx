@@ -153,13 +153,13 @@ const Table = ({
                       direction={sortBy === id ? sortDirection : 'asc'}
                       onClick={() => handleSort(id)}
                     >
-                      <Typography variant="body2" color={colors.grayBlue500}>
+                      <Typography variant="body2" color={colors.textTertiary}>
                         {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                         {t(label as any)}
                       </Typography>
                     </TableSortLabel>
                   ) : (
-                    <Typography variant="body2" color={colors.grayBlue500}>
+                    <Typography variant="body2" color={colors.textTertiary}>
                       {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
                       {t(label as any)}
                     </Typography>

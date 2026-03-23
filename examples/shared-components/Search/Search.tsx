@@ -59,7 +59,7 @@ const Search = ({ value, onChange, placeholder, disableDebounce = false, fullWid
         input: {
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon size={24} fill={colors.grayBlue200} />
+              <SearchIcon size={24} fill={colors.borderColor} />
             </InputAdornment>
           ),
           endAdornment: (

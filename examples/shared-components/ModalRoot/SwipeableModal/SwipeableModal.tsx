@@ -110,14 +110,14 @@ const SwipeableModal = ({
       zIndex={noTitle ? 1300 : 'auto'}
     >
       {arrowBack && (
-        <IconButton size="large" onClick={onBack} sx={{ color: colors.black400 }}>
+        <IconButton size="large" onClick={onBack} sx={{ color: colors.textPlaceholder }}>
           <KeyboardBackspaceIcon />
         </IconButton>
       )}
       <Stack>
         <Typography variant="h2">{title}</Typography>
         {description && (
-          <Typography variant="body1" color={colors.grayBlue500}>
+          <Typography variant="body1" color={colors.textTertiary}>
             {description}
           </Typography>
         )}
@@ -128,7 +128,7 @@ const SwipeableModal = ({
           size="large"
           onClick={onClose}
           sx={{
-            color: noTitle ? colors.white : colors.grayBlue400,
+            color: noTitle ? colors.white : colors.textPlaceholder,
             ...closeButtonSx,
           }}
         >

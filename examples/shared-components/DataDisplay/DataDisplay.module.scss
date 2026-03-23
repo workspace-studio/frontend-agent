@@ -6,7 +6,7 @@
   max-height: calc(100dvh - rem-calc(244));
   overflow: auto;
   overscroll-behavior: contain;
-  scrollbar-color: $gray-blue-200 $white;
+  scrollbar-color: $border-color $white;
 
   @include media(0, 'sm') {
     max-height: none;

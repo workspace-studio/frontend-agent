@@ -143,8 +143,17 @@ Unified Table/Card view switcher. Renders either Table or DataCard based on `vie
 
 **Props**: extends TableProps, adds `cardData`, `onCardClick`, `viewType`, `twoColumnLayout`
 
-#### StatusChip
-MUI Chip wrapper with color variants (error, warning, success, info, primary, secondary).
+#### MeatballsMenu
+Vertical dots (3-dots) menu for row actions.
+
+```tsx
+<MeatballsMenu>
+  <MenuItem onClick={handleEdit}>{t('actions.edit')}</MenuItem>
+  <MenuItem onClick={handleDelete}>{t('actions.delete')}</MenuItem>
+</MeatballsMenu>
+```
+
+**Props**: `children`, `anchorOriginVertical`, `transformOriginVertical`, `sx`, `size`
 
 ### Layout Components
 
@@ -207,6 +216,53 @@ MUI Pagination with custom arrow icons.
 ```
 
 **Props**: `page`, `onChange`, `count`
+
+### SVG Icons
+
+Shared SVG icon components in `@examples/shared-components/SvgIcons/`. Copy needed icons when adding components that reference them.
+
+| Icon | Used By |
+|------|---------|
+| CheckboxChecked, CheckboxUnchecked, CheckboxIndeterminate | Checkbox |
+| RadioChecked, RadioUnchecked | RadioGroup |
+| Calendar | DatePicker, DateRangePicker |
+| Close | ModalRoot, AutocompleteMultipleChip |
+| Search | Search |
+| VerticalDots | MeatballsMenu |
+| Check | AutocompleteMultipleChip (SearchOptionItem) |
+| Error, Info, Success, Warning | Toast |
+
+All icons share a common props pattern: `size`, `fill`, `width`, `height`.
+
+## Semantic Color Variables
+
+Components use **semantic color variable names** — not project-specific color names. Projects must define these variables in their styles:
+
+**SCSS** (`@/styles/settings/variables`):
+
+| Variable | Purpose |
+|----------|---------|
+| `$white`, `$black` | Universal base colors |
+| `$bg-hover` | Hover backgrounds |
+| `$bg-subtle` | Light backgrounds, subtle borders |
+| `$bg-active` | Active row/item backgrounds |
+| `$border-color` | Default borders, dividers, scrollbars |
+| `$text-primary` | Primary text |
+| `$text-secondary` | Secondary text, focus borders |
+| `$text-tertiary` | Description text |
+| `$text-placeholder` | Placeholder text, default icons |
+| `$text-disabled` | Disabled text, handles |
+| `$text-label` | Labels (weekdays, etc.) |
+| `$text-muted` | Muted text |
+| `$accent-color` | Primary accent (selected, links) |
+| `$accent-lightest` | Very light accent backgrounds |
+| `$accent-light` | Range/selection backgrounds |
+| `$accent-hover` | Accent hover |
+| `$accent-active` | Accent pressed |
+| `$accent-dark` | Dark accent (link hover) |
+| `$error-color` | Error states |
+
+**TSX** (`@/styles/themes/colors`): same names in camelCase (`colors.borderColor`, `colors.textSecondary`, etc.)
 
 ## Rules
 
