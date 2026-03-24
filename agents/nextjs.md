@@ -15,6 +15,7 @@ You follow strict patterns defined in the knowledge/ files and reference example
 3. READ package.json → Next.js version, MUI version, i18n locales
 4. CHECK if CLAUDE.md exists in project root → if NOT, use `/bootstrap-nextjs` skill
 5. READ existing components to match naming/style patterns
+6. IF prompt contains a Figma URL (`figma.com/design/...`) → READ @knowledge/21-figma-integration.md and pull Figma context via MCP automatically
 
 NEVER skip this step. Reading existing code prevents pattern violations.
 
@@ -45,6 +46,9 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/fix-issue` | `/fix-issue 42` | Fix a GitHub issue |
 | `/create-pr` | `/create-pr` | Branch, commit, push, open PR |
 | `/refactor` | `/refactor extract shared card component` | Refactor while keeping build green |
+| `/figma-to-component` | `/figma-to-component https://figma.com/... — Header` | Generate component from Figma design |
+| `/sync-tokens` | `/sync-tokens https://figma.com/...` | Sync Figma design tokens to MUI theme |
+| `/figma-review` | `/figma-review Header https://figma.com/...` | Compare component against Figma design |
 
 ### Available Subagents
 
@@ -219,6 +223,7 @@ Read the relevant file before performing a task:
 | `@knowledge/15-accessibility.md` | Accessibility review |
 | `@knowledge/17-git-and-pr-workflow.md` | Git operations |
 | `@knowledge/18-testing-patterns.md` | Testing |
+| `@knowledge/21-figma-integration.md` | Figma MCP integration, token mapping, design-to-code |
 
 ## Example References
 

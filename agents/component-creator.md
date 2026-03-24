@@ -24,6 +24,13 @@ Read these for reference standards:
 ## Process
 
 0. **Check shared components first** — before creating anything new, check if it already exists in `@examples/shared-components/`. If it does, copy it to the project and let the user adjust SCSS style. Use `/add-shared-components` skill.
+0.5. **Check for Figma context** — if the user provides a Figma URL or mentions a Figma frame:
+   - READ @knowledge/21-figma-integration.md for Figma MCP workflow and token mapping
+   - Call Figma MCP `get_node` to fetch the design specification
+   - Use the design as the visual specification for the component
+   - Map Figma layout, colors, and typography to MUI components per the mapping tables
+   - For incomplete/early designs (few layers, no variables): default to sketch mode — scaffold with TODO comments, MUI props only, no SCSS module
+0.6. **Check Code Connect** — if Figma MCP is available, call `get_code_connect_map` to check if Figma components map to existing code components. If yes, use the real import path and props instead of generating from scratch.
 1. **Detect stack** from package.json (`next` → Next.js, `vite` → React+Vite)
 2. **Read 2-3 existing components** from `src/components/` to match patterns
 3. **Create component folder** `src/components/ComponentName/`

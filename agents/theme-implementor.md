@@ -22,6 +22,11 @@ Read these for reference standards:
 
 ## Process
 
+0. **Check for Figma token source** — if the user provides a Figma URL:
+   - READ @knowledge/21-figma-integration.md for token mapping rules
+   - Call Figma MCP `get_variable_defs` and `get_styles` to fetch design tokens
+   - Use as the authoritative source for colors, typography, and spacing values
+   - Map to the 6-file structure per the token mapping tables in the knowledge file
 1. **Read existing theme** if present in `src/styles/themes/`
 2. **Create/update** `src/styles/themes/` with up to 6 files:
    - `colors.ts` — Color constants organized by hue (project-specific palette)

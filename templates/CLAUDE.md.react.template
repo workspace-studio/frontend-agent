@@ -64,6 +64,15 @@ import Component from '../components/Component';  // ❌
 13. **ALWAYS use axios instance** from `@/config/axios.config.ts`
 14. **View sections start with `Container`** — `<Container component="section">`
 
+## Figma Integration (Optional)
+
+If Figma MCP is configured, these skills are available:
+- `/figma-to-component URL — Name` — generate component from Figma frame
+- `/sync-tokens URL` — sync design tokens to MUI theme
+- `/figma-review Name URL` — compare component against Figma design
+
+Paste any Figma URL in a prompt to auto-pull design context.
+
 ## Naming Conventions
 
 - Components/Files: PascalCase (`StatusChip.tsx`)
