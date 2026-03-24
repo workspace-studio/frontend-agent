@@ -47,15 +47,27 @@ const breakpoints: ThemeOptions['breakpoints'] = {
 
 Map colors to MUI palette roles (primary, secondary, error, warning, success, info).
 
-### Step 5: Create typography.ts
+### Step 5: Download Font Files
+
+1. Identify required fonts from the user's request (e.g., Inter, Poppins)
+2. Download `.woff2` files — for each font, download only the weights needed:
+   - Regular (400) and SemiBold (600) are typical minimums
+   - Bold (700) if used for headings
+3. Save to `public/fonts/` (Next.js) or `src/assets/fonts/` (React+Vite)
+4. Create `src/styles/globals/fonts.scss` with `@font-face` declarations (see @knowledge/14-performance.md for example)
+5. Import fonts.scss in `src/styles/index.scss`: `@use 'globals/fonts';`
+
+**NEVER use Google Fonts links, CDN imports, or `next/font/google`.** Fonts must be local `.woff2` files.
+
+### Step 6: Create typography.ts
 
 Define fontFamily and variant overrides (h1, h2, h3, body1, body2, button).
 
-### Step 6: Create components.ts
+### Step 7: Create components.ts
 
 Override MUI components: MuiButton (sizes, variants), MuiTextField, MuiFilledInput, MuiDialog, MuiPaper, MuiChip, MuiTab, etc. Disable ripple and elevation by default.
 
-### Step 7: Create index.ts
+### Step 8: Create index.ts
 
 ```typescript
 import { createTheme } from '@mui/material';
@@ -68,12 +80,12 @@ const theme = createTheme({ breakpoints, components, palette, typography });
 export default theme;
 ```
 
-### Step 8: Wire ThemeProvider
+### Step 9: Wire ThemeProvider
 
 - Next.js: wrap in `src/app/[locale]/providers.tsx`
 - React: wrap in `src/App.tsx`
 
-### Step 9: Validate
+### Step 10: Validate
 
 ```bash
 yarn build

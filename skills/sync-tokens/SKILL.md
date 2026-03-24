@@ -5,12 +5,12 @@ description: Extract design tokens from Figma and sync to MUI theme files — in
 
 # Sync Tokens
 
-Extract design tokens from Figma and sync to the MUI theme. Usage: `/sync-tokens https://figma.com/design/...`
+Extract design tokens from Figma and sync to the MUI theme. Usage: `/sync-tokens`
 
 **Partial sync flags:**
-- `/sync-tokens URL --colors-only` — sync only color tokens
-- `/sync-tokens URL --typography-only` — sync only typography tokens
-- `/sync-tokens URL --all` — sync everything (default)
+- `/sync-tokens --colors-only` — sync only color tokens
+- `/sync-tokens --typography-only` — sync only typography tokens
+- `/sync-tokens --all` — sync everything (default)
 
 ## Pre-Work
 
@@ -21,19 +21,26 @@ Extract design tokens from Figma and sync to the MUI theme. Usage: `/sync-tokens
 
 ## Steps
 
-### Step 1: Parse Figma URL
+### Step 1: Request Variables Panel Screenshot
 
-Extract `fileKey` from the URL. This skill operates on the entire file, not a specific node.
+Ask the user:
+> "Please paste a screenshot of your Figma Variables panel showing all tokens (colors, spacing, typography). This is the most reliable way to capture ALL variables with their exact names and groups.
+>
+> In Figma: click the Variables icon (◆) → expand all groups → take a screenshot."
 
-### Step 2: Fetch Figma Tokens
+**Why screenshot is required:** Figma MCP's `get_variable_defs` only returns variables applied to a specific node, NOT all variables defined in the file. A screenshot of the Variables panel is the only reliable way to get the complete list with correct names and group structure.
 
-Call Figma MCP tools:
-- `get_variable_defs` — fetch all design variables (colors, spacing, typography)
-- `get_styles` — fetch published styles (color styles, text styles, effect styles)
+If the user also provides a Figma URL, use `get_styles` as a **supplementary** source for published text and color styles — but the screenshot is the primary source of truth for variable definitions.
 
-If MCP is unavailable:
-- Tell the user: "Figma MCP is not configured. Run `claude mcp add --transport http figma https://mcp.figma.com/mcp` to set it up."
-- Stop.
+### Step 2: Parse Screenshot
+
+Extract from the Variables panel screenshot:
+- **Group names** exactly as shown (e.g., Green, Gray, Red, Blue — use Figma's names, do NOT rename)
+- **Variable names** within each group (e.g., green/100, green/200, green/300)
+- **Hex values** for each variable
+- **Collection structure** (e.g., "Colors" collection, "Spacing" collection)
+
+**Critical:** Preserve the exact group names from Figma. If Figma calls it "Green", use `green` — do NOT rename to `success` or `emerald` or anything else.
 
 ### Step 3: Read Existing Theme
 
@@ -45,8 +52,8 @@ Read all current theme files:
 - `src/styles/themes/breakpoints.ts`
 - `src/styles/themes/index.ts`
 
-Also check for SCSS variables:
-- `src/styles/settings/variables` (if exists)
+Also read SCSS variables (REQUIRED sync target):
+- `src/styles/settings/_variables.scss`
 
 ### Step 4: Generate Diff Report
 
@@ -92,14 +99,54 @@ Show the complete diff report and ask the user:
 
 ### Step 6: Apply Changes
 
-On approval, update only changed theme files:
+On approval, update theme files. **Figma tokens override existing values — do NOT keep default/placeholder colors that aren't defined in Figma.**
 
-1. **colors.ts** — add new entries, update changed hex values. Keep organized by hue.
-2. **palette.ts** — update semantic mappings if colors changed. Always reference `colors.ts`.
-3. **typography.ts** — update font sizes, weights, families. Keep variant structure.
-4. **components.ts** — update overrides (borderRadius, padding, spacing). Reference `colors.ts` and `typography.ts`.
+1. **colors.ts** — **Replace** the entire color definitions with Figma values. Group by Figma group names (Green, Gray, Red, etc.). Use camelCase naming: `green50`, `green100`, `gray950`, etc.
 
-**SCSS sync** — if `src/styles/settings/variables` exists, update corresponding SCSS variables to match.
+2. **`_variables.scss`** (MANDATORY) — Sync every color from `colors.ts` to SCSS format. This is NOT optional.
+
+   Format:
+   ```scss
+   @use 'sass:map';
+
+   // Colors — synced with Figma variables
+   $black: #000000;
+   $white: #ffffff;
+
+   // Green
+   $green-50: #f2fcfa;
+   $green-100: #d3f8ef;
+   $green-200: #a6f0df;
+   $green-300: #75e1cc;
+   $green-400: #4fcab5;
+   $green-500: #3aae9c;
+   $green-600: #2d8c80;
+   $green-700: #256f67;
+   $green-800: #205a54;
+   $green-900: #1d4b46;
+   $green-950: #0b2d2b;
+
+   // Gray
+   $gray-50: #f6f6f6;
+   $gray-100: #e7e7e7;
+   ...
+   ```
+
+   Rules for `_variables.scss`:
+   - `@use 'sass:map';` at the top
+   - `$black` and `$white` base colors first
+   - Each Figma group as a commented section header (e.g., `// Green`, `// Gray`, `// Red`)
+   - Kebab-case variable names: `$green-50`, `$gray-950`, `$red-500`
+   - Every color in `colors.ts` must have a corresponding SCSS variable
+
+3. **palette.ts** — Update semantic mappings if colors changed. Always reference `colors.ts`.
+4. **typography.ts** — Update font sizes, weights, families. Keep variant structure.
+   If typography sync includes new font families not already in the project:
+   - Download the `.woff2` files for the new font
+   - Save to `public/fonts/` (Next.js) or `src/assets/fonts/` (React+Vite)
+   - Add `@font-face` declarations to `src/styles/globals/fonts.scss`
+   - NEVER use Google Fonts links or CDN — always local `.woff2` files
+5. **components.ts** — Update overrides (borderRadius, padding, spacing). Reference `colors.ts` and `typography.ts`.
 
 ### Step 7: Validate
 
@@ -114,24 +161,27 @@ yarn lint          # Must pass
 ═══════════════════════════════════════════
 TOKEN SYNC COMPLETE
 ═══════════════════════════════════════════
-Source:       {Figma file URL}
+Source:       Variables panel screenshot
 Scope:        All / Colors only / Typography only
 Changes:
-  colors.ts:      3 added, 1 updated
-  palette.ts:     1 updated
-  typography.ts:  1 added, 1 updated
-  components.ts:  2 updated
-  SCSS vars:      synced
-Build:        Pass
+  colors.ts:        3 added, 1 updated, 2 removed (defaults)
+  _variables.scss:  synced (all colors)
+  palette.ts:       1 updated
+  typography.ts:    1 added, 1 updated
+  components.ts:    2 updated
+Build:          Pass
 ═══════════════════════════════════════════
 ```
 
 ## Rules
 
-- **NEVER delete existing tokens** — only add or update
+- **Override existing defaults** — Figma tokens replace existing values entirely; do NOT keep placeholder colors that aren't defined in Figma
 - **NEVER auto-apply** — always present diff and wait for approval
 - **Always reference colors.ts in palette.ts** — never hardcode hex in palette
-- **Preserve hue grouping** in colors.ts when adding new entries
 - **Follow the 6-file theme structure** from @knowledge/04-mui-theming.md
-- **Naming convention**: strip Figma collection prefix, camelCase + scale (e.g., `grayBlue200`)
+- **Preserve Figma group names** — if Figma says "Green", use `green` not `success` or `emerald`
+- **colors.ts naming**: camelCase + scale (e.g., `green200`, `grayBlue200`)
+- **_variables.scss naming**: kebab-case + scale (e.g., `$green-200`, `$gray-blue-200`)
+- **Always sync `_variables.scss`** — every color in `colors.ts` must have a corresponding SCSS variable in `_variables.scss`
+- **Screenshot is source of truth** — never rely solely on `get_variable_defs` for the complete token list
 - **Incremental by design** — only sync what changed, not full reimport

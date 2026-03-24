@@ -38,13 +38,52 @@ const HeavyChart = dynamic(() => import('@/components/Chart'), {
 });
 ```
 
-## Font Optimization (Next.js)
+## Font Loading
 
-```tsx
-import { Inter, Poppins } from 'next/font/google';
+Fonts MUST be self-hosted as local files. **NEVER** use Google Fonts links, CDN imports, or `next/font/google`.
 
-const inter = Inter({ subsets: ['latin'] });
-const poppins = Poppins({ weight: ['600', '700'], subsets: ['latin'] });
+1. Download `.woff2` files from the font's official site (e.g., Google Fonts → download family → extract `.woff2`)
+2. Place in `public/fonts/` (Next.js) or `src/assets/fonts/` (React+Vite)
+3. Declare `@font-face` in `src/styles/globals/fonts.scss`
+
+```scss
+// src/styles/globals/fonts.scss
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/Poppins-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+```
+
+Import in `src/styles/index.scss`:
+```scss
+@use 'globals/fonts';
 ```
 
 ## Bundle Analysis

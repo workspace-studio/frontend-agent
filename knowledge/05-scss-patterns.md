@@ -89,7 +89,7 @@ src/styles/
 ├── index.scss           # Imports all global styles
 ├── globals/
 │   ├── reset.scss       # CSS reset / normalize
-│   ├── fonts.scss       # @font-face declarations
+│   ├── fonts.scss       # @font-face declarations (self-hosted .woff2 files)
 │   └── animations.scss  # Keyframe animations
 ├── mixins/
 │   └── breakpoints.scss # @include media() mixin
@@ -98,6 +98,8 @@ src/styles/
 └── utils/
     └── rem-calc.scss    # rem-calc() function
 ```
+
+**fonts.scss** — Self-hosted `@font-face` declarations. Font `.woff2` files live in `public/fonts/` (Next.js) or `src/assets/fonts/` (React+Vite). Always use `.woff2` format with `font-display: swap`. NEVER use Google Fonts links, CDN imports, or `next/font/google`.
 
 ## Styling Priority
 

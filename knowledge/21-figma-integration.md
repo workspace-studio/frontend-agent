@@ -35,7 +35,7 @@ No special command needed — engineers can paste a Figma URL into any prompt.
 |------|---------|-------------|
 | `get_file` | File metadata, pages, top-level frames | Browsing file structure |
 | `get_node` | Specific node by ID (frame, component, group) | Component generation, design review |
-| `get_variable_defs` | Design variables (colors, spacing, typography tokens) | Token sync, theme setup |
+| `get_variable_defs` | Design variables applied to a **specific node** (NOT all file variables) | Supplementary token data for a specific component — for complete token lists, request a screenshot of the Variables panel |
 | `get_styles` | Published styles (color, text, effect, grid) | Token sync, style extraction |
 | `get_components` | Component definitions in a file | Understanding design system |
 | `get_code_connect_map` | Code Connect mappings (Figma component → code component) | Component generation — reuse real components |
@@ -103,9 +103,10 @@ Figma color primitives map directly to `colors.ts`:
 
 **Naming rules:**
 - Strip the collection prefix (e.g., `colors/`)
+- **Preserve Figma group names exactly** — if Figma calls it "Green", use `green`. Do NOT rename to `success`, `emerald`, or any other name
 - Convert hyphens to camelCase (`gray-blue` → `grayBlue`)
 - Append the scale number (`/500` → `500`)
-- Group entries by hue in the file
+- Group entries by Figma group name in the file
 
 ### palette.ts
 

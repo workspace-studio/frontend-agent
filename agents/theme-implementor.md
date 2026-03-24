@@ -24,8 +24,10 @@ Read these for reference standards:
 
 0. **Check for Figma token source** — if the user provides a Figma URL:
    - READ @knowledge/21-figma-integration.md for token mapping rules
-   - Call Figma MCP `get_variable_defs` and `get_styles` to fetch design tokens
-   - Use as the authoritative source for colors, typography, and spacing values
+   - Ask the user for a **screenshot of the Figma Variables panel** — this is the only reliable way to get ALL variables with correct names and groups (`get_variable_defs` only returns variables applied to a specific node, not all file variables)
+   - Optionally call `get_styles` for published text/color styles as supplementary data
+   - Use the screenshot as the authoritative source for colors, typography, and spacing values
+   - **Preserve Figma group names exactly** (e.g., if Figma says "Green", use `green` — do NOT rename to `success`)
    - Map to the 6-file structure per the token mapping tables in the knowledge file
 1. **Read existing theme** if present in `src/styles/themes/`
 2. **Create/update** `src/styles/themes/` with up to 6 files:
@@ -33,6 +35,7 @@ Read these for reference standards:
    - `breakpoints.ts` — `ThemeOptions['breakpoints']` with custom values
    - `palette.ts` — primary, secondary, error, warning, success, info + custom colors
    - `typography.ts` — fontFamily, variant definitions (h1-h3, body1-3, button)
+   - When setting up typography, download font `.woff2` files to `public/fonts/` (Next.js) or `src/assets/fonts/` (React+Vite) and create `@font-face` in `src/styles/globals/fonts.scss`. NEVER use Google Fonts links, CDN, or `next/font/google`.
    - `components.ts` — MUI component overrides (MuiButton, MuiTextField, MuiDialog, etc.)
    - `index.ts` — `createTheme({ breakpoints, components, palette, typography })`
 3. **Ensure ThemeProvider** wraps the app:
