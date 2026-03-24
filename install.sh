@@ -1,8 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# When piped (curl | bash), read from terminal directly
+if [ -t 0 ]; then
+    READ_FROM=""
+else
+    READ_FROM="/dev/tty"
+fi
+ask() { if [ -n "$READ_FROM" ]; then read "$@" < "$READ_FROM"; else read "$@"; fi; }
+
 REPO_URL="https://github.com/workspace-studio/frontend-agent"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 
 # --- Source resolution ---
 if [ -f "$SCRIPT_DIR/agents/nextjs.md" ]; then
@@ -26,7 +34,7 @@ fi
 # --- Validate target ---
 if [ ! -f "package.json" ]; then
     echo "WARNING: No package.json found in $(pwd)"
-    read -p "Continue anyway? (y/N) " -n 1 -r
+    ask -p "Continue anyway? (y/N) " -n 1 -r
     echo
     [[ $REPLY =~ ^[Yy]$ ]] || exit 1
 fi
@@ -35,7 +43,7 @@ echo "Detected stack: $STACK"
 
 # --- Create directory structure ---
 mkdir -p .claude/{agents,knowledge,examples,rules}
-for skill in create-component create-view add-store setup-i18n setup-theme add-form seo-audit bootstrap-nextjs bootstrap-react write-tests fix-issue create-pr refactor deploy figma-to-component sync-tokens figma-review; do
+for skill in create-component create-view add-store setup-i18n setup-theme add-form add-shared-components seo-audit bootstrap-nextjs bootstrap-react write-tests test-page test-flow fix-issue create-pr refactor deploy figma-to-component sync-tokens figma-review; do
     mkdir -p ".claude/skills/$skill"
 done
 
@@ -104,7 +112,7 @@ fi
 
 # --- Optional: Figma MCP ---
 FIGMA_MCP="no"
-read -p "Configure Figma MCP integration? (y/N) " -n 1 -r FIGMA_REPLY
+ask -p "Configure Figma MCP integration? (y/N) " -n 1 -r FIGMA_REPLY
 echo
 if [[ $FIGMA_REPLY =~ ^[Yy]$ ]]; then
     echo ""
@@ -115,10 +123,10 @@ if [[ $FIGMA_REPLY =~ ^[Yy]$ ]]; then
     echo "     Best for: design system engineering, bidirectional workflows"
     echo ""
     echo "  TIP: Options 1+3 or 2+3 work together (official for Code Connect, console for token management)"
-    read -p "Choice [1/2/3]: " -n 1 -r FIGMA_CHOICE
+    ask -p "Choice [1/2/3]: " -n 1 -r FIGMA_CHOICE
     echo
     echo ""
-    read -p "Apply to all projects (--scope user)? (y/N) " -n 1 -r SCOPE_REPLY
+    ask -p "Apply to all projects (--scope user)? (y/N) " -n 1 -r SCOPE_REPLY
     echo
 
     SCOPE_FLAG=""
