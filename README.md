@@ -1,6 +1,6 @@
 # Frontend Agent
 
-> AI-powered frontend expert agent for Claude Code. Battle-tested patterns for Next.js and React+Vite projects with MUI, SCSS Modules, Valtio, and i18n.
+> AI-powered frontend expert for Claude Code — battle-tested patterns for **Next.js** and **React+Vite** with MUI, SCSS Modules, Valtio, and i18n.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -8,278 +8,287 @@
 
 ## Table of Contents
 
-1. [Prerequisites](#1-prerequisites)
-2. [Creating a New Project From Scratch](#2-creating-a-new-project-from-scratch)
-3. [Installing Frontend Agent](#3-installing-frontend-agent-into-your-project)
-4. [Invoking the Agent](#4-invoking-the-agent)
-5. [What the Agent Can Do](#5-what-the-agent-can-do)
-6. [Example Tasks](#6-example-tasks--copy-paste-ready)
-7. [Project Structure](#7-understanding-the-project-structure)
-8. [Development Workflow](#8-the-development-workflow)
-9. [Troubleshooting](#9-troubleshooting)
-10. [Architecture Reference](#10-architecture-reference)
+1. [Quick Start](#1-quick-start)
+2. [Skills (Slash Commands)](#2-skills-slash-commands)
+3. [Capabilities](#3-capabilities)
+4. [Project Structure](#4-project-structure)
+5. [How It Works](#5-how-it-works)
+6. [Example Tasks](#6-example-tasks)
+7. [What Gets Installed](#7-what-gets-installed)
+8. [Troubleshooting](#8-troubleshooting)
+9. [Architecture Reference](#9-architecture-reference)
 
 ---
 
-## 1. Prerequisites
+## 1. Quick Start
 
-| Tool | Version | Install | Purpose |
-|------|---------|---------|---------|
-| Node.js | 20+ (LTS recommended) | `brew install node` or [nvm](https://github.com/nvm-sh/nvm) | JavaScript runtime |
-| Git | 2.x+ | `brew install git` | Version control |
-| Claude Code | Latest | `npm i -g @anthropic-ai/claude-code` | AI coding assistant |
-| GitHub CLI | Latest | `brew install gh` → `gh auth login` | PR management |
-| VS Code | Latest (optional) | [code.visualstudio.com](https://code.visualstudio.com) | Editor |
+### Prerequisites
 
-Verify installation:
+| Tool | Install |
+|------|---------|
+| Node.js 20+ | `brew install node` or [nvm](https://github.com/nvm-sh/nvm) |
+| Git 2.x+ | `brew install git` |
+| Claude Code | `npm i -g @anthropic-ai/claude-code` |
+| GitHub CLI | `brew install gh` → `gh auth login` |
 
-```bash
-node --version        # v20.x.x or higher
-git --version         # git version 2.x.x
-claude --version      # Claude Code vX.X.X
-gh --version          # gh version X.X.X
-```
-
----
-
-## 2. Creating a New Project From Scratch
-
-### Option A: Let the Agent Do It (Recommended)
-
-Once you have the agent installed (see section 3), simply tell it:
-
-**For a Next.js landing/marketing site:**
-```
-Bootstrap a new Next.js project called "my-landing" with:
-- MUI theme, SCSS Modules
-- next-intl with English and Croatian
-- SEO setup (metadata, sitemap, robots)
-- Home page with hero section
-```
-
-**For a React+Vite application/dashboard:**
-```
-Bootstrap a new React+Vite project called "my-app" with:
-- MUI theme, SCSS Modules
-- i18next with English and Croatian
-- Valtio for state management
-- Axios with token interceptor
-- Login page and dashboard skeleton
-```
-
-The agent will scaffold the entire project, install dependencies, configure everything, and verify it builds.
-
-### Option B: Manual Setup (Using Boilerplate)
-
-**Next.js:**
-```bash
-git clone https://github.com/workspace-studio/nextjs-boilerplate.git my-landing
-cd my-landing
-rm -rf .git && git init
-yarn install
-yarn add @mui/material @emotion/react @emotion/styled next-intl react-hook-form
-# Install the agent
-curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
-```
-
-**React+Vite:**
-```bash
-git clone https://github.com/workspace-studio/react-vite-boilerplate.git my-app
-cd my-app
-rm -rf .git && git init
-yarn install
-yarn add @mui/material @emotion/react @emotion/styled valtio i18next react-i18next i18next-browser-languagedetector axios react-hook-form
-# Install the agent
-curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
-```
-
----
-
-## 3. Installing Frontend Agent Into Your Project
-
-### Option A: One-Line Install (Recommended)
+### Install the Agent
 
 ```bash
 cd /path/to/your-frontend-project
 curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
 ```
 
-The installer automatically detects your stack (Next.js or React+Vite) and configures accordingly.
+The installer auto-detects your stack (Next.js or React+Vite) and configures everything.
 
-### Option B: Clone and Install
+### Start Working
 
+```bash
+claude                    # Start Claude Code
+# Type /agents → select "Next.js" or "React"
+# Give it a task in natural language
+```
+
+### Bootstrap a New Project
+
+Don't have a project yet? The agent can create one from scratch:
+
+```
+/bootstrap-nextjs my-landing — marketing site with MUI, next-intl (en/hr), SEO
+/bootstrap-react my-app — dashboard with MUI, i18next (en/hr), Valtio, Axios
+```
+
+<details>
+<summary><strong>Alternative install methods</strong></summary>
+
+**Clone and install:**
 ```bash
 git clone https://github.com/workspace-studio/frontend-agent.git /tmp/frontend-agent
 cd /path/to/your-frontend-project
 bash /tmp/frontend-agent/install.sh
 ```
 
-### Option C: Manual Copy
+**Manual setup (boilerplate):**
 
 ```bash
-git clone https://github.com/workspace-studio/frontend-agent.git /tmp/frontend-agent
-cd /path/to/your-frontend-project
-mkdir -p .claude/{agents,knowledge,examples}
-mkdir -p .claude/skills/{create-component,create-view,add-store,setup-i18n,setup-theme,add-form,seo-audit,bootstrap-nextjs,bootstrap-react,fix-issue,create-pr,refactor}
-cp /tmp/frontend-agent/agents/*.md .claude/agents/
-for s in /tmp/frontend-agent/skills/*/; do cp "$s"SKILL.md ".claude/skills/$(basename $s)/"; done
-cp /tmp/frontend-agent/knowledge/*.md .claude/knowledge/
-cp -r /tmp/frontend-agent/examples/* .claude/examples/
-```
+# Next.js
+git clone https://github.com/workspace-studio/nextjs-boilerplate.git my-landing
+cd my-landing && rm -rf .git && git init && yarn install
+yarn add @mui/material @emotion/react @emotion/styled next-intl react-hook-form
+curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
 
-### What Gets Installed
-
-```
-your-project/
-├── CLAUDE.md                           # Project-specific context (auto-generated)
-└── .claude/
-    ├── agents/
-    │   ├── nextjs.md                   # Main agent: Next.js expert
-    │   ├── react.md                    # Main agent: React+Vite expert
-    │   ├── component-creator.md        # Subagent: creates components
-    │   ├── seo-specialist.md           # Subagent: SEO audit & fixes
-    │   ├── theme-implementor.md        # Subagent: MUI theme setup
-    │   ├── i18n-specialist.md          # Subagent: i18n management
-    │   └── code-reviewer.md            # Subagent: code review (read-only)
-    ├── skills/
-    │   ├── create-component/SKILL.md   # /create-component — new component
-    │   ├── create-view/SKILL.md        # /create-view — new page/view
-    │   ├── add-store/SKILL.md          # /add-store — Valtio store + actions
-    │   ├── setup-i18n/SKILL.md         # /setup-i18n — add locale/keys
-    │   ├── setup-theme/SKILL.md        # /setup-theme — MUI theme from scratch
-    │   ├── add-form/SKILL.md           # /add-form — react-hook-form form
-    │   ├── seo-audit/SKILL.md          # /seo-audit — SEO analysis
-    │   ├── bootstrap-nextjs/SKILL.md   # /bootstrap-nextjs — new Next.js project
-    │   ├── bootstrap-react/SKILL.md    # /bootstrap-react — new React project
-    │   ├── fix-issue/SKILL.md          # /fix-issue — fix GitHub issue
-    │   ├── create-pr/SKILL.md          # /create-pr — git + PR workflow
-    │   └── refactor/SKILL.md           # /refactor — safe refactoring
-    ├── knowledge/                      # 18 topic reference files
-    │   └── 01 through 18-*.md
-    ├── examples/                       # Reference code examples
-    │   ├── valtio-store/               # Valtio store + actions pattern
-    │   ├── service/                    # Axios service class pattern
-    │   ├── theme/                      # Complete MUI theme (6 files)
-    │   ├── i18n-nextintl/              # next-intl configuration
-    │   ├── i18n-i18next/               # i18next configuration
-    │   ├── nextjs-page/                # Next.js page with generateMetadata
-    │   ├── react-view/                 # React view component pattern
-    │   └── component/                  # Component + SCSS module + index
-    └── settings.json                   # Hooks (auto-lint, pre-commit validation)
-```
-
-**Architecture:**
-- **Agents** (`nextjs.md`, `react.md`) — concise core instructions loaded every session (~200 lines each)
-- **Skills** — on-demand workflows loaded only when invoked (e.g., `/create-component`)
-- **Subagents** — isolated specialists that run in their own context (SEO, theme, i18n, code review)
-- **Knowledge** — deep reference files loaded on-demand via `@` imports
-- **Examples** — working code templates the agent uses as patterns
-- **Hooks** — automatic ESLint-fix-on-edit and pre-commit build validation
-
-### Version Control Your Agent
-
-Commit the `.claude/` directory so your entire team benefits:
-
-```bash
-git add .claude/
-git commit -m "chore: add Frontend AI agent"
-```
-
-### Updating
-
-Re-run the installer — it overwrites existing files with the latest version:
-
-```bash
+# React+Vite
+git clone https://github.com/workspace-studio/react-vite-boilerplate.git my-app
+cd my-app && rm -rf .git && git init && yarn install
+yarn add @mui/material @emotion/react @emotion/styled valtio i18next react-i18next i18next-browser-languagedetector axios react-hook-form
 curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
 ```
+</details>
 
 ---
 
-## 4. Invoking the Agent
+## 2. Skills (Slash Commands)
 
-```bash
-cd your-project
-claude                    # Start Claude Code
-# Type /agents → select "Next.js" or "React"
-# Give it a task in natural language
-```
+### Scaffolding
 
-The agent automatically:
+| Command | Description |
+|---------|-------------|
+| `/bootstrap-nextjs my-site — landing, en/hr` | New Next.js project from scratch |
+| `/bootstrap-react my-app — dashboard, en/hr` | New React+Vite project from scratch |
 
-- Detects your stack (Next.js or React+Vite)
-- Reads relevant knowledge files based on your task
-- References examples for correct patterns
-- Implements the solution
-- Runs build and lint validation
-- Fixes any failures until green
-- Updates your project's CLAUDE.md
+### Components & Views
 
-### Skills (Slash Commands)
+| Command | Description |
+|---------|-------------|
+| `/create-component Header — sticky nav with logo` | Component with SCSS module and index.ts |
+| `/create-view Settings — user preferences page` | Page/view with routing and metadata |
+| `/add-form ContactForm — name, email, message` | react-hook-form form with validation |
+| `/add-shared-components` | Copy shared library (Form, FormInput, Select, DatePicker) |
 
-| Command | What it does | Stack |
-|---------|-------------|-------|
-| `/create-component Header — sticky nav with logo` | Create a component with SCSS module and index.ts | Both |
-| `/create-view Settings — user preferences page` | Create view/page with routing and metadata | Both |
-| `/add-store bookings — list, modals, loading` | Add Valtio store with actions and service | React |
-| `/setup-i18n add-locale de` | Add new locale or translation keys | Both |
-| `/setup-theme — primary=#1976d2, font=Inter` | Set up complete MUI theme (6 files) | Both |
-| `/add-form ContactForm — name, email, message` | Add react-hook-form form with validation | Both |
-| `/seo-audit` | Audit SEO: metadata, sitemaps, OG, structured data | Next.js |
-| `/bootstrap-nextjs my-site — landing, en/hr` | Bootstrap new Next.js project from scratch | Next.js |
-| `/bootstrap-react my-app — dashboard, en/hr` | Bootstrap new React+Vite project from scratch | React |
-| `/fix-issue 42` | Read, analyze, fix a GitHub issue, create PR | Both |
-| `/create-pr` | Create branch, commit, push, open PR | Both |
-| `/refactor extract shared card component` | Refactor code safely while keeping build green | Both |
+### State & Configuration
 
-### Tips for Best Results
+| Command | Description |
+|---------|-------------|
+| `/add-store bookings — list, modals, loading` | Valtio store with actions and service |
+| `/setup-i18n add-locale de` | Add locale or translation keys |
+| `/setup-theme — primary=#1976d2, font=Inter` | Complete MUI theme (6 files) |
 
-- **Use skills for common workflows.** `/create-component` is faster and more consistent than describing the steps manually.
-- **Be specific.** Instead of "add a page", say "Create a 'Pricing' page with monthly/yearly toggle, 3 plan cards, FAQ section, generateMetadata with SEO, translations in en and hr."
-- **Reference existing work.** "Follow the same pattern as the Header component" helps the agent stay consistent.
-- **Mention the stack.** If you have both Next.js and React in the same repo, specify which one.
-- **One task at a time.** The agent works best when focused on a single, well-defined task.
+### Testing
+
+| Command | Description |
+|---------|-------------|
+| `/write-tests Header` | Playwright component tests |
+| `/test-page /pricing` | Playwright E2E test for a page |
+| `/test-flow checkout` | Playwright E2E test for a user flow |
+
+### Figma Integration
+
+| Command | Description |
+|---------|-------------|
+| `/figma-to-component Frame123` | Generate component from Figma design |
+| `/sync-tokens` | Extract Figma design tokens → MUI theme |
+| `/figma-review Header` | Compare implementation vs Figma design |
+
+### Workflow
+
+| Command | Description |
+|---------|-------------|
+| `/fix-issue 42` | Analyze, fix GitHub issue, create PR |
+| `/create-pr` | Branch, commit, push, open PR |
+| `/refactor extract shared card component` | Safe refactoring, keeps build green |
+| `/seo-audit` | Full SEO audit (Next.js) |
+| `/deploy` | Deploy to Vercel with pre-flight checks |
 
 ---
 
-## 5. What the Agent Can Do
+## 3. Capabilities
 
-### Next.js Projects
+### Next.js
 
-| Capability | Description | Knowledge File |
-|------------|-------------|----------------|
-| Create pages | App Router pages with metadata, i18n, views pattern | `10-nextjs-app-router.md` |
-| Create components | Server/client components with MUI, SCSS, translations | `03-component-patterns.md` |
-| SEO optimization | Metadata, sitemaps, robots, JSON-LD, OG images | `13-seo-metadata.md` |
-| i18n setup | next-intl routing, messages, locale-aware navigation | `08-i18n-nextintl.md` |
-| MUI theming | Complete theme with colors, typography, overrides | `04-mui-theming.md` |
-| Forms | react-hook-form with validation and translations | `07-forms-validation.md` |
-| Performance | Image optimization, code splitting, Core Web Vitals | `14-performance.md` |
-| Accessibility | ARIA, semantic HTML, keyboard navigation | `15-accessibility.md` |
-| Code review | Pattern compliance, accessibility, performance audit | `01-code-style.md` |
-| Bootstrap | New project from zero to running | `10-nextjs-app-router.md` |
+| Capability | Knowledge File |
+|------------|----------------|
+| App Router pages with metadata, i18n, views pattern | `10-nextjs-app-router.md` |
+| Server/client components with MUI, SCSS, translations | `03-component-patterns.md` |
+| SEO: metadata, sitemaps, robots, JSON-LD, OG images | `13-seo-metadata.md` |
+| next-intl routing, messages, locale-aware navigation | `08-i18n-nextintl.md` |
+| API routes, middleware, validation | `20-api-routes.md` |
 
-### React+Vite Projects
+### React+Vite
 
-| Capability | Description | Knowledge File |
-|------------|-------------|----------------|
-| Create views | Views with routing, lazy loading, access control | `11-react-vite-routing.md` |
-| Create components | Components with MUI, SCSS modules, translations | `03-component-patterns.md` |
-| State management | Valtio stores with actions, modal state, loading | `06-state-management.md` |
-| API integration | Axios services with token refresh, error handling | `12-api-integration.md` |
-| i18n setup | i18next with namespaces, 4+ locales | `09-i18n-i18next.md` |
-| MUI theming | Complete theme with colors, typography, overrides | `04-mui-theming.md` |
-| Forms | react-hook-form with Form/FormInput wrappers | `07-forms-validation.md` |
-| PWA support | Service workers, offline mode, install prompt | `16-pwa-setup.md` |
-| Code review | Pattern compliance, state management, performance | `01-code-style.md` |
-| Bootstrap | New project from zero to running | `11-react-vite-routing.md` |
+| Capability | Knowledge File |
+|------------|----------------|
+| Views with routing, lazy loading, access control | `11-react-vite-routing.md` |
+| Valtio stores with actions, modal state, loading | `06-state-management.md` |
+| Axios services with token refresh, error handling | `12-api-integration.md` |
+| i18next with namespaces, 4+ locales | `09-i18n-i18next.md` |
+| PWA: service workers, offline mode, install prompt | `16-pwa-setup.md` |
+
+### Both Stacks
+
+| Capability | Knowledge File |
+|------------|----------------|
+| MUI theming (colors, typography, component overrides) | `04-mui-theming.md` |
+| SCSS modules, mixins, rem-calc, BEM naming | `05-scss-patterns.md` |
+| react-hook-form with validation and translations | `07-forms-validation.md` |
+| Playwright component and E2E tests | `18-testing-patterns.md` |
+| Shared components (Form, FormInput, Select, DatePicker) | `19-shared-components.md` |
+| Figma design-to-code, token sync, visual review | `21-figma-integration.md` |
+| Performance: image optimization, code splitting | `14-performance.md` |
+| Accessibility: ARIA, semantic HTML, keyboard navigation | `15-accessibility.md` |
+| Code review: patterns, accessibility, performance | `01-code-style.md` |
+| Git workflow, branching, PR process | `17-git-and-pr-workflow.md` |
 
 The agent reads only the knowledge files relevant to your task, keeping context efficient.
 
 ---
 
-## 6. Example Tasks — Copy-Paste Ready
+## 4. Project Structure
 
-### Next.js: New Landing Page
+### Next.js
+
+```
+src/
+├── app/                          # App Router
+│   ├── [locale]/                 # Dynamic locale segment
+│   │   ├── layout.tsx            # Root layout (providers, metadata, JSON-LD)
+│   │   ├── providers.tsx         # ThemeProvider, context providers
+│   │   ├── (home)/page.tsx       # Home page → imports from views/
+│   │   └── (public)/             # Public pages (about, contact, blog)
+│   ├── api/                      # API routes
+│   ├── robots.ts                 # robots.txt generation
+│   └── sitemap.ts                # Sitemap generation
+├── components/                   # Reusable UI components (PascalCase/)
+│   └── Header/                   # Header.tsx + Header.module.scss + index.ts
+├── views/                        # Page-level view components
+│   └── Home/HeroSection/         # Section-level breakdown
+├── i18n/                         # routing.ts, request.ts, navigation.ts
+├── styles/                       # SCSS: globals, mixins, settings, themes/
+└── utils/                        # hooks/, static/
+```
+
+### React+Vite
+
+```
+src/
+├── components/                   # Reusable UI components
+├── views/                        # Page-level views + partials/
+├── routers/AppRouter.tsx         # Routes with lazy loading + guards
+├── valtio/                       # Store + actions per domain
+├── services/                     # Axios service classes
+├── config/                       # Axios, constants, form models
+├── i18n/                         # i18next configuration
+├── locales/                      # en/, hr/, ba/, rs/ JSON files
+├── styles/                       # SCSS: globals, mixins, settings, themes/
+└── utils/                        # hooks/, context/
+```
+
+### Layer Comparison
+
+| Layer | Next.js | React+Vite |
+|-------|---------|-----------|
+| **Routing** | App Router + [locale] segments | React Router + AppRoute wrapper |
+| **Pages** | `app/[locale]/page.tsx` → views/ | `views/` (lazy loaded) |
+| **State** | Server state (SSR) + Valtio (optional) | Valtio proxy + actions |
+| **API** | Server Actions / fetch | Axios service classes |
+| **i18n** | next-intl (URL-based) | i18next (localStorage) |
+| **SEO** | generateMetadata, sitemap.ts, robots.ts | N/A (SPA) |
+| **Styling** | MUI + SCSS Modules | MUI + SCSS Modules |
+
+---
+
+## 5. How It Works
+
+### Agent Workflow
+
+Every task follows the same pattern:
+
+```
+1. Pre-Work     → reads CLAUDE.md, package.json, existing code patterns
+2. Knowledge    → loads relevant knowledge files (@knowledge/*)
+3. Implement    → creates/modifies files following project patterns
+4. Translate    → adds translation keys to all configured locales
+5. Validate     → yarn build && yarn lint (auto-fixes failures)
+6. Summary      → reports files created/modified, build/lint status
+```
+
+### Automation (Hooks)
+
+The installer configures hooks in `.claude/settings.json`:
+
+| Trigger | Action |
+|---------|--------|
+| File edited (.tsx/.ts) | Auto-runs `npx eslint --fix` |
+| `git commit` | Runs `yarn build && yarn lint` — blocks commit on failure |
+
+### Subagents (Isolated Context)
+
+Specialist tasks run in separate context to keep the main agent clean:
+
+| Subagent | Role |
+|----------|------|
+| `component-creator` | Creates components with MUI, SCSS, translations |
+| `seo-specialist` | SEO audit and fixes |
+| `theme-implementor` | MUI theme setup |
+| `i18n-specialist` | i18n configuration and translations |
+| `qa-tester` | Playwright E2E test writing |
+| `code-reviewer` | Code review (read-only) |
+
+### Rules (Always Enforced)
+
+4 rule files are loaded every session:
+
+| Rule | Key Constraints |
+|------|----------------|
+| `components.md` | PascalCase, index.ts barrel, SCSS modules, no `any`, no React.memo |
+| `styles.md` | `@use` imports, rem-calc(), theme colors, BEM naming |
+| `api.md` | Zod validation, requireAuth(), consistent error format |
+| `git.md` | Flat branch names, `#{issue}: description` commits, no force push |
+
+---
+
+## 6. Example Tasks
+
+<details>
+<summary><strong>Next.js: New Landing Page</strong></summary>
 
 ```
 Create a "Pricing" page at /pricing with:
@@ -290,30 +299,10 @@ Create a "Pricing" page at /pricing with:
 - Translations in English and Croatian
 - Responsive design (cards stack on mobile)
 ```
+</details>
 
-### Next.js: SEO Audit
-
-```
-Run a full SEO audit of this project. Check:
-- Every page has generateMetadata
-- Sitemap includes all routes
-- robots.ts is configured correctly
-- OG images exist and are correct size
-- JSON-LD structured data is present
-Fix any issues you find.
-```
-
-### Next.js: Add New Locale
-
-```
-Add German (de) locale to this project:
-- Add 'de' to the locales array in routing.ts
-- Create German message files for all namespaces
-- Copy English translations as starting point
-- Verify the build passes with the new locale
-```
-
-### React: New Feature Module
+<details>
+<summary><strong>React: Complete Feature Module</strong></summary>
 
 ```
 Create a complete "Customers" feature with:
@@ -326,17 +315,10 @@ Create a complete "Customers" feature with:
 - Add route to AppRouter (protected, ADMIN+USER access)
 - Add navigation entry
 ```
+</details>
 
-### React: Add Valtio Store
-
-```
-Create a Valtio store for "projects" with:
-- State: projects list, selected project, total count, loading, modals (create, update, delete), form submitting
-- Actions: getProjects, getProject, createProject, updateProject, deleteProject, toggleModals
-- Service: ProjectsService with static CRUD methods
-```
-
-### Both: New Component
+<details>
+<summary><strong>Both: New Component</strong></summary>
 
 ```
 Create a "StatCard" component that shows:
@@ -347,8 +329,10 @@ Create a "StatCard" component that shows:
 Use MUI Paper, Stack, Typography. SCSS module for custom styling.
 Make it responsive (full width on mobile).
 ```
+</details>
 
-### Both: Setup MUI Theme
+<details>
+<summary><strong>Both: Setup MUI Theme</strong></summary>
 
 ```
 Set up a complete MUI theme with:
@@ -358,10 +342,25 @@ Set up a complete MUI theme with:
 - Border radius: 12px for cards, 8px for buttons
 - Custom button styles (contained, outlined, text)
 - Custom TextField with filled variant
-- Custom Dialog styling
 ```
+</details>
 
-### Both: Code Review
+<details>
+<summary><strong>Next.js: SEO Audit</strong></summary>
+
+```
+Run a full SEO audit of this project. Check:
+- Every page has generateMetadata
+- Sitemap includes all routes
+- robots.ts is configured correctly
+- OG images exist and are correct size
+- JSON-LD structured data is present
+Fix any issues you find.
+```
+</details>
+
+<details>
+<summary><strong>Both: Code Review</strong></summary>
 
 ```
 Review the Header component and its sub-components for:
@@ -371,570 +370,140 @@ Review the Header component and its sub-components for:
 - Styling consistency
 Produce a structured review with critical issues, warnings, and suggestions.
 ```
+</details>
+
+**Tips:**
+- Use skills for common workflows — faster and more consistent
+- Be specific: "Pricing page with 3 cards, toggle, FAQ, SEO, en/hr translations"
+- Reference existing work: "Follow the same pattern as the Header component"
+- One task at a time for best results
 
 ---
 
-## 7. Understanding the Project Structure
-
-### Next.js Projects
+## 7. What Gets Installed
 
 ```
-src/
-├── app/                               # App Router
-│   ├── [locale]/                     # Dynamic locale segment
-│   │   ├── layout.tsx                # Root layout (providers, metadata, JSON-LD)
-│   │   ├── providers.tsx             # ThemeProvider, context providers
-│   │   ├── (home)/                   # Route group: home layout
-│   │   │   ├── layout.tsx            # Header + Footer
-│   │   │   └── page.tsx              # Home page → imports from views/
-│   │   ├── (public)/                 # Route group: public pages
-│   │   │   ├── layout.tsx            # Shared public layout
-│   │   │   ├── about/page.tsx
-│   │   │   ├── contact/page.tsx
-│   │   │   └── blog/
-│   │   │       ├── page.tsx
-│   │   │       └── [slug]/page.tsx
-│   │   └── (simple)/                 # Route group: minimal layout
-│   │       └── layout.tsx
-│   ├── api/                          # API routes
-│   ├── robots.ts                     # robots.txt generation
-│   └── sitemap.ts                    # Sitemap generation
-│
-├── components/                        # Reusable UI components
-│   └── Header/
-│       ├── Header.tsx                # 'use client' if interactive
-│       ├── Header.module.scss        # Scoped styles
-│       └── index.ts                  # Barrel export
-│
-├── views/                            # Page-level view components
-│   └── Home/
-│       ├── HeroSection/
-│       │   ├── HeroSection.tsx
-│       │   ├── HeroSection.module.scss
-│       │   └── index.ts
-│       └── FeaturesSection/
-│
-├── i18n/                             # Internationalization
-│   ├── routing.ts                    # defineRouting({ locales, defaultLocale })
-│   ├── request.ts                    # getRequestConfig with message imports
-│   └── navigation.ts                # createNavigation (Link, redirect)
-│
-├── config/                           # Configuration
-│   └── meta.config.ts               # Base metadata values
-│
-├── styles/
-│   ├── index.scss                    # Global imports
-│   ├── globals/                      # Reset, fonts, animations
-│   ├── mixins/                       # Responsive breakpoints
-│   ├── settings/                     # SCSS variables
-│   ├── utils/                        # rem-calc helper
-│   └── themes/                       # MUI theme (6 files)
-│
-├── types/                            # TypeScript definitions
-└── utils/
-    ├── hooks/                        # Custom hooks
-    └── static/                       # Utility functions
+your-project/
+├── CLAUDE.md                      # Project context (auto-generated)
+└── .claude/
+    ├── agents/                    # 2 main + 6 subagents
+    │   ├── nextjs.md / react.md   # Main agents (loaded per session)
+    │   └── component-creator, seo-specialist, theme-implementor,
+    │       i18n-specialist, qa-tester, code-reviewer
+    ├── skills/                    # 20 slash commands (loaded on-demand)
+    ├── knowledge/                 # 21 reference files (loaded on-demand)
+    ├── examples/                  # 9 working code templates
+    ├── rules/                     # 4 enforcement rules (loaded every session)
+    │   └── components, styles, api, git
+    └── settings.json              # Hooks (auto-lint, pre-commit validation)
 ```
 
-### React+Vite Projects
-
-```
-src/
-├── components/                        # Reusable UI components
-│   └── Table/
-│       ├── Table.tsx
-│       ├── Table.module.scss
-│       └── index.ts
-│
-├── views/                            # Page-level views
-│   └── WorkOrders/
-│       ├── WorkOrders.tsx
-│       ├── WorkOrders.module.scss
-│       ├── partials/                 # Sub-components
-│       │   ├── CreateModal.tsx
-│       │   └── DetailDrawer.tsx
-│       └── index.ts
-│
-├── routers/
-│   └── AppRouter.tsx                 # Routes with lazy loading + guards
-│
-├── valtio/                           # State management
-│   └── workOrders/
-│       ├── workOrders.store.ts       # proxy<Store>({...}) + useSnapshot
-│       └── workOrders.actions.ts     # Async functions mutating store
-│
-├── services/                         # API layer
-│   └── workOrders.service.ts         # Static class with axios calls
-│
-├── config/
-│   ├── axios.config.ts               # Axios instance + interceptors
-│   ├── constants.config.ts           # App constants
-│   └── forms/
-│       └── form-models.config.ts     # Form default values
-│
-├── i18n/
-│   └── i18n.ts                       # i18next configuration
-│
-├── locales/                          # Translation files
-│   ├── en/
-│   │   ├── common.json
-│   │   ├── navigation.json
-│   │   └── work-orders.json
-│   ├── hr/
-│   ├── ba/
-│   └── rs/
-│
-├── models/                           # Data model interfaces
-├── @types/                           # Type augmentations
-│
-├── styles/
-│   ├── index.scss
-│   ├── globals/
-│   ├── mixins/
-│   ├── settings/
-│   ├── utils/
-│   └── themes/                       # MUI theme (6 files)
-│
-├── types/                            # TypeScript definitions
-└── utils/
-    ├── hooks/                        # Custom hooks
-    └── context/                      # React context providers
-```
-
-### Layer Responsibilities
-
-| Layer | Next.js | React+Vite |
-|-------|---------|-----------|
-| **Routing** | App Router + [locale] segments | React Router + AppRoute wrapper |
-| **Pages** | `src/app/[locale]/page.tsx` (thin, imports views/) | `src/views/` (lazy loaded) |
-| **State** | Server state (SSR) + Valtio (optional) | Valtio proxy + actions |
-| **API** | Server Actions / fetch | Axios service classes |
-| **i18n** | next-intl (URL-based) | i18next (localStorage) |
-| **SEO** | generateMetadata, sitemap.ts, robots.ts | N/A (SPA) |
-| **Styling** | MUI + SCSS Modules | MUI + SCSS Modules |
-
----
-
-## 8. How It Works — Practical Flow
-
-### Flow 1: Creating a Component (Next.js)
-
-**You say:** `/create-component PricingCard — plan card with price, features list, CTA button`
-
-**What the agent does:**
-
-```
-Step 1: Pre-Work (reads existing code)
-├── Reads CLAUDE.md → learns project conventions
-├── Reads package.json → Next.js 16, MUI v7, next-intl
-├── Reads src/components/Header/ → learns component pattern
-│   ├── Header.tsx uses 'use client', MUI AppBar, useTranslations
-│   ├── Header.module.scss uses @use mixins, rem-calc()
-│   └── index.ts exports default
-└── Reads @knowledge/03-component-patterns.md → confirms pattern
-
-Step 2: Reads knowledge files
-├── @knowledge/03-component-patterns.md → folder structure, SCSS module, index.ts
-└── @knowledge/05-scss-patterns.md → @use imports, rem-calc, media mixins
-
-Step 3: Creates files
-├── src/components/PricingCard/PricingCard.tsx
-│   ├── Interface: PricingCardProps { planName, price, features, ctaText, highlighted }
-│   ├── Uses: Paper, Stack, Typography, Button, List, ListItem from MUI
-│   ├── Uses: useTranslations('pricing') for text
-│   └── Uses: styles from './PricingCard.module.scss'
-├── src/components/PricingCard/PricingCard.module.scss
-│   ├── @use '@/styles/settings/variables' as *;
-│   ├── @use '@/styles/utils/rem-calc' as *;
-│   ├── @use '@/styles/mixins/breakpoints' as *;
-│   └── .container, .highlighted, .price, .features classes
-└── src/components/PricingCard/index.ts
-    └── export { default } from './PricingCard';
-
-Step 4: Adds translations
-├── messages/en/pricing.json → { "card": { "perMonth": "/month", "getStarted": "Get Started" } }
-└── messages/hr/pricing.json → { "card": { "perMonth": "/mjesečno", "getStarted": "Započni" } }
-
-Step 5: Validation
-├── yarn build → ✅ Pass
-└── yarn lint → ✅ Pass
-
-Step 6: Task Summary
-═══════════════════════════════════════════
-TASK SUMMARY
-═══════════════════════════════════════════
-Task:        Create PricingCard component
-Files:       5 files created
-Build:       Pass
-Lint:        Pass
-═══════════════════════════════════════════
-```
-
----
-
-### Flow 2: Creating a Complete Feature (React+Vite)
-
-**You say:** "Create a complete Customers feature with list view, CRUD, modals, and translations"
-
-**What the agent does:**
-
-```
-Step 1: Pre-Work
-├── Reads CLAUDE.md → Valtio, i18next, Form+FormInput, ModalRoot
-├── Reads existing feature (e.g., workOrders/) as reference
-└── Reads @knowledge/06-state-management.md, @knowledge/07-forms-validation.md
-
-Step 2: Creates Valtio Store
-├── src/valtio/customers/customers.store.ts
-│   └── proxy<CustomersStore>({ customers: [], selectedCustomer, totalCount, isLoading, modals... })
-└── src/valtio/customers/customers.actions.ts
-    └── getCustomers(), getCustomer(), createCustomer(), deleteCustomer(), toggleModals()
-
-Step 3: Creates Service
-└── src/services/customers.service.ts
-    └── static getCustomers(params), getCustomer(id), createCustomer(payload), etc.
-
-Step 4: Creates View
-├── src/views/Customers/Customers.tsx → main view with table, search, modals
-├── src/views/Customers/Customers.module.scss
-├── src/views/Customers/partials/CreateCustomerModal.tsx
-├── src/views/Customers/partials/DeleteCustomerModal.tsx
-└── src/views/Customers/index.ts
-
-Step 5: Adds Routing
-└── src/routers/AppRouter.tsx
-    └── Adds: <Route path="/customers/*" element={<AppRoute variant="protected" accessLevel={[ADMIN, USER]}><Customers /></AppRoute>} />
-
-Step 6: Adds Translations (all 4 locales)
-├── src/locales/en/customers.json
-├── src/locales/hr/customers.json
-├── src/locales/ba/customers.json
-└── src/locales/rs/customers.json
-    + Registers namespace in src/i18n/i18n.ts
-
-Step 7: Validation
-├── yarn build → ❌ Fail (missing import)
-├── Fix → add lazy import to AppRouter
-├── yarn build → ✅ Pass
-└── yarn lint → ✅ Pass
-
-Step 8: Updates CLAUDE.md
-└── Adds customers to module list and folder structure
-```
-
----
-
-### Flow 3: SEO Audit (Next.js)
-
-**You say:** `/seo-audit`
-
-**What the agent does:**
-
-```
-Step 1: Scans all page.tsx files
-├── src/app/[locale]/(home)/page.tsx → ✅ has generateMetadata
-├── src/app/[locale]/(public)/about/page.tsx → ❌ MISSING generateMetadata
-├── src/app/[locale]/(public)/blog/page.tsx → ✅ has generateMetadata
-├── src/app/[locale]/(public)/blog/[slug]/page.tsx → ✅ has generateMetadata
-└── src/app/[locale]/(public)/contact/page.tsx → ⚠️ has metadata but missing alternates
-
-Step 2: Checks SEO infrastructure
-├── src/app/robots.ts → ✅ present, disallows protected paths
-├── src/app/sitemap.ts → ⚠️ missing /about route
-├── Root layout → ✅ JSON-LD present
-└── /public/meta/og-image.png → ✅ exists (1200x630)
-
-Step 3: Produces Report
-
-## SEO Audit Report
-
-### Critical Issues
-- [src/app/[locale]/(public)/about/page.tsx] Missing generateMetadata export — page has no SEO title/description
-
-### Warnings
-- [src/app/[locale]/(public)/contact/page.tsx:12] Missing alternates.languages — no hreflang tags for locale variants
-- [src/app/sitemap.ts:15] About page URL not included in sitemap
-
-### Suggestions
-- [src/app/[locale]/(public)/blog/[slug]/page.tsx:8] Consider adding article structured data (JSON-LD) for blog posts
-
-### Summary
-1 critical, 2 warnings, 1 suggestion — fix the about page metadata first
-
-Step 4: Fixes issues (if requested)
-├── Adds generateMetadata to about/page.tsx
-├── Adds alternates to contact/page.tsx
-└── Adds /about to sitemap.ts
-```
-
----
-
-### Flow 4: Setting Up MUI Theme
-
-**You say:** `/setup-theme — primary=#2563EB, font=Inter, border-radius=12`
-
-**What the agent does:**
-
-```
-Step 1: Reads @knowledge/04-mui-theming.md and @examples/theme/
-
-Step 2: Creates 6 files in src/styles/themes/
-
-├── colors.ts
-│   └── Color constants: blue50-950, gray50-950, green, red, yellow, white, black
-│
-├── breakpoints.ts
-│   └── { xs: 0, sm: 640, md: 768, lg: 1024, xl: 1280 }
-│
-├── palette.ts
-│   └── primary: { main: colors.blue600 }, secondary, error, warning, success
-│
-├── typography.ts
-│   └── fontFamily: 'Inter, sans-serif', h1-h3, body1-3, button variants
-│
-├── components.ts
-│   └── MuiButton: { borderRadius: 12, variants... }
-│   └── MuiTextField: { variant: 'filled', borderRadius: 12... }
-│   └── MuiPaper: { borderRadius: 12... }
-│   └── MuiDialog, MuiChip, MuiTab, MuiSwitch, etc.
-│
-└── index.ts
-    └── export default createTheme({ breakpoints, components, palette, typography })
-
-Step 3: Wires ThemeProvider
-└── Updates providers.tsx or App.tsx with <ThemeProvider theme={theme}>
-
-Step 4: yarn build → ✅ Pass
-```
-
----
-
-### Flow 5: Bootstrap New Project
-
-**You say:** `/bootstrap-nextjs my-landing — marketing site for SaaS product, en and hr locales`
-
-**What the agent does:**
-
-```
-Step 1: Creates Next.js project
-└── npx create-next-app@latest my-landing --typescript --eslint --app --src-dir
-
-Step 2: Installs dependencies
-└── yarn add @mui/material @emotion/react @emotion/styled next-intl react-hook-form sass
-
-Step 3: Sets up i18n
-├── src/i18n/routing.ts → { locales: ['en', 'hr'], defaultLocale: 'en' }
-├── src/i18n/request.ts → dynamic message imports
-├── src/i18n/navigation.ts → createNavigation
-├── src/middleware.ts → createMiddleware
-├── messages/en/home.json, common.json, metadata.json
-└── messages/hr/home.json, common.json, metadata.json
-
-Step 4: Sets up MUI theme (6 files)
-
-Step 5: Sets up SCSS structure
-├── src/styles/index.scss
-├── src/styles/globals/reset.scss
-├── src/styles/mixins/breakpoints.scss
-├── src/styles/settings/variables.scss
-└── src/styles/utils/rem-calc.scss
-
-Step 6: Creates root layout with providers, metadata, JSON-LD
-
-Step 7: Creates home page
-├── src/app/[locale]/(home)/layout.tsx → Header + Footer
-├── src/app/[locale]/(home)/page.tsx → imports HeroSection
-└── src/views/Home/HeroSection/
-
-Step 8: Configures next.config.js with withNextIntl
-
-Step 9: Sets up ESLint + Stylelint + Prettier
-
-Step 10: Generates CLAUDE.md from template
-
-Step 11: Validates
-├── yarn build → ✅
-└── yarn lint → ✅
-
-Step 12: Commits
-└── git commit on chore/bootstrap-project branch
-```
-
----
-
-### How Hooks Work (Automatic)
-
-The install creates `.claude/settings.json` with hooks that run automatically:
-
-```
-You edit a .tsx file
-  └── PostToolUse hook fires → npx eslint --fix automatically
-
-You run git commit
-  └── PreToolUse hook fires → yarn build && yarn lint must pass first
-  └── If build fails → commit is blocked, agent fixes and retries
-```
-
-### How Knowledge Files Work (On-Demand)
-
-```
-Agent receives task: "Add a contact form"
-  └── Agent reads @knowledge/07-forms-validation.md → learns Form+FormInput pattern
-  └── Agent reads @knowledge/03-component-patterns.md → learns component structure
-  └── Agent reads @examples/component/ → sees real code example
-  └── Agent implements following the patterns
-```
-
-Knowledge files are NOT loaded every session — only when referenced via `@knowledge/` in the agent's instructions for that specific task type. This keeps context clean.
-
-### How Subagents Work (Isolated Context)
-
-```
-You say: "Review the Header component for accessibility"
-  └── Main agent delegates to code-reviewer subagent
-  └── code-reviewer runs in SEPARATE context (doesn't pollute main)
-  └── code-reviewer reads Header.tsx, checks accessibility checklist
-  └── Returns structured review to main agent
-  └── Main context stays clean for implementation
-```
-
----
-
-## 9. Troubleshooting
-
-### Build fails with "Module not found"
+**How it loads:**
+- **Agents** — core instructions loaded every session (~200 lines each)
+- **Rules** — constraints enforced every session (component patterns, styling, API, git)
+- **Skills** — workflows loaded only when you invoke a slash command
+- **Knowledge** — deep reference loaded on-demand when relevant to task
+- **Examples** — code templates the agent uses as patterns
+
+### Version Control
 
 ```bash
-# Check path aliases
-cat tsconfig.json | grep paths    # Should have @/* mapping
-
-# For Vite projects, also check vite.config.ts resolve.alias
+git add .claude/ && git commit -m "chore: add Frontend AI agent"
 ```
 
-### SCSS errors
+### Updating
 
 ```bash
-# Check SCSS preprocessor config
-# Vite: vite.config.ts → css.preprocessorOptions.scss.api should be 'modern'
-# Next.js: next.config.js → sassOptions
-```
-
-### i18n: Translation key not found
-
-```bash
-# Check the namespace is registered
-# Next.js: verify message file is imported in request.ts
-# React: verify namespace is in i18n.ts ns array and JSON files exist in ALL locales
-```
-
-### MUI theme not applying
-
-```bash
-# Verify ThemeProvider wraps the app
-# Next.js: check src/app/[locale]/providers.tsx
-# React: check src/App.tsx or equivalent
-```
-
-### "use client" errors
-
-```bash
-# If you see "useState/useEffect can only be used in Client Components":
-# Add 'use client' directive at the top of the file
-# Only add it where needed — keep components server-side by default
-```
-
-### Valtio store not updating
-
-```bash
-# Ensure you're using useSnapshot() in components, not accessing proxy directly
-# Ensure mutations happen in actions, not in components
-```
-
-### Agent not showing in /agents
-
-```bash
-ls .claude/agents/               # Should contain nextjs.md and react.md
-# If missing, re-run the installer
-```
-
-### Port already in use
-
-```bash
-lsof -i :3000       # Find process using port
-kill <PID>           # Kill it
+curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/main/install.sh | bash
 ```
 
 ---
 
-## 10. Architecture Reference
+## 8. Troubleshooting
 
-### How the Agent System Works
+| Problem | Solution |
+|---------|----------|
+| **Build fails: "Module not found"** | Check `tsconfig.json` has `@/*` path alias. For Vite, check `vite.config.ts` resolve.alias |
+| **SCSS errors** | Vite: `css.preprocessorOptions.scss.api` should be `'modern'`. Next.js: check `sassOptions` |
+| **Translation key not found** | Next.js: verify import in `request.ts`. React: check `i18n.ts` ns array + all locale JSON files |
+| **MUI theme not applying** | Verify `ThemeProvider` wraps app in `providers.tsx` (Next.js) or `App.tsx` (React) |
+| **"use client" errors** | Add `'use client'` at top of file. Only where needed — server components by default |
+| **Valtio store not updating** | Use `useSnapshot()` in components, not proxy directly. Mutations only in actions |
+| **Agent not in /agents** | Run `ls .claude/agents/` — if missing, re-run installer |
+| **Port already in use** | `lsof -i :3000` → `kill <PID>` |
+
+---
+
+## 9. Architecture Reference
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                    Claude Code                       │
-│                                                     │
-│  ┌─────────────┐    ┌──────────────┐               │
-│  │  nextjs.md   │    │   react.md   │  Main Agents  │
-│  │  (Next.js)   │    │  (React)     │  (loaded per  │
-│  └──────┬───────┘    └──────┬───────┘   session)    │
-│         │                   │                       │
-│  ┌──────┴───────────────────┴──────┐                │
-│  │         Subagents               │                │
-│  │  component-creator              │  (isolated     │
-│  │  seo-specialist                 │   context)     │
-│  │  theme-implementor              │                │
-│  │  i18n-specialist                │                │
-│  │  code-reviewer                  │                │
-│  └──────┬───────────────────┬──────┘                │
-│         │                   │                       │
-│  ┌──────┴──────┐    ┌───────┴──────┐                │
-│  │   Skills    │    │  Knowledge   │  (loaded       │
-│  │ /create-*   │    │  01-18.md    │   on-demand)   │
-│  │ /setup-*    │    │              │                │
-│  │ /bootstrap  │    │  Examples    │                │
-│  │ /fix-issue  │    │  valtio/     │                │
-│  │ /create-pr  │    │  theme/      │                │
-│  │ /refactor   │    │  i18n/       │                │
-│  └─────────────┘    └──────────────┘                │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────┐
+│                     Claude Code                       │
+│                                                       │
+│  ┌──────────┐  ┌──────────┐                           │
+│  │ nextjs.md │  │ react.md │   Main Agents (per session)│
+│  └─────┬─────┘  └─────┬────┘                           │
+│        └───────┬───────┘                               │
+│                │                                       │
+│  ┌─────────────┴──────────────┐                        │
+│  │       6 Subagents          │  (isolated context)    │
+│  │  component-creator         │                        │
+│  │  seo-specialist            │                        │
+│  │  theme-implementor         │                        │
+│  │  i18n-specialist           │                        │
+│  │  qa-tester                 │                        │
+│  │  code-reviewer             │                        │
+│  └─────────────┬──────────────┘                        │
+│                │                                       │
+│     ┌──────────┼──────────┐                            │
+│     │          │          │                            │
+│  ┌──┴───┐  ┌──┴────┐  ┌──┴──────────┐                 │
+│  │Rules │  │Skills │  │Knowledge    │                 │
+│  │  4   │  │  20   │  │  21 files   │                 │
+│  │always│  │on-demand│ │  + 9 examples│                │
+│  └──────┘  └───────┘  └─────────────┘                 │
+└──────────────────────────────────────────────────────┘
 ```
 
-### Knowledge Files
+### Knowledge Files (21)
 
-| # | File | Description |
-|---|------|-------------|
-| 01 | `code-style.md` | ESLint, Prettier, Stylelint, naming conventions |
-| 02 | `project-structure.md` | Next.js vs React folder layouts |
-| 03 | `component-patterns.md` | Component structure, SCSS modules, barrels |
-| 04 | `mui-theming.md` | MUI theme: colors, palette, typography, overrides |
-| 05 | `scss-patterns.md` | SCSS modules, mixins, rem-calc, variables |
-| 06 | `state-management.md` | Valtio proxy + actions pattern |
-| 07 | `forms-validation.md` | react-hook-form patterns |
-| 08 | `i18n-nextintl.md` | next-intl setup for Next.js |
-| 09 | `i18n-i18next.md` | i18next setup for React+Vite |
-| 10 | `nextjs-app-router.md` | App Router: layouts, pages, metadata, route groups |
-| 11 | `react-vite-routing.md` | React Router, lazy loading, guards |
-| 12 | `api-integration.md` | Axios config, services, server actions |
-| 13 | `seo-metadata.md` | Metadata API, sitemaps, structured data, OG |
-| 14 | `performance.md` | Image optimization, code splitting |
-| 15 | `accessibility.md` | ARIA, semantic HTML, keyboard navigation |
-| 16 | `pwa-setup.md` | Service workers, offline mode |
-| 17 | `git-and-pr-workflow.md` | Git branching, commit conventions |
-| 18 | `testing-patterns.md` | Vitest/Jest, React Testing Library |
+| # | File | Topic |
+|---|------|-------|
+| 01 | `code-style` | ESLint, Prettier, naming conventions |
+| 02 | `project-structure` | Next.js vs React folder layouts |
+| 03 | `component-patterns` | Component structure, SCSS modules, barrels |
+| 04 | `mui-theming` | Colors, palette, typography, overrides |
+| 05 | `scss-patterns` | SCSS modules, mixins, rem-calc |
+| 06 | `state-management` | Valtio proxy + actions |
+| 07 | `forms-validation` | react-hook-form patterns |
+| 08 | `i18n-nextintl` | next-intl (Next.js) |
+| 09 | `i18n-i18next` | i18next (React+Vite) |
+| 10 | `nextjs-app-router` | Layouts, pages, metadata, route groups |
+| 11 | `react-vite-routing` | React Router, lazy loading, guards |
+| 12 | `api-integration` | Axios config, services, server actions |
+| 13 | `seo-metadata` | Metadata API, sitemaps, JSON-LD, OG |
+| 14 | `performance` | Image optimization, code splitting |
+| 15 | `accessibility` | ARIA, semantic HTML, keyboard nav |
+| 16 | `pwa-setup` | Service workers, offline mode |
+| 17 | `git-and-pr-workflow` | Branching, commit conventions |
+| 18 | `testing-patterns` | Playwright component and E2E tests |
+| 19 | `shared-components` | Form, FormInput, Select, DatePicker |
+| 20 | `api-routes` | Next.js API routes, middleware |
+| 21 | `figma-integration` | Figma MCP, token mapping, Code Connect |
 
-The agent reads only the files relevant to the current task, keeping context usage efficient.
+### Example Templates (9)
 
-### Example Implementations
-
-- **`valtio-store/`** — Complete Valtio store with proxy, useSnapshot, and async CRUD actions
-- **`service/`** — Axios service class with static methods and error handling
-- **`theme/`** — Full MUI theme (6 files: colors, breakpoints, palette, typography, components, index)
-- **`i18n-nextintl/`** — next-intl routing and request configuration
-- **`i18n-i18next/`** — i18next config with LanguageDetector
-- **`nextjs-page/`** — Next.js page with generateMetadata and view import
-- **`react-view/`** — React view component with list pattern
-- **`component/`** — Component with SCSS module and barrel export
+| Example | Contents |
+|---------|----------|
+| `valtio-store/` | Valtio store with proxy, useSnapshot, async CRUD |
+| `service/` | Axios service class with static methods |
+| `theme/` | Complete MUI theme (6 files) |
+| `i18n-nextintl/` | next-intl routing and request config |
+| `i18n-i18next/` | i18next with LanguageDetector |
+| `nextjs-page/` | Page with generateMetadata and view import |
+| `react-view/` | View component with list pattern |
+| `component/` | Component + SCSS module + barrel export |
+| `shared-components/` | Form, FormInput, Select, DatePicker |
 
 ---
 
