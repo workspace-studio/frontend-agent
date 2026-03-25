@@ -63,11 +63,15 @@ Map colors to MUI palette roles (primary, secondary, error, warning, success, in
 
 Define fontFamily and variant overrides (h1, h2, h3, body1, body2, button).
 
-### Step 7: Create components.ts
+### Step 7: Create typings.d.ts (if needed)
+
+If the theme uses custom variants (e.g., `body3`) or doesn't use some MUI defaults (e.g., `h4`, `h5`, `h6`, `caption`, `overline`), generate `src/types/typings.d.ts` to add/disable variants. See @knowledge/04-mui-theming.md for the exact pattern.
+
+### Step 8: Create components.ts
 
 Override MUI components: MuiButton (sizes, variants), MuiTextField, MuiFilledInput, MuiDialog, MuiPaper, MuiChip, MuiTab, etc. Disable ripple and elevation by default.
 
-### Step 8: Create index.ts
+### Step 9: Create index.ts
 
 ```typescript
 import { createTheme } from '@mui/material';
@@ -80,12 +84,12 @@ const theme = createTheme({ breakpoints, components, palette, typography });
 export default theme;
 ```
 
-### Step 9: Wire ThemeProvider
+### Step 10: Wire ThemeProvider
 
 - Next.js: wrap in `src/app/[locale]/providers.tsx`
 - React: wrap in `src/App.tsx`
 
-### Step 10: Validate
+### Step 11: Validate
 
 ```bash
 yarn build

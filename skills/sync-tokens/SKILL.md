@@ -30,6 +30,13 @@ Ask the user:
 
 **Why screenshot is required:** Figma MCP's `get_variable_defs` only returns variables applied to a specific node, NOT all variables defined in the file. A screenshot of the Variables panel is the only reliable way to get the complete list with correct names and group structure.
 
+**Typography fallback:** If typography is not defined as Variables, also ask for a screenshot of the **Text Styles** panel:
+> "If your typography is defined as Text Styles (not Variables), please also paste a screenshot of the Text Styles panel.
+>
+> In Figma: right sidebar → Design → Local styles (text icon `Aa`) → screenshot all text styles."
+
+Typography can come from either source — Variables or Text Styles. Use whichever is present.
+
 If the user also provides a Figma URL, use `get_styles` as a **supplementary** source for published text and color styles — but the screenshot is the primary source of truth for variable definitions.
 
 ### Step 2: Parse Screenshot
@@ -41,6 +48,11 @@ Extract from the Variables panel screenshot:
 - **Collection structure** (e.g., "Colors" collection, "Spacing" collection)
 
 **Critical:** Preserve the exact group names from Figma. If Figma calls it "Green", use `green` — do NOT rename to `success` or `emerald` or anything else.
+
+**If typography comes from Text Styles** (not Variables):
+- Extract style names exactly as shown (e.g., Heading/H1, Body/Regular, Button/Label)
+- Extract font family, size, weight, line-height for each style
+- Map to MUI typography variants (h1, h2, h3, body1, body2, body3, button)
 
 ### Step 3: Read Existing Theme
 
@@ -148,6 +160,36 @@ On approval, update theme files. **Figma tokens override existing values — do 
    - NEVER use Google Fonts links or CDN — always local `.woff2` files
 5. **components.ts** — Update overrides (borderRadius, padding, spacing). Reference `colors.ts` and `typography.ts`.
 
+6. **typings.d.ts** (MANDATORY when custom or disabled variants exist) — Generate `src/types/typings.d.ts`:
+   - Compare Figma text styles against MUI defaults (`h1`-`h6`, `subtitle1`-`2`, `body1`-`2`, `caption`, `overline`, `button`)
+   - Any MUI default NOT present in Figma → disable with `false`
+   - Any Figma style NOT in MUI defaults → add as custom variant with `true`
+
+   Example:
+   ```typescript
+   import type { CSSProperties } from '@mui/material/styles/createTypography';
+
+   declare module '@mui/material/styles' {
+     interface TypographyVariants {
+       body3: CSSProperties;
+     }
+     interface TypographyVariantsOptions {
+       body3?: CSSProperties;
+     }
+   }
+
+   declare module '@mui/material/Typography' {
+     interface TypographyPropsVariantOverrides {
+       h4: false;
+       h5: false;
+       h6: false;
+       caption: false;
+       overline: false;
+       body3: true;
+     }
+   }
+   ```
+
 ### Step 7: Validate
 
 ```bash
@@ -168,6 +210,7 @@ Changes:
   _variables.scss:  synced (all colors)
   palette.ts:       1 updated
   typography.ts:    1 added, 1 updated
+  typings.d.ts:     3 disabled, 1 custom variant added
   components.ts:    2 updated
 Build:          Pass
 ═══════════════════════════════════════════

@@ -100,6 +100,38 @@ const typography: TypographyOptions = {
 export default typography;
 ```
 
+## typings.d.ts
+
+When the project uses custom typography variants (e.g., `body3`) or disables unused MUI defaults (e.g., `h4`, `h5`, `h6`, `caption`, `overline`), create `src/types/typings.d.ts`:
+
+```typescript
+import type { CSSProperties } from '@mui/material/styles/createTypography';
+
+declare module '@mui/material/styles' {
+  interface TypographyVariants {
+    body3: CSSProperties;
+  }
+  interface TypographyVariantsOptions {
+    body3?: CSSProperties;
+  }
+}
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    h4: false;
+    h5: false;
+    h6: false;
+    caption: false;
+    overline: false;
+    body3: true;
+  }
+}
+```
+
+- Disable any MUI default variant NOT used in the project's design system
+- Add any custom variant that exists in Figma but not in MUI defaults
+- This file ensures TypeScript enforces only the variants your design system actually uses
+
 ## components.ts
 
 Override MUI components for consistent look:
