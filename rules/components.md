@@ -13,6 +13,7 @@ paths:
 - SCSS module ONLY if component has custom styles — skip if MUI props suffice
 - Props interface exported from component file
 - When using MUI component as building block, extend its Props type (e.g., `interface StatusChipProps extends ChipProps`) and add custom props as needed
+- NEVER use raw HTML elements (`<div>`, `<header>`, `<nav>`, `<span>`, `<section>`) — always use MUI equivalents: `Box`, `Stack`, `AppBar`, `Toolbar`, `Container`, `Typography`, etc. Use the `component` prop for semantic HTML (e.g., `<Stack component="nav">`, `<Container component="section">`, `<Typography component="h2">`)
 
 ## Styling
 - Use SCSS modules + MUI component props (variant, size, color)
@@ -26,7 +27,7 @@ paths:
 - Responsive via `@include media()` mixin
 
 ## Accessibility
-- Semantic HTML: nav, main, section, article, aside
+- Semantic HTML via MUI `component` prop: `<Stack component="nav">`, `<Box component="main">`, `<Container component="section">`
 - All interactive elements keyboard accessible
 - Images have descriptive `alt` text
 - ARIA labels on IconButton and custom controls

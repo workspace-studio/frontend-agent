@@ -20,6 +20,7 @@ Read these for reference standards:
 - @knowledge/03-component-patterns.md
 - @knowledge/04-mui-theming.md
 - @knowledge/05-scss-patterns.md
+- @knowledge/22-mui-components.md
 
 ## Process
 
@@ -31,6 +32,7 @@ Read these for reference standards:
    - Map Figma layout, colors, and typography to MUI components per the mapping tables
    - For incomplete/early designs (few layers, no variables): default to sketch mode — scaffold with TODO comments, MUI props only, no SCSS module
 0.6. **Check Code Connect** — if Figma MCP is available, call `get_code_connect_map` to check if Figma components map to existing code components. If yes, use the real import path and props instead of generating from scratch.
+0.7. **Look up MUI component docs** — before creating any component, use context7 MCP to fetch MUI documentation for the components you plan to use. Call `resolve-library-id` with `@mui/material`, then `get-library-docs` with the specific component topic (e.g., "AppBar", "Stack"). This ensures you know all available props, slots, and variants. See @knowledge/22-mui-components.md for the HTML→MUI mapping.
 1. **Detect stack** from package.json (`next` → Next.js, `vite` → React+Vite)
 2. **Read 2-3 existing components** from `src/components/` to match patterns
 3. **Create component folder** `src/components/ComponentName/`
@@ -68,3 +70,6 @@ Read these for reference standards:
 - Always create index.ts with: `import X from './X'; export default X;`
 - Always create .spec.tsx Playwright test
 - Colors from `@/styles/themes/colors` (TS) or `@/styles/settings/variables` (SCSS)
+- NEVER use raw HTML elements — always use MUI equivalents (see @knowledge/22-mui-components.md for mapping)
+- Use MUI `component` prop for semantic HTML: `<Stack component="nav">`, `<Container component="section">`
+- Before using an unfamiliar MUI component, fetch its docs via context7 MCP
