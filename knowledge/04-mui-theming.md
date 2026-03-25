@@ -130,7 +130,22 @@ declare module '@mui/material/Typography' {
 
 - Disable any MUI default variant NOT used in the project's design system
 - Add any custom variant that exists in Figma but not in MUI defaults
-- This file ensures TypeScript enforces only the variants your design system actually uses
+
+Apply the same pattern to **any MUI component with variant overrides** (Button, Chip, TextField, etc.):
+
+```typescript
+declare module '@mui/material/Button' {
+  interface ButtonPropsVariantOverrides {
+    outlined: false;
+    containedError: true;
+    containedSecondary: true;
+  }
+}
+```
+
+- If the design system only defines `contained` and `containedSecondary` buttons, disable `outlined` and `text`
+- If custom variants exist (e.g., `containedError`), add them with `true`
+- This ensures TypeScript enforces only the variants your design system actually uses
 
 ## components.ts
 

@@ -17,6 +17,7 @@ paths:
 - Use SCSS modules + MUI component props (variant, size, color)
 - MUI `sx` prop ONLY for spacing (mt, mb, gap, p) — nothing else
 - NEVER mix sx and SCSS on same element
+- Only use MUI component variants defined in the design system — if `typings.d.ts` disables a variant (e.g., `outlined: false`), do NOT use it; if a custom variant exists (e.g., `containedSecondary`), use it instead of ad-hoc styling
 - SCSS uses `@use` (not `@import`)
 - Colors from theme variables — no hardcoded hex
 - `rem-calc()` for sizing — no hardcoded px
