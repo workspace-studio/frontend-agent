@@ -57,6 +57,32 @@ const overrides: ThemeOptions['components'] = {
       },
     },
   },
+  MuiIconButton: {
+    styleOverrides: {
+      root: {
+        borderRadius: 8,
+        color: colors.grayBlue600,
+        backgroundColor: colors.grayBlue50,
+        '&:hover': { backgroundColor: colors.grayBlue100 },
+        '&:active': { backgroundColor: colors.grayBlue200 },
+        '&.Mui-disabled': { backgroundColor: colors.grayBlue50, color: colors.grayBlue200 },
+        '&.MuiIconButton-colorPrimary': {
+          backgroundColor: 'transparent',
+          color: colors.grayBlue600,
+          '&:hover': { backgroundColor: 'rgba(255, 255, 255, 0.15)' },
+          '&.Mui-disabled': { backgroundColor: 'transparent', color: colors.grayBlue200 },
+        },
+        '&.MuiIconButton-colorSecondary': {
+          backgroundColor: 'transparent',
+          color: colors.grayBlue600,
+          '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.1)' },
+          '&.Mui-disabled': { backgroundColor: 'transparent', color: colors.grayBlue200 },
+        },
+      },
+      sizeSmall: { padding: 8 },
+      sizeMedium: { padding: 12 },
+    },
+  },
   MuiPaper: {
     defaultProps: { elevation: 0 },
     styleOverrides: {
@@ -65,21 +91,69 @@ const overrides: ThemeOptions['components'] = {
     },
   },
   MuiTextField: {
-    defaultProps: { variant: 'filled' },
+    defaultProps: { variant: 'filled', size: 'small' },
   },
   MuiFilledInput: {
-    defaultProps: { disableUnderline: true },
+    defaultProps: { disableUnderline: true, placeholder: ' ' },
     styleOverrides: {
       root: {
         borderRadius: 12,
         color: colors.grayBlue600,
         border: `1px solid ${colors.grayBlue200}`,
-        backgroundColor: colors.white,
+        backgroundColor: 'transparent',
         overflow: 'hidden',
-        '&:hover': { borderColor: colors.grayBlue400, backgroundColor: colors.white },
-        '&.Mui-focused': { borderColor: colors.grayBlue600, backgroundColor: colors.white },
-        '&.Mui-error': { backgroundColor: colors.white, borderColor: colors.red600, color: colors.red600 },
-        '&.Mui-disabled': { backgroundColor: colors.white, borderColor: colors.grayBlue100 },
+        '&:hover': { borderColor: colors.grayBlue400, backgroundColor: 'transparent' },
+        '&.Mui-focused': {
+          borderColor: colors.grayBlue600,
+          boxShadow: `inset 0 0 0 1px ${colors.grayBlue600}`,
+          backgroundColor: 'transparent',
+        },
+        '&:not(.Mui-disabled):not(.Mui-error):not(.Mui-focused):has(input:not(:placeholder-shown))': {
+          borderColor: colors.grayBlue400,
+          backgroundColor: colors.white,
+          color: colors.grayBlue600,
+        },
+        '&.Mui-error': { backgroundColor: 'transparent', borderColor: colors.red600, color: colors.red600 },
+        '&.Mui-disabled': { backgroundColor: 'transparent', borderColor: colors.grayBlue100 },
+        '&.Mui-disabled:has(input:not(:placeholder-shown))': {
+          backgroundColor: colors.white,
+          borderColor: colors.grayBlue200,
+        },
+      },
+      input: {
+        paddingTop: 20,
+        paddingBottom: 3,
+        '&.Mui-disabled': { WebkitTextFillColor: colors.grayBlue200 },
+      },
+    },
+  },
+  MuiInputLabel: {
+    styleOverrides: {
+      root: {
+        ...typography.body1,
+        color: colors.grayBlue400,
+        '&.Mui-focused': { color: colors.grayBlue600 },
+        '&.Mui-error': { color: colors.red600 },
+        '&.Mui-disabled': { color: colors.grayBlue200 },
+      },
+      shrink: { ...typography.body2, fontWeight: 600, color: colors.grayBlue600 },
+    },
+  },
+  MuiInputAdornment: {
+    styleOverrides: {
+      positionStart: { marginRight: 6 },
+      positionEnd: { marginLeft: 6 },
+    },
+  },
+  MuiFormControl: {
+    styleOverrides: {
+      root: {
+        '&:has(.MuiInputLabel-filled:not(.MuiInputLabel-shrink)) .MuiInputAdornment-positionStart': {
+          marginTop: '0 !important',
+        },
+        '&:has(.MuiInputBase-adornedStart) .MuiInputLabel-filled:not(.MuiInputLabel-shrink)': {
+          transform: 'translate(42px, 13px) scale(1)',
+        },
       },
     },
   },
@@ -89,19 +163,13 @@ const overrides: ThemeOptions['components'] = {
     },
   },
   MuiDialogTitle: {
-    styleOverrides: {
-      root: { padding: '16px 24px', color: colors.grayBlue950 },
-    },
+    styleOverrides: { root: { padding: '16px 24px', color: colors.grayBlue950 } },
   },
   MuiDialogContent: {
-    styleOverrides: {
-      root: { padding: '16px 24px', color: colors.grayBlue500 },
-    },
+    styleOverrides: { root: { padding: '16px 24px', color: colors.grayBlue500 } },
   },
   MuiDialogActions: {
-    styleOverrides: {
-      root: { padding: '16px 24px', gap: 16 },
-    },
+    styleOverrides: { root: { padding: '16px 24px', gap: 16 } },
   },
   MuiTypography: {
     defaultProps: { variant: 'body2' },

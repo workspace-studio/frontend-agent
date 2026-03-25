@@ -85,3 +85,7 @@ export default createTheme({ breakpoints, components, palette, typography });
 - Use `ThemeOptions` types for type safety
 - Component overrides should disable ripple/elevation by default
 - Typography should define at minimum: h1, h2, h3, body1, body2, button
+- **TextField overrides MUST cover all 5 components**: MuiTextField (defaultProps), MuiFilledInput (all states + input slot), MuiInputLabel (root + shrink + states), MuiInputAdornment (position margins), MuiFormControl (label positioning with adornments)
+- Always set `placeholder: ' '` as a defaultProp on MuiFilledInput — this enables `:has(input:not(:placeholder-shown))` for filled state detection
+- Use `boxShadow: inset 0 0 0 1px` on `&.Mui-focused` for double-border focus effect
+- **MuiIconButton overrides** should cover: root with hover/active/disabled states, colorPrimary and colorSecondary variants, sizeSmall and sizeMedium

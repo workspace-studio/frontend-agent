@@ -149,69 +149,107 @@ declare module '@mui/material/Button' {
 
 ## components.ts
 
-Override MUI components for consistent look:
+Override MUI components for consistent look. Import both `colors` and `typography` for use in overrides.
+
+### Button & IconButton
 
 ```typescript
-import type { ThemeOptions } from '@mui/material';
-import colors from './colors';
-import typography from './typography';
-
-const overrides: ThemeOptions['components'] = {
-  MuiButtonBase: {
-    defaultProps: { disableTouchRipple: true, disableRipple: true },
+MuiButtonBase: {
+  defaultProps: { disableTouchRipple: true, disableRipple: true },
+},
+MuiButton: {
+  defaultProps: { variant: 'contained' },
+  styleOverrides: {
+    root: { borderRadius: 8, boxShadow: 'none', '&:hover': { boxShadow: 'none' } },
+    sizeMedium: { ...typography.body2, paddingInline: '12px', height: 36 },
+    contained: { backgroundColor: colors.primary, '&:hover': { backgroundColor: colors.primaryDark } },
   },
-  MuiButton: {
-    defaultProps: { variant: 'contained' },
-    styleOverrides: {
-      root: { borderRadius: 8, boxShadow: 'none', '&:hover': { boxShadow: 'none' } },
-      sizeMedium: { ...typography.body2, paddingInline: '12px', height: 36 },
-      sizeLarge: { ...typography.body1, paddingInline: '16px', height: 48, borderRadius: 12 },
-      contained: {
-        backgroundColor: colors.orange500,
-        color: colors.white,
-        '&:hover': { backgroundColor: colors.orange600 },
-        '&:disabled': { backgroundColor: colors.orange200, color: colors.orange300 },
-      },
-      outlined: {
-        borderColor: colors.black100,
-        color: colors.grayBlue600,
-        '&:hover': { backgroundColor: colors.grayBlue50 },
-      },
+},
+MuiIconButton: {
+  styleOverrides: {
+    root: {
+      borderRadius: 8, backgroundColor: colors.gray50,
+      '&:hover': { backgroundColor: colors.gray100 },
+      '&.Mui-disabled': { backgroundColor: colors.gray50, color: colors.gray200 },
+      // Color variants nest inside root
+      '&.MuiIconButton-colorPrimary': { backgroundColor: 'transparent', ... },
+      '&.MuiIconButton-colorSecondary': { backgroundColor: 'transparent', ... },
     },
+    sizeSmall: { padding: 8 },
+    sizeMedium: { padding: 12 },
   },
-  MuiPaper: {
-    defaultProps: { elevation: 0 },
-    styleOverrides: {
-      rounded: { borderRadius: 12, padding: 16 },
-    },
-  },
-  MuiTextField: {
-    defaultProps: { variant: 'filled' },
-  },
-  MuiFilledInput: {
-    defaultProps: { disableUnderline: true },
-    styleOverrides: {
-      root: {
-        borderRadius: 12,
-        border: `1px solid ${colors.grayBlue200}`,
-        backgroundColor: colors.white,
-        '&:hover': { borderColor: colors.grayBlue400, backgroundColor: colors.white },
-        '&.Mui-focused': { borderColor: colors.grayBlue600, backgroundColor: colors.white },
-      },
-    },
-  },
-  MuiDialog: {
-    styleOverrides: {
-      paper: { padding: 0, maxWidth: 704, maxHeight: '90vh' },
-    },
-  },
-  MuiTypography: {
-    defaultProps: { variant: 'body2' },
-  },
-};
-
-export default overrides;
+},
 ```
+
+### TextField family (5 components)
+
+TextField overrides require **5 coordinated MUI components**:
+
+**Placeholder trick** — set `placeholder: ' '` as a defaultProp on MuiFilledInput. This enables the CSS selector `:has(input:not(:placeholder-shown))` to detect when the input has a value (filled state), allowing different styling for empty vs filled inputs.
+
+**Focus double-border effect** — use `boxShadow: inset 0 0 0 1px ${color}` on `&.Mui-focused` to create a visual double border without changing layout.
+
+```typescript
+MuiTextField: {
+  defaultProps: { variant: 'filled', size: 'small' },
+},
+MuiFilledInput: {
+  defaultProps: { disableUnderline: true, placeholder: ' ' },
+  styleOverrides: {
+    root: {
+      borderRadius: 12, border: '1px solid ...', backgroundColor: 'transparent',
+      '&:hover': { borderColor: '...', backgroundColor: 'transparent' },
+      '&.Mui-focused': { borderColor: '...', boxShadow: 'inset 0 0 0 1px ...' },
+      // Filled state — white bg when user has typed something
+      '&:not(.Mui-disabled):not(.Mui-error):not(.Mui-focused):has(input:not(:placeholder-shown))': {
+        backgroundColor: colors.white, borderColor: '...',
+      },
+      '&.Mui-error': { borderColor: colors.red, color: colors.red },
+      '&.Mui-disabled': { borderColor: '...lighter...' },
+      '&.Mui-disabled:has(input:not(:placeholder-shown))': {
+        backgroundColor: colors.white, // disabled but has value
+      },
+    },
+    input: {
+      paddingTop: 20, paddingBottom: 3,
+      '&.Mui-disabled': { WebkitTextFillColor: colors.gray200 },
+    },
+  },
+},
+MuiInputLabel: {
+  styleOverrides: {
+    root: {
+      ...typography.body1, color: colors.gray400,
+      '&.Mui-focused': { color: colors.gray600 },
+      '&.Mui-error': { color: colors.red },
+      '&.Mui-disabled': { color: colors.gray200 },
+    },
+    shrink: { ...typography.body2, fontWeight: 600, color: colors.gray800 },
+  },
+},
+MuiInputAdornment: {
+  styleOverrides: {
+    positionStart: { marginRight: 6 },
+    positionEnd: { marginLeft: 6 },
+  },
+},
+MuiFormControl: {
+  styleOverrides: {
+    root: {
+      // Reset adornment margin when label is not shrunk
+      '&:has(.MuiInputLabel-filled:not(.MuiInputLabel-shrink)) .MuiInputAdornment-positionStart': {
+        marginTop: '0 !important',
+      },
+      // Shift label right when start adornment present
+      '&:has(.MuiInputBase-adornedStart) .MuiInputLabel-filled:not(.MuiInputLabel-shrink)': {
+        transform: 'translate(42px, 13px) scale(1)',
+      },
+    },
+  },
+},
+```
+
+See `@examples/theme/components.ts` for a complete working implementation.
 
 ## index.ts
 

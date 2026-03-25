@@ -69,7 +69,21 @@ If the theme uses custom variants (e.g., `body3`) or doesn't use some MUI defaul
 
 ### Step 8: Create components.ts
 
-Override MUI components: MuiButton (sizes, variants), MuiTextField, MuiFilledInput, MuiDialog, MuiPaper, MuiChip, MuiTab, etc. Disable ripple and elevation by default.
+Override MUI components. Disable ripple and elevation by default. Each component group has specific requirements:
+
+**Button family:**
+- MuiButtonBase — disable ripple
+- MuiButton — sizes (small, medium, large), variant styles (contained, outlined, text) with hover/active/disabled
+- MuiIconButton — root with hover/active/disabled, colorPrimary/colorSecondary variants, sizeSmall/sizeMedium
+
+**TextField family (all 5 required):**
+- MuiTextField — `defaultProps: { variant: 'filled', size: 'small' }`
+- MuiFilledInput — `defaultProps: { disableUnderline: true, placeholder: ' ' }`, root states (hover, focused with inset box-shadow, filled via `:has(input:not(:placeholder-shown))`, error, disabled, disabled+filled), input slot (padding, WebkitTextFillColor for disabled)
+- MuiInputLabel — root typography (body1) + color states (focused, error, disabled), shrink (body2, fontWeight 600)
+- MuiInputAdornment — positionStart/positionEnd margins
+- MuiFormControl — `:has()` selectors for label positioning when start adornment is present
+
+**Other:** MuiPaper, MuiDialog, MuiTypography, MuiChip, MuiTab, etc.
 
 ### Step 9: Create index.ts
 
