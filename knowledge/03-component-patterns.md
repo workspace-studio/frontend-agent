@@ -66,6 +66,7 @@ const MyButton = (props) => <Button {...props} variant="contained" />;
 1. **MUI component props** (variant, size, color, component) — PREFERRED for styling
 2. **SCSS modules** — for custom styles that can't be achieved with MUI props
 3. **`sx` prop** — ONLY for one-off spacing (mt, mb, gap, p) — NEVER for colors, borders, backgrounds
+4. **`cx` from `clsx`** — for merging multiple classNames or conditional classes. NEVER use template literals (`` `${styles.a} ${styles.b}` ``) or string concatenation
 
 **NEVER mix sx and SCSS on the same element.**
 

@@ -12,12 +12,14 @@ paths:
 - Every component folder has `index.ts`: `import X from './X'; export default X;`
 - SCSS module ONLY if component has custom styles — skip if MUI props suffice
 - Props interface exported from component file
+- When using MUI component as building block, extend its Props type (e.g., `interface StatusChipProps extends ChipProps`) and add custom props as needed
 
 ## Styling
 - Use SCSS modules + MUI component props (variant, size, color)
 - MUI `sx` prop ONLY for spacing (mt, mb, gap, p) — nothing else
 - NEVER mix sx and SCSS on same element
 - Only use MUI component variants defined in the design system — if `typings.d.ts` disables a variant (e.g., `outlined: false`), do NOT use it; if a custom variant exists (e.g., `containedSecondary`), use it instead of ad-hoc styling
+- Use `cx` from `clsx` for className merging — NEVER template literals or string concatenation
 - SCSS uses `@use` (not `@import`)
 - Colors from theme variables — no hardcoded hex
 - `rem-calc()` for sizing — no hardcoded px
