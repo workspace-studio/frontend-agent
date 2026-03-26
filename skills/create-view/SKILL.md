@@ -91,7 +91,7 @@ Add to ALL locales in `src/locales/{locale}/`.
 
 ### Step 5: Add Navigation Entry
 
-Update navigation config if the view needs a sidebar/menu entry.
+Update `src/config/navigation.config.ts` if the view needs a sidebar/menu/tab entry.
 
 ### Step 6: Validate
 

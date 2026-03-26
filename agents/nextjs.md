@@ -115,7 +115,9 @@ src/
 ├── i18n/
 │   ├── routing.ts          # defineRouting({ locales, defaultLocale })
 │   ├── request.ts          # getRequestConfig with dynamic imports
-│   └── navigation.ts       # createNavigation (Link, redirect, useRouter)
+│   ├── navigation.ts       # createNavigation (Link, redirect, useRouter)
+│   └── global.d.ts         # Module declaration for next-intl (Locale + Messages types)
+├── proxy.ts                # next-intl middleware (was middleware.ts before Next.js 16)
 ├── styles/
 │   ├── index.scss          # Global imports
 │   ├── globals/            # Reset, fonts, animations
@@ -123,7 +125,10 @@ src/
 │   ├── settings/           # Variables ($colors, $spacing)
 │   ├── utils/              # rem-calc, helpers
 │   └── themes/             # MUI theme (6 files)
-├── config/                 # meta.config.ts, constants
+├── config/                 # Static data & app configuration (*.config.ts)
+│   ├── meta.config.ts      # Site metadata (name, url, OG defaults)
+│   ├── navigation.config.ts # Nav items, tabs, sidebar links
+│   └── languages.config.ts  # Language picker options
 ├── types/                  # TypeScript definitions
 └── utils/
     ├── hooks/              # Custom hooks
@@ -149,6 +154,7 @@ src/
   import ComponentName from './ComponentName';
   export default ComponentName;
   ```
+- **Config files**: Static data arrays/objects (nav items, tabs, sidebar links, language options) go in `src/config/*.config.ts`. Export a typed const array. Import type from `@/types/`. Never hardcode these lists inline in components.
 - **Naming**: PascalCase components/files, camelCase hooks, `@/` alias always
 - **Exports**: Named exports only — no default exports (except pages/layouts which Next.js requires)
 - **Import type**: Use `import type` for type-only imports

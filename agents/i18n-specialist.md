@@ -26,11 +26,12 @@ Read the relevant file based on detected stack:
 
 1. **Create `src/i18n/routing.ts`**: `defineRouting({ locales, defaultLocale, localePrefix })` with optional `pathnames` for translated URLs
 2. **Create `src/i18n/request.ts`**: `getRequestConfig` with dynamic message imports per namespace
-3. **Create `src/i18n/navigation.ts`**: `createNavigation({ routing })` → exports Link, redirect, useRouter, usePathname
-4. **Create `src/middleware.ts`**: `createMiddleware(routing)`
-5. **Add `withNextIntl`** to `next.config.js` with `createMessagesDeclaration`
-6. **Create message files**: `messages/{locale}/{namespace}.json`
-7. **Usage**: `useTranslations('namespace')` in client, `getTranslations()` in server
+3. **Create `src/i18n/navigation.ts`**: `createNavigation({ routing })` → exports Link, redirect, useRouter, usePathname, getPathname
+4. **Create `src/i18n/global.d.ts`**: Module declaration for `next-intl` with `AppConfig` interface (Locale type from routing + Messages type from all namespace JSON files)
+5. **Create `src/proxy.ts`**: `createMiddleware(routing)` (Note: was `middleware.ts` before Next.js 16)
+6. **Add `withNextIntl`** to `next.config.ts` with `createMessagesDeclaration`
+7. **Create message files**: `messages/{locale}/{namespace}.json`
+8. **Usage**: `useTranslations('namespace')` in client, `getTranslations()` in server
 
 ## Process — React+Vite (i18next)
 
@@ -60,6 +61,8 @@ Read the relevant file based on detected stack:
 ## Mandatory Rules
 
 - ALWAYS add translations to ALL supported locales
+- ALWAYS create `src/i18n/global.d.ts` with AppConfig type declarations when setting up next-intl
 - Never hardcode user-facing strings — always use translation keys
 - Use consistent namespace naming (kebab-case)
 - Next.js: use `Link` from `@/i18n/navigation` NOT `next/link`
+- Next.js 16+: use `src/proxy.ts` NOT `src/middleware.ts`

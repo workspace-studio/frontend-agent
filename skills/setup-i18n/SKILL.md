@@ -21,8 +21,9 @@ Set up or extend i18n. Usage: `/setup-i18n add-locale de` or `/setup-i18n add-ke
 2. Create `messages/{locale}/` directory
 3. Copy all JSON files from default locale (en/) as starting point
 4. Update `src/i18n/request.ts` imports if using static imports
-5. Add translated pathnames if using `pathnames` in routing
-6. Run `yarn build` to verify
+5. Update `src/i18n/global.d.ts` Messages interface if new namespaces were added
+6. Add translated pathnames if using `pathnames` in routing
+7. Run `yarn build` to verify
 
 ### React+Vite (i18next)
 

@@ -30,7 +30,7 @@ yarn add -D @playwright/experimental-ct-react
 
 ### Step 3: Set Up i18n
 
-Create `src/i18n/` with routing.ts, request.ts, navigation.ts. Create `src/middleware.ts`. Create `messages/{locale}/` with initial JSON files. Configure `next.config.js` with `withNextIntl`.
+Create `src/i18n/` with routing.ts, request.ts, navigation.ts, global.d.ts. Create `src/proxy.ts` (was middleware.ts before Next.js 16). Create `messages/{locale}/` with initial JSON files. Configure `next.config.ts` with `withNextIntl`.
 
 ### Step 4: Set Up MUI Theme
 

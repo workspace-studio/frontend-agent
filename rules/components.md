@@ -33,6 +33,15 @@ paths:
 - ARIA labels on IconButton and custom controls
 - Form inputs have associated labels
 
+## Config Data
+- Static data arrays (nav items, tabs, sidebar links, language options) go in `src/config/*.config.ts` — NEVER hardcode inline in components
+- Export a typed const array with a proper interface from `@/types/`
+
+## SVG Icons
+- All icons in `src/components/SvgIcons/`, grouped by category in subfolders with `index.ts` barrel exports
+- MANDATORY props: `props?: SVGProps<SVGSVGElement>`, `fill?: string` (default `'currentColor'`), `size?: string | number` (default `24`)
+- Spread `{...props}` on `<svg>`, use `width={size} height={size}`, keep original `viewBox`
+
 ## Forbidden
 - NEVER use `React.memo`, `useMemo`, or `useCallback`
 - NEVER use `any` or `unknown` — define proper types

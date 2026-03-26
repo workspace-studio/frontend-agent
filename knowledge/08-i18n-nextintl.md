@@ -53,39 +53,59 @@ export default getRequestConfig(async ({ requestLocale }) => {
 import { createNavigation } from 'next-intl/navigation';
 import { routing } from './routing';
 
-export const { Link, redirect, usePathname, useRouter } = createNavigation(routing);
+export const { Link, redirect, usePathname, useRouter, getPathname } = createNavigation(routing);
 ```
 
-### middleware.ts
+### proxy.ts
+
+> **Note:** `proxy.ts` was called `middleware.ts` up until Next.js 16.
 
 ```typescript
-// src/middleware.ts
+// src/proxy.ts
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 
 export default createMiddleware(routing);
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
+  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)' ,
 };
 ```
 
-### next.config.js
+### global.d.ts
 
-```javascript
-const createNextIntlPlugin = require('next-intl/plugin');
+```typescript
+// src/i18n/global.d.ts
+import { routing } from '@/i18n/routing';
+
+declare module 'next-intl' {
+  interface AppConfig {
+    Locale: (typeof routing.locales)[number];
+    Messages: {
+      common: typeof import('../../messages/en/common.json').default;
+      home: typeof import('../../messages/en/home.json').default;
+      metadata: typeof import('../../messages/en/metadata.json').default;
+      contact: typeof import('../../messages/en/contact.json').default;
+    };
+  }
+}
+```
+
+The `Messages` interface must include an entry for each message namespace JSON file. This provides full type safety for `useTranslations()` and `getTranslations()`.
+
+### next.config.ts
+
+```typescript
+// next.config.ts
+import { createNextIntlPlugin } from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin({
   experimental: {
-    createMessagesDeclaration: [
-      './messages/en/home.json',
-      './messages/en/common.json',
-      './messages/en/metadata.json',
-    ],
+    createMessagesDeclaration: './messages/en.json',
   },
 });
 
-module.exports = withNextIntl(nextConfig);
+export default withNextIntl(nextConfig);
 ```
 
 ## Message Files
@@ -133,6 +153,16 @@ import { Link } from '@/i18n/navigation';
 // NOT next/link
 
 <Link href="/about">{t('nav.about')}</Link>
+```
+
+## NextIntlClientProvider
+
+In Next.js 16+ / next-intl 4+, `NextIntlClientProvider` automatically inherits `messages` and `formats` from server config — no need to pass them as props:
+
+```tsx
+<NextIntlClientProvider>
+  {children}
+</NextIntlClientProvider>
 ```
 
 ## URL Pattern

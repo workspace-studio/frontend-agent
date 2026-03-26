@@ -147,6 +147,76 @@ interface StatusChipProps extends ChipProps {
 }
 ```
 
+## SVG Icon Components
+
+All SVG icons live in `src/components/SvgIcons/`, organized by category in subfolders with barrel exports.
+
+### Folder Structure
+
+```
+src/components/SvgIcons/
+├── Locales/
+│   ├── EnFlag.tsx
+│   ├── HrFlag.tsx
+│   └── index.ts          # export { EnFlag, HrFlag }
+├── Actions/
+│   ├── Eye.tsx
+│   ├── Edit.tsx
+│   ├── Delete.tsx
+│   └── index.ts
+├── ArrowLeft.tsx          # Ungrouped icons at root level
+└── index.ts               # Re-exports from subfolders
+```
+
+### Mandatory Props Format
+
+Every SVG icon component MUST use this exact props pattern:
+
+```tsx
+import { SVGProps } from 'react';
+
+const Eye = ({
+  props,
+  fill = 'currentColor',
+  size = 24,
+}: {
+  props?: SVGProps<SVGSVGElement>;
+  fill?: string;
+  size?: string | number;
+}) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 20 14" fill="none" {...props}>
+    <path
+      fill={fill}
+      d="M9.99993 0C14.0554..."
+    />
+  </svg>
+);
+
+export default Eye;
+```
+
+**Rules:**
+- `props` — optional `SVGProps<SVGSVGElement>`, spread onto `<svg>` element
+- `fill` — defaults to `'currentColor'`
+- `size` — defaults to `24`, controls both `width` and `height`
+- `viewBox` — keep original from SVG source, do NOT change
+- NEVER use `React.FC` or separate interface — use inline destructured object type
+
+### Subfolder index.ts Pattern
+
+```typescript
+// src/components/SvgIcons/Locales/index.ts
+import EnFlag from './EnFlag';
+import HrFlag from './HrFlag';
+
+export { EnFlag, HrFlag };
+```
+
+Import icons from their subfolder:
+```typescript
+import { EnFlag, HrFlag } from '@/components/SvgIcons/Locales';
+```
+
 ## Naming
 
 - Component files: PascalCase (`StatusChip.tsx`)

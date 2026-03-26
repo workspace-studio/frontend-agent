@@ -15,11 +15,17 @@ src/
 │   ├── robots.ts          # robots.txt generation
 │   └── sitemap.ts         # Sitemap generation
 ├── components/            # Reusable UI components
-│   └── Header/
-│       ├── Header.tsx
-│       ├── Header.module.scss  # Only if needed
-│       ├── Header.spec.tsx     # Playwright test
-│       └── index.ts            # Barrel export
+│   ├── Header/
+│   │   ├── Header.tsx
+│   │   ├── Header.module.scss  # Only if needed
+│   │   ├── Header.spec.tsx     # Playwright test
+│   │   └── index.ts            # Barrel export
+│   └── SvgIcons/          # SVG icon components
+│       ├── Locales/       # Grouped by category
+│       │   ├── EnFlag.tsx
+│       │   ├── HrFlag.tsx
+│       │   └── index.ts   # Named exports
+│       └── ArrowLeft.tsx  # Ungrouped icons
 ├── views/                 # Page-level view components
 │   └── Home/
 │       ├── HeroSection/
@@ -27,8 +33,13 @@ src/
 ├── i18n/                  # next-intl config
 │   ├── routing.ts
 │   ├── request.ts
-│   └── navigation.ts
-├── config/                # Configuration
+│   ├── navigation.ts
+│   └── global.d.ts        # next-intl AppConfig type declarations
+├── proxy.ts               # next-intl middleware (was middleware.ts before Next.js 16)
+├── config/                # Configuration files (*.config.ts)
+│   ├── meta.config.ts     # Site metadata (name, url, OG defaults)
+│   ├── navigation.config.ts  # Nav items, tabs, sidebar links
+│   └── languages.config.ts   # Language picker options
 ├── styles/
 │   ├── index.scss         # Global imports
 │   ├── globals/           # Reset, fonts, animations

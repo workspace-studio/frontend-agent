@@ -83,7 +83,32 @@ Import sorting via `@trivago/prettier-plugin-sort-imports`:
 | Hook | `.ts` | `useAuth.ts` |
 | Type | `.type.ts` | `response.type.ts` |
 | Model | `.model.ts` | `booking.model.ts` |
-| Config | `.config.ts` | `axios.config.ts` |
+| Config | `.config.ts` | `axios.config.ts`, `navigation.config.ts` |
+
+### Config Files Pattern
+
+Static data arrays/objects (navigation items, tabs, sidebar links, language options, etc.) go in `src/config/*.config.ts`. Export a typed const array with a proper interface from `@/types/`.
+
+```typescript
+// src/config/navigation.config.ts
+import Home from '@/components/SvgIcons/Home';
+import Reservations from '@/components/SvgIcons/Reservations';
+import Book from '@/components/SvgIcons/Book';
+import Profile from '@/components/SvgIcons/Profile';
+
+import NavigationLink from '@/types/navigation-link.type';
+
+const navItems: NavigationLink[] = [
+  { text: 'home', href: '/', icon: Home },
+  { text: 'reserve', href: '/reserve', icon: Reservations },
+  { text: 'myBookings', href: '/bookings', icon: Book },
+  { text: 'profile', href: '/profile', icon: Profile },
+];
+
+export default navItems;
+```
+
+Never hardcode static data arrays inline in components — always extract to a `.config.ts` file.
 
 ## Import Order
 
