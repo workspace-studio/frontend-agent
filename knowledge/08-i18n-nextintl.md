@@ -196,23 +196,39 @@ With `localePrefix: 'as-needed'`:
 
 ### 3. Error page crashes with "useTranslations" error
 **Cause**: Root `error.tsx` renders a view that uses `useTranslations` without `NextIntlClientProvider`.
-**Fix**: Root error/not-found must use hardcoded text or separate views without i18n hooks.
+**Fix**: Root error/not-found stay inline with hardcoded EN text. Only `[locale]/` error/not-found delegate to views.
 
 ### 4. `import { routing } from '@/i18n/routing'` breaks global.d.ts
 **Cause**: `@/` alias import makes linter add/remove things that break `declare module`.
 **Fix**: Always use `import { routing } from './routing'` (relative) in global.d.ts.
 
-### 5. `Link` component as prop causes hydration mismatch
-**Cause**: `<Button component={Link}>` passes a client component function across server/client boundary.
-**Fix**: Use `<Button href="/">` or wrap with `<Link><Button></Button></Link>`.
+### 5. Plain `Button href="/"` loses locale prefix
+**Cause**: `<Button href="/">` navigates to `/` regardless of current locale — user on `/hr` gets redirected to English.
+**Fix**: Use `<Button component={Link} href="/">` with `Link` from `@/i18n/navigation` for locale-aware links.
 
 ### 6. New route not accepted by Link href
 **Cause**: Route not in `routing.ts` pathnames.
 **Fix**: Add pathname to `src/i18n/routing.ts`.
 
+### 7. `metadata` export on not-found.tsx
+**Cause**: Next.js does NOT support `metadata` exports from `not-found.tsx`.
+**Fix**: Only export `metadata`/`generateMetadata` from `page.tsx` and `layout.tsx`.
+
+### 8. `'use client'` on Valtio store files
+**Cause**: Stores are not React components — `'use client'` doesn't make sense.
+**Fix**: Never add `'use client'` to `.store.ts` or `.actions.ts` files.
+
+## .gitignore
+
+Add auto-generated next-intl type declaration files:
+
+```
+messages/*.d.json.ts
+```
+
 ## Dependencies
 
 ```bash
 yarn add next-intl
-yarn add @mui/material-nextjs  # For AppRouterCacheProvider in error boundaries
+yarn add @mui/material-nextjs  # For AppRouterCacheProvider in providers.tsx
 ```

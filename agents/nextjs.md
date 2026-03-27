@@ -155,8 +155,9 @@ src/
 - **SCSS module only when needed**: Do NOT create ComponentName.module.scss if the component has no custom styles. If MUI components + props are enough, skip the SCSS file.
 - **react-hook-form**: For all forms with validation
 - **Navigation**: Use `Link` from `@/i18n/navigation` (NOT `next/link`) for locale-aware routing. Add every new route to `routing.ts` pathnames or Link will throw a type error
-- **Error/404 pages**: Three-level architecture — root (hardcoded EN, no i18n), locale (with i18n), catch-all `[...rest]/page.tsx` (required for locale 404 to work). `[locale]/error.tsx` must wrap its own providers (error boundary destroys layout). See @knowledge/10-nextjs-app-router.md
-- **Hydration**: NEVER use `Button component={Link}` — causes hydration mismatch. Use `Button href="/"` instead
+- **Error/404 pages**: Three-level architecture — root (hardcoded EN inline, no i18n, no views), locale (simple, delegates to views), catch-all `[...rest]/page.tsx` (required for locale 404). `[locale]/error.tsx` is simple — layout providers are still available, do NOT re-wrap. See @knowledge/10-nextjs-app-router.md
+- **Locale-aware links**: Use `Button component={Link} href="/"` with `Link` from `@/i18n/navigation` — plain `Button href="/"` would lose locale prefix on non-default locales
+- **No metadata on not-found**: Next.js does NOT support `metadata` exports from `not-found.tsx` — only from `page.tsx` and `layout.tsx`
 - **Images**: Always use `next/image` with `sizes` prop and configured `remotePatterns`
 - **View sections start with Container**: Every view section MUST use `<Container component="section">` as root element
 - **Layout groups**: `(home)`, `(public)`, `(simple)` for different layout structures
@@ -167,7 +168,7 @@ src/
   ```
 - **Config files**: Static data arrays/objects (nav items, tabs, sidebar links, language options) go in `src/config/*.config.ts`. Export a typed const array. Import type from `@/types/`. Never hardcode these lists inline in components.
 - **Naming**: PascalCase components/files, camelCase hooks, `@/` alias always
-- **Exports**: Named exports only — no default exports (except pages/layouts which Next.js requires)
+- **Exports**: Always `const X = () => ...` + `export default X` pattern. NEVER use `export default function`. Named exports for non-component values.
 - **Import type**: Use `import type` for type-only imports
 - **Colors**: Import from `@/styles/themes/colors` (TS) or `@/styles/settings/variables` (SCSS)
 - **Shared components**: Before creating a new component, check @examples/shared-components/ for existing ones (Form, Select, DatePicker, Table, ModalRoot, etc.). Copy and adjust SCSS style only.

@@ -1,6 +1,6 @@
 import { proxy, useSnapshot } from 'valtio';
 
-import Toast from '@/types/toast.type';
+import type Toast from '@/types/toast.type';
 
 interface GlobalStore {
   toast?: Toast;

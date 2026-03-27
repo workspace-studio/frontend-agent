@@ -10,9 +10,12 @@ Valtio uses JavaScript Proxy for reactive state. Pattern: `.store.ts` + `.action
 
 ```typescript
 // src/valtio/workOrders/workOrders.store.ts
-import { proxy, useSnapshot } from 'valtio';
+import { proxy, useSnapshot } from "valtio";
 
-import type { WorkOrderModel, WorkOrderShortInfo } from '@/models/work-order.model';
+import type {
+  WorkOrderModel,
+  WorkOrderShortInfo,
+} from "@/models/work-order.model";
 
 interface WorkOrdersStore {
   workOrders: WorkOrderShortInfo[];
@@ -38,12 +41,14 @@ export const workOrdersStore = proxy<WorkOrdersStore>({
   isFormSubmitting: false,
 });
 
-export const useWorkOrdersStore = (): WorkOrdersStore => useSnapshot(workOrdersStore);
+export const useWorkOrdersStore = (): WorkOrdersStore =>
+  useSnapshot(workOrdersStore);
 ```
 
 ### Store Structure
 
 Every store has:
+
 - **Entity list** — `items: Model[]`
 - **Selected entity** — `selectedItem?: Model`
 - **Pagination** — `totalCount: number`
@@ -55,17 +60,18 @@ Every store has:
 
 ```typescript
 // src/valtio/workOrders/workOrders.actions.ts
-import WorkOrdersService from '@/services/workOrders.service';
-import type { WorkOrdersParams } from '@/services/workOrders.service';
-import type { PayloadResponse } from '@/types/response.type';
+import WorkOrdersService from "@/services/workOrders.service";
+import type { WorkOrdersParams } from "@/services/workOrders.service";
+import type { PayloadResponse } from "@/types/response.type";
 
-import { workOrdersStore } from './workOrders.store';
+import { workOrdersStore } from "./workOrders.store";
 
 // GET LIST — set loading, call service, update store
 export async function getWorkOrders(params: WorkOrdersParams): Promise<void> {
   workOrdersStore.isLoading = true;
 
-  const { entities, totalCount } = await WorkOrdersService.getWorkOrders(params);
+  const { entities, totalCount } =
+    await WorkOrdersService.getWorkOrders(params);
 
   workOrdersStore.isLoading = false;
   workOrdersStore.workOrders = entities;
@@ -84,7 +90,9 @@ export function clearSelectedWorkOrder(): void {
 }
 
 // CREATE — set submitting, call service, reset submitting
-export async function createWorkOrder(payload: CreateFormValues): Promise<PayloadResponse<boolean>> {
+export async function createWorkOrder(
+  payload: CreateFormValues
+): Promise<PayloadResponse<boolean>> {
   workOrdersStore.isFormSubmitting = true;
   const response = await WorkOrdersService.createWorkOrder(payload);
   workOrdersStore.isFormSubmitting = false;
@@ -92,9 +100,13 @@ export async function createWorkOrder(payload: CreateFormValues): Promise<Payloa
 }
 
 // MODAL TOGGLE
-export function toggleCreateWorkOrderModal(isOpen?: boolean | React.MouseEvent): void {
+export function toggleCreateWorkOrderModal(
+  isOpen?: boolean | React.MouseEvent
+): void {
   workOrdersStore.createWorkOrderModalOpen =
-    typeof isOpen === 'boolean' ? isOpen : !workOrdersStore.createWorkOrderModalOpen;
+    typeof isOpen === "boolean"
+      ? isOpen
+      : !workOrdersStore.createWorkOrderModalOpen;
 }
 ```
 
@@ -124,9 +136,9 @@ Every project MUST have a `global` store with toast notifications and form dirty
 
 ```typescript
 // src/valtio/global/global.store.ts
-import { proxy, useSnapshot } from 'valtio';
+import { proxy, useSnapshot } from "valtio";
 
-import Toast from '@/types/toast.type';
+import type Toast from "@/types/toast.type";
 
 interface GlobalStore {
   toast?: Toast;
@@ -145,9 +157,9 @@ export const useGlobalStore = (): GlobalStore => useSnapshot(globalStore);
 
 ```typescript
 // src/valtio/global/global.actions.ts
-import Toast from '@/types/toast.type';
+import Toast from "@/types/toast.type";
 
-import { globalStore } from './global.store';
+import { globalStore } from "./global.store";
 
 export const showToast = ({ status, text }: Toast): void => {
   globalStore.toast = {
@@ -170,7 +182,7 @@ export function setIsFormDirty(isDirty: boolean): void {
 ```typescript
 // src/types/toast.type.ts
 type Toast = {
-  status: 'success' | 'error' | 'warning' | 'info';
+  status: "success" | "error" | "warning" | "info";
   text: string;
 };
 
@@ -183,16 +195,16 @@ The Toast component uses MUI `Snackbar` + `Alert` with custom SVG icons per seve
 
 ```tsx
 // src/components/Toast/Toast.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Snackbar } from "@mui/material";
 
-import Error from '@/components/SvgIcons/Toast/Error';
-import Info from '@/components/SvgIcons/Toast/Info';
-import Success from '@/components/SvgIcons/Toast/Success';
-import Warning from '@/components/SvgIcons/Toast/Warning';
-import { resetToast } from '@/valtio/global/global.actions';
-import { useGlobalStore } from '@/valtio/global/global.store';
+import Error from "@/components/SvgIcons/Toast/Error";
+import Info from "@/components/SvgIcons/Toast/Info";
+import Success from "@/components/SvgIcons/Toast/Success";
+import Warning from "@/components/SvgIcons/Toast/Warning";
+import { resetToast } from "@/valtio/global/global.actions";
+import { useGlobalStore } from "@/valtio/global/global.store";
 
 const Toast: React.FC = () => {
   const { toast } = useGlobalStore();
@@ -217,7 +229,7 @@ const Toast: React.FC = () => {
   };
 
   return (
-    <Snackbar open={Boolean(toast)}>
+    <Snackbar open={Boolean(toast)} onClose={resetToast}>
       <Alert severity={toast?.status} iconMapping={customIconMapping}>
         {toast?.text}
       </Alert>
@@ -229,6 +241,7 @@ export default Toast;
 ```
 
 **Setup:**
+
 - Create `src/components/SvgIcons/Toast/` with Success, Error, Warning, Info icons (follow SVG icon rules)
 - Place `<Toast />` in the root layout/providers so it's always rendered
 - Style the Snackbar/Alert via Figma design — the user will send the design
@@ -236,7 +249,9 @@ export default Toast;
 ## Rules
 
 - **NEVER** use Redux or Context API for global state
+- **NEVER** add `'use client'` to `.store.ts` or `.actions.ts` files — they are not React components
 - **NEVER** mutate store directly from components — only through actions
+- **Always** use `import type` for type-only imports in store/actions files
 - **Always** use `useSnapshot()` for reactive reads in components
 - **Always** separate store and actions into two files
 - **Always** create global store with toast + isFormDirty on project setup

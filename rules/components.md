@@ -42,6 +42,9 @@ paths:
 - MANDATORY props: `props?: SVGProps<SVGSVGElement>`, `fill?: string` (default `'currentColor'`), `size?: string | number` (default `24`)
 - Spread `{...props}` on `<svg>`, use `width={size} height={size}`, keep original `viewBox`
 
+## Exports
+- Always `const X = () => ...` + `export default X` — NEVER `export default function`
+
 ## Forbidden
 - NEVER use `React.memo`, `useMemo`, or `useCallback`
 - NEVER use `any` or `unknown` — define proper types

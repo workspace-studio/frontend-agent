@@ -33,8 +33,8 @@ Read the relevant file based on detected stack:
 6. **Update `next.config.js`**: wrap with `createNextIntlPlugin`, add `createMessagesDeclaration` array with all English namespace paths
 7. **Create message files**: `messages/{locale}/{namespace}.json` — always include `errors.json` as separate namespace
 8. **Create error/404 pages**: Three-level architecture (see @knowledge/10-nextjs-app-router.md):
-   - Root `error.tsx` + `not-found.tsx` (hardcoded EN, no i18n)
-   - `[locale]/error.tsx` (wraps own providers) + `[locale]/not-found.tsx`
+   - Root `error.tsx` + `not-found.tsx` (hardcoded EN inline, no i18n, no views)
+   - `[locale]/error.tsx` + `[locale]/not-found.tsx` (simple, delegate to views — layout providers still available)
    - `[locale]/[...rest]/page.tsx` catch-all that calls `notFound()`
 9. **Create views**: `ErrorPage` + `NotFoundPage` in `src/views/` using `useTranslations('errors')`
 
@@ -79,6 +79,7 @@ Read the relevant file based on detected stack:
 - ALWAYS add new routes to `routing.ts` pathnames — Link will throw type error otherwise
 - Never hardcode user-facing strings — always use translation keys
 - Next.js: use `Link` from `@/i18n/navigation` NOT `next/link`
-- NEVER use `Button component={Link}` — causes hydration error. Use `Button href="/"` instead
-- `[locale]/error.tsx` MUST wrap its own providers (error boundary destroys layout providers)
-- Root error/not-found MUST use hardcoded EN text — no i18n hooks
+- Use `Button component={Link} href="/"` with Link from `@/i18n/navigation` — plain `href` loses locale prefix
+- `[locale]/error.tsx` is simple — layout providers are still available, do NOT re-wrap
+- Root error/not-found stay inline with hardcoded EN — do NOT delegate to views that use i18n hooks
+- NEVER add `'use client'` to Valtio store/actions files
