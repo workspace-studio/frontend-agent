@@ -78,21 +78,30 @@ yarn test:ct      # Playwright component tests
 ### App Router with Internationalization
 
 ```
-src/app/[locale]/
-├── layout.tsx              # Root layout (providers, metadata, JSON-LD)
-├── providers.tsx           # ThemeProvider, context providers
-├── (home)/
-│   ├── layout.tsx          # Home layout (Header + Footer)
-│   └── page.tsx            # Home page (imports from views/)
-├── (public)/               # Public pages with shared layout
-│   ├── layout.tsx
-│   ├── about/page.tsx
-│   ├── contact/page.tsx
-│   └── blog/
-│       ├── page.tsx
-│       └── [slug]/page.tsx
-└── (simple)/               # Minimal layout pages
-    └── layout.tsx
+src/app/
+├── error.tsx                    # Root error fallback (hardcoded EN, no i18n)
+├── not-found.tsx                # Root 404 fallback (hardcoded EN, no i18n)
+├── robots.ts
+├── sitemap.ts
+└── [locale]/
+    ├── layout.tsx               # Root layout — NextIntlClientProvider wraps children
+    ├── providers.tsx             # ThemeProvider + Toast
+    ├── error.tsx                 # Locale error — wraps own providers (error boundary resets them)
+    ├── not-found.tsx             # Locale 404 — gets providers from layout
+    ├── [...rest]/
+    │   └── page.tsx             # Catch-all → notFound() — REQUIRED for locale 404 to work
+    ├── (home)/
+    │   ├── layout.tsx           # Route group layout
+    │   └── page.tsx
+    ├── (public)/                # Public pages with shared layout
+    │   ├── layout.tsx
+    │   ├── about/page.tsx
+    │   ├── contact/page.tsx
+    │   └── blog/
+    │       ├── page.tsx
+    │       └── [slug]/page.tsx
+    └── (simple)/                # Minimal layout pages
+        └── layout.tsx
 ```
 
 ### Component & View Pattern
@@ -117,7 +126,7 @@ src/
 │   ├── request.ts          # getRequestConfig with dynamic imports
 │   ├── navigation.ts       # createNavigation (Link, redirect, useRouter)
 │   └── global.d.ts         # Module declaration for next-intl (Locale + Messages types)
-├── proxy.ts                # next-intl middleware (was middleware.ts before Next.js 16)
+├── proxy.ts                # next-intl routing (Next.js 16) or middleware.ts (Next.js 15)
 ├── styles/
 │   ├── index.scss          # Global imports
 │   ├── globals/            # Reset, fonts, animations
@@ -145,7 +154,9 @@ src/
 - **SCSS modules + MUI props PREFERRED over sx**: Use SCSS modules for complex styling and MUI component props (variant, size, color) for styling. Avoid `sx` prop — use only as last resort for one-off spacing (e.g., `mt={2}`). NEVER mix sx and SCSS on same element.
 - **SCSS module only when needed**: Do NOT create ComponentName.module.scss if the component has no custom styles. If MUI components + props are enough, skip the SCSS file.
 - **react-hook-form**: For all forms with validation
-- **Navigation**: Use `Link` from `@/i18n/navigation` (NOT `next/link`) for locale-aware routing
+- **Navigation**: Use `Link` from `@/i18n/navigation` (NOT `next/link`) for locale-aware routing. Add every new route to `routing.ts` pathnames or Link will throw a type error
+- **Error/404 pages**: Three-level architecture — root (hardcoded EN, no i18n), locale (with i18n), catch-all `[...rest]/page.tsx` (required for locale 404 to work). `[locale]/error.tsx` must wrap its own providers (error boundary destroys layout). See @knowledge/10-nextjs-app-router.md
+- **Hydration**: NEVER use `Button component={Link}` — causes hydration mismatch. Use `Button href="/"` instead
 - **Images**: Always use `next/image` with `sizes` prop and configured `remotePatterns`
 - **View sections start with Container**: Every view section MUST use `<Container component="section">` as root element
 - **Layout groups**: `(home)`, `(public)`, `(simple)` for different layout structures

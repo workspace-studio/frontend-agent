@@ -5,15 +5,20 @@
 ```
 src/
 ├── app/                    # App Router
-│   ├── [locale]/          # Dynamic locale segment
-│   │   ├── layout.tsx     # Root layout (providers, metadata, JSON-LD)
-│   │   ├── providers.tsx  # ThemeProvider, context providers
-│   │   ├── (home)/        # Route group: home layout
-│   │   ├── (public)/      # Route group: public pages
-│   │   └── (simple)/      # Route group: minimal layout
-│   ├── api/               # API routes
+│   ├── error.tsx          # Root error fallback (hardcoded EN, no i18n)
+│   ├── not-found.tsx      # Root 404 fallback (hardcoded EN, no i18n)
 │   ├── robots.ts          # robots.txt generation
-│   └── sitemap.ts         # Sitemap generation
+│   ├── sitemap.ts         # Sitemap generation
+│   └── [locale]/          # Dynamic locale segment
+│       ├── layout.tsx     # Root layout — NextIntlClientProvider
+│       ├── providers.tsx  # ThemeProvider + Toast
+│       ├── error.tsx      # Locale error — wraps own providers
+│       ├── not-found.tsx  # Locale 404
+│       ├── [...rest]/
+│       │   └── page.tsx   # Catch-all → notFound() (REQUIRED)
+│       ├── (home)/        # Route group: home layout
+│       ├── (public)/      # Route group: public pages
+│       └── (simple)/      # Route group: minimal layout
 ├── components/            # Reusable UI components
 │   ├── Header/
 │   │   ├── Header.tsx
@@ -27,15 +32,17 @@ src/
 │       │   └── index.ts   # Named exports
 │       └── ArrowLeft.tsx  # Ungrouped icons
 ├── views/                 # Page-level view components
-│   └── Home/
-│       ├── HeroSection/
-│       └── FeaturesSection/
+│   ├── Home/
+│   │   ├── HeroSection/
+│   │   └── FeaturesSection/
+│   ├── ErrorPage/         # 'use client', useTranslations('errors')
+│   └── NotFoundPage/      # 'use client', useTranslations('errors')
 ├── i18n/                  # next-intl config
 │   ├── routing.ts
 │   ├── request.ts
 │   ├── navigation.ts
 │   └── global.d.ts        # next-intl AppConfig type declarations
-├── proxy.ts               # next-intl middleware (was middleware.ts before Next.js 16)
+├── proxy.ts               # next-intl routing (Next.js 16) or middleware.ts (Next.js 15)
 ├── config/                # Configuration files (*.config.ts)
 │   ├── meta.config.ts     # Site metadata (name, url, OG defaults)
 │   ├── navigation.config.ts  # Nav items, tabs, sidebar links

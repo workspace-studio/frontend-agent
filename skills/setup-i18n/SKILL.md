@@ -11,7 +11,8 @@ Set up or extend i18n. Usage: `/setup-i18n add-locale de` or `/setup-i18n add-ke
 
 1. Detect stack from package.json
 2. READ @knowledge/08-i18n-nextintl.md (Next.js) or @knowledge/09-i18n-i18next.md (React)
-3. READ existing i18n config and message/locale files
+3. READ @knowledge/10-nextjs-app-router.md (Next.js — for error/not-found page setup)
+4. READ existing i18n config and message/locale files
 
 ## Steps — Add New Locale
 
@@ -33,6 +34,14 @@ Set up or extend i18n. Usage: `/setup-i18n add-locale de` or `/setup-i18n add-ke
 4. Add locale to `supportedLngs` array
 5. Run `yarn build` to verify
 
+## Steps — Add New Namespace (Next.js)
+
+1. Create `messages/en/{namespace}.json` and all other locale files
+2. Add import to `src/i18n/request.ts`
+3. Add to `src/i18n/global.d.ts` Messages interface
+4. Add to `next.config.js` `createMessagesDeclaration` array
+5. Run `yarn build` to verify
+
 ## Steps — Add Translation Keys
 
 1. Identify the namespace for the new keys
@@ -43,6 +52,9 @@ Set up or extend i18n. Usage: `/setup-i18n add-locale de` or `/setup-i18n add-ke
 ## Rules
 
 - ALWAYS add translations to ALL supported locales
+- ALWAYS update all 4 places when adding a namespace (message files, request.ts, global.d.ts, next.config.js)
 - Copy English as the base for new locales
 - Use consistent namespace naming (kebab-case for React, camelCase for Next.js)
 - Never hardcode user-facing strings
+- Use `errors.json` as separate namespace — never nest error keys in common.json
+- Add every new route to `routing.ts` pathnames

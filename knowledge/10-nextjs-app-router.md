@@ -1,25 +1,35 @@
 # Next.js App Router
 
-## Route Groups
-
-Use parenthesized folders for layout grouping without affecting URL:
+## App Router Layout Structure
 
 ```
-src/app/[locale]/
-├── (home)/          # Home layout (Header + Footer)
-│   ├── layout.tsx
-│   └── page.tsx
-├── (public)/        # Public pages (shared nav layout)
-│   ├── layout.tsx
-│   ├── about/page.tsx
-│   ├── contact/page.tsx
-│   └── blog/
-│       ├── page.tsx
-│       └── [slug]/page.tsx
-├── (simple)/        # Minimal layout (legal pages)
-│   └── layout.tsx
-└── (booking)/       # Booking flow layout
-    └── layout.tsx
+src/app/
+├── error.tsx                    # Root error fallback (hardcoded EN, no i18n)
+├── not-found.tsx                # Root 404 fallback (hardcoded EN, no i18n)
+├── robots.ts
+├── sitemap.ts
+└── [locale]/
+    ├── layout.tsx               # Root layout — NextIntlClientProvider wraps children
+    ├── providers.tsx             # ThemeProvider + Toast
+    ├── error.tsx                 # Locale error — wraps own providers (error boundary resets them)
+    ├── not-found.tsx             # Locale 404 — gets providers from layout
+    ├── [...rest]/
+    │   └── page.tsx             # Catch-all → notFound() — REQUIRED for locale 404 to work
+    ├── (home)/
+    │   ├── layout.tsx           # Route group layout — Header + Layout + BottomTabBar
+    │   ├── page.tsx
+    │   ├── reserve/page.tsx
+    │   ├── bookings/page.tsx
+    │   └── profile/page.tsx
+    ├── (public)/                # Public pages with shared layout
+    │   ├── layout.tsx
+    │   ├── about/page.tsx
+    │   ├── contact/page.tsx
+    │   └── blog/
+    │       ├── page.tsx
+    │       └── [slug]/page.tsx
+    └── (simple)/                # Minimal layout pages
+        └── layout.tsx
 ```
 
 ## Root Layout
@@ -90,6 +100,135 @@ export async function generateMetadata() {
 const AboutPage = () => <AboutView />;
 export default AboutPage;
 ```
+
+## Error & Not-Found Pages
+
+### Three-level architecture
+
+| File | Purpose | Has i18n? | Why |
+|------|---------|-----------|-----|
+| `src/app/not-found.tsx` | Root fallback when locale unknown | NO | No NextIntlClientProvider above it |
+| `src/app/error.tsx` | Root error fallback | NO | No NextIntlClientProvider above it |
+| `src/app/[locale]/not-found.tsx` | Locale-aware 404 | YES | Layout provides NextIntlClientProvider |
+| `src/app/[locale]/error.tsx` | Locale-aware error | YES | Must wrap its own providers |
+| `src/app/[locale]/[...rest]/page.tsx` | Catch-all trigger | N/A | Calls notFound() to trigger locale 404 |
+
+### [locale]/[...rest]/page.tsx — REQUIRED
+
+Without this catch-all, Next.js uses root `not-found.tsx` for unknown routes, bypassing locale translations entirely:
+
+```tsx
+import { notFound } from 'next/navigation';
+
+const CatchAllPage = () => {
+  notFound();
+};
+
+export default CatchAllPage;
+```
+
+### [locale]/not-found.tsx — Simple (providers from layout)
+
+```tsx
+import NotFoundPage from '@/views/NotFoundPage';
+
+const NotFound = () => <NotFoundPage />;
+
+export default NotFound;
+```
+
+### [locale]/error.tsx — Wraps own providers (error boundary resets them)
+
+```tsx
+'use client';
+
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { ThemeProvider } from '@mui/material/styles';
+import { NextIntlClientProvider, useLocale } from 'next-intl';
+
+import theme from '@/styles/themes';
+import ErrorPage from '@/views/ErrorPage';
+
+export default function Error() {
+  const locale = useLocale();
+
+  return (
+    <AppRouterCacheProvider>
+      <ThemeProvider theme={theme}>
+        <NextIntlClientProvider locale={locale}>
+          <ErrorPage />
+        </NextIntlClientProvider>
+      </ThemeProvider>
+    </AppRouterCacheProvider>
+  );
+}
+```
+
+**Why own providers?** Error boundaries in React unmount the component tree above them. The layout's `NextIntlClientProvider` gets destroyed, so `error.tsx` must recreate it.
+
+### Root not-found.tsx — Hardcoded English fallback
+
+No i18n, no views with useTranslations. Plain MUI or HTML:
+
+```tsx
+import { Button, Container, Stack, Typography } from '@mui/material';
+
+const GlobalNotFound = () => (
+  <Container component="section">
+    <Stack alignItems="center" justifyContent="center" spacing={2} minHeight="100vh">
+      <Typography variant="h1">404</Typography>
+      <Typography variant="subtitle1">Page Not Found</Typography>
+      <Button href="/" variant="contained">Go to homepage</Button>
+    </Stack>
+  </Container>
+);
+
+export default GlobalNotFound;
+```
+
+### Root error.tsx — Hardcoded English with providers
+
+Needs `AppRouterCacheProvider` + `ThemeProvider` for MUI to work, but NO `NextIntlClientProvider`:
+
+```tsx
+'use client';
+
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import { ThemeProvider } from '@mui/material/styles';
+
+import theme from '@/styles/themes';
+import ErrorPage from '@/views/ErrorPage';
+
+export default function Error() {
+  return (
+    <AppRouterCacheProvider>
+      <ThemeProvider theme={theme}>
+        <ErrorPage />
+      </ThemeProvider>
+    </AppRouterCacheProvider>
+  );
+}
+```
+
+**Note**: If ErrorPage uses `useTranslations`, this will crash. Root error view must NOT use i18n hooks.
+
+### Error/NotFound View Components
+
+```
+src/views/
+├── ErrorPage/
+│   ├── ErrorPage.tsx       # 'use client', useTranslations('errors')
+│   └── index.ts
+└── NotFoundPage/
+    ├── NotFoundPage.tsx    # 'use client', useTranslations('errors')
+    └── index.ts
+```
+
+**Rules for views:**
+- Mark as `'use client'` (they use hooks)
+- Use `useTranslations('errors')` — dedicated namespace, not nested in common
+- Do NOT use `Button component={Link}` — causes hydration error. Use `Button href="/"` instead
+- Use `@mui/material-nextjs` package for `AppRouterCacheProvider` in error boundaries
 
 ## View Section Pattern
 

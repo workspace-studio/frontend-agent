@@ -24,13 +24,13 @@ The boilerplate includes React, TypeScript, Sass, ESLint, Stylelint, Prettier, H
 
 ```bash
 yarn install
-yarn add @mui/material @emotion/react @emotion/styled next-intl react-hook-form
+yarn add @mui/material @emotion/react @emotion/styled @mui/material-nextjs next-intl react-hook-form
 yarn add -D @playwright/experimental-ct-react
 ```
 
 ### Step 3: Set Up i18n
 
-Create `src/i18n/` with routing.ts, request.ts, navigation.ts, global.d.ts. Create `src/proxy.ts` (was middleware.ts before Next.js 16). Create `messages/{locale}/` with initial JSON files. Configure `next.config.ts` with `withNextIntl`.
+Create `src/i18n/` with routing.ts, request.ts, navigation.ts, global.d.ts (use RELATIVE import `./routing` in global.d.ts). Create `src/proxy.ts` (Next.js 16) or `src/middleware.ts` (Next.js 15). Create `messages/{locale}/` with initial JSON files including `errors.json`. Configure `next.config.js` with `withNextIntl` and `createMessagesDeclaration` array.
 
 ### Step 3b: Set Up Global Store
 
@@ -52,21 +52,30 @@ Create `src/app/[locale]/(home)/layout.tsx` (Header + Footer), `page.tsx`, and `
 
 Add `withNextIntl`, `sassOptions`, `images.remotePatterns`.
 
-### Step 8: Create SEO Files
+### Step 8: Create Error & Not-Found Pages
+
+Three-level architecture (see @knowledge/10-nextjs-app-router.md):
+- Root `src/app/error.tsx` + `src/app/not-found.tsx` — hardcoded EN, no i18n, MUI with AppRouterCacheProvider + ThemeProvider
+- `src/app/[locale]/error.tsx` — wraps own providers (error boundary destroys layout)
+- `src/app/[locale]/not-found.tsx` — simple, uses providers from layout
+- `src/app/[locale]/[...rest]/page.tsx` — catch-all calls `notFound()` (REQUIRED for locale 404 to work)
+- `src/views/ErrorPage/` + `src/views/NotFoundPage/` — use `useTranslations('errors')`
+
+### Step 9: Create SEO Files
 
 Create `src/app/robots.ts` and `src/app/sitemap.ts`.
 
-### Step 9: Generate CLAUDE.md
+### Step 10: Generate CLAUDE.md
 
 Create from `@templates/CLAUDE.md.nextjs.template`.
 
-### Step 10: Validate
+### Step 11: Validate
 
 ```bash
 yarn build && yarn lint
 ```
 
-### Step 11: Commit
+### Step 12: Commit
 
 ```bash
 git add .

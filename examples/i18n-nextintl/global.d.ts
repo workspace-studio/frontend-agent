@@ -1,13 +1,12 @@
-import { routing } from '@/i18n/routing';
+import { routing } from './routing';
 
 declare module 'next-intl' {
   interface AppConfig {
     Locale: (typeof routing.locales)[number];
     Messages: {
       common: typeof import('../../messages/en/common.json').default;
-      home: typeof import('../../messages/en/home.json').default;
-      metadata: typeof import('../../messages/en/metadata.json').default;
-      contact: typeof import('../../messages/en/contact.json').default;
+      navigation: typeof import('../../messages/en/navigation.json').default;
+      errors: typeof import('../../messages/en/errors.json').default;
     };
   }
 }
