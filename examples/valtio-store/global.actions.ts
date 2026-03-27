@@ -1,4 +1,4 @@
-import type Toast from '@/types/toast.type';
+import Toast from '@/types/toast.type';
 
 import { globalStore } from './global.store';
 

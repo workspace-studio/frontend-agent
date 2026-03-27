@@ -1,7 +1,7 @@
 import { forwardRef, useCallback, useEffect, useState } from 'react';
 
 import { Backdrop, FormHelperText, Portal, Stack } from '@mui/material';
-import type { SxProps, Theme } from '@mui/material/styles';
+import { SxProps, Theme } from '@mui/material/styles';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';

@@ -5,7 +5,7 @@
 Every Next.js page must export `generateMetadata()`:
 
 ```typescript
-import type { Metadata } from 'next';
+import{ Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { buildMetadata } from '@/utils/static/buildMetadata';
 
@@ -63,7 +63,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
 ## robots.ts
 
 ```typescript
-import type { MetadataRoute } from 'next';
+import{ MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
 
 const protectedPaths = ['/admin', '/my-profile', '/my-bookings', '/forgot-password'];
@@ -85,7 +85,7 @@ export default function robots(): MetadataRoute.Robots {
 ## sitemap.ts
 
 ```typescript
-import type { MetadataRoute } from 'next';
+import{ MetadataRoute } from 'next';
 import { meta } from '@/config/meta.config';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

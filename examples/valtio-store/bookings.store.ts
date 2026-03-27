@@ -1,6 +1,6 @@
 import { proxy, useSnapshot } from 'valtio';
 
-import type { BookingModel } from '@/models/booking.model';
+import{ BookingModel } from '@/models/booking.model';
 
 interface BookingsStore {
   bookings: BookingModel[];

@@ -1,4 +1,4 @@
-import type { ThemeOptions } from '@mui/material';
+import{ ThemeOptions } from '@mui/material';
 
 import colors from './colors';
 

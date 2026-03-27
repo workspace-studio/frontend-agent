@@ -139,15 +139,6 @@ import Component from '@/components/Component';   // ✅
 import Component from '../components/Component';  // ❌
 ```
 
-## Type Imports
-
-Use `import type` for type-only imports:
-
-```typescript
-import type { BookingModel } from '@/models/booking.model';
-import type { PaginatedResponse } from '@/types/response.type';
-```
-
 ## Exports
 
 - **Named exports only** — no default exports (except pages/layouts for Next.js and index.ts barrel files)

@@ -79,9 +79,9 @@ api.interceptors.response.use(
 ```typescript
 // src/services/equipment.service.ts
 import { api } from '@/config/axios.config';
-import type { EquipmentModel } from '@/models/equipment.model';
-import type { ErrorModel } from '@/models/error.model';
-import type { PaginatedResponse, PayloadResponse } from '@/types/response.type';
+import{ EquipmentModel } from '@/models/equipment.model';
+import{ ErrorModel } from '@/models/error.model';
+import{ PaginatedResponse, PayloadResponse } from '@/types/response.type';
 import { createQueryParams } from '@/utils/static/queryParams';
 
 export default class EquipmentService {

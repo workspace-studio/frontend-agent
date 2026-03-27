@@ -74,7 +74,6 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] SCSS module ONLY if component has custom styles (not created unnecessarily)
 - [ ] Props interface exported
 - [ ] Named exports only (except Next.js pages/layouts)
-- [ ] `import type` for type-only imports
 
 ### Styling
 - [ ] SCSS modules + MUI props used for styling (NOT sx prop)
@@ -124,7 +123,6 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] No `any` or `unknown` — always define proper interfaces/types
 - [ ] No `as` type assertions — use type guards or proper generics
 - [ ] Proper interfaces for component props
-- [ ] `import type` for type-only imports
 - [ ] Functions under 50 lines — extract helpers for longer logic
 
 ### Imports

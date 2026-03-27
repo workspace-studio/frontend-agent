@@ -12,7 +12,7 @@ Valtio uses JavaScript Proxy for reactive state. Pattern: `.store.ts` + `.action
 // src/valtio/workOrders/workOrders.store.ts
 import { proxy, useSnapshot } from "valtio";
 
-import type {
+import {
   WorkOrderModel,
   WorkOrderShortInfo,
 } from "@/models/work-order.model";
@@ -61,8 +61,8 @@ Every store has:
 ```typescript
 // src/valtio/workOrders/workOrders.actions.ts
 import WorkOrdersService from "@/services/workOrders.service";
-import type { WorkOrdersParams } from "@/services/workOrders.service";
-import type { PayloadResponse } from "@/types/response.type";
+import { WorkOrdersParams } from "@/services/workOrders.service";
+import { PayloadResponse } from "@/types/response.type";
 
 import { workOrdersStore } from "./workOrders.store";
 
@@ -138,7 +138,7 @@ Every project MUST have a `global` store with toast notifications and form dirty
 // src/valtio/global/global.store.ts
 import { proxy, useSnapshot } from "valtio";
 
-import type Toast from "@/types/toast.type";
+import Toast from "@/types/toast.type";
 
 interface GlobalStore {
   toast?: Toast;
@@ -251,7 +251,6 @@ export default Toast;
 - **NEVER** use Redux or Context API for global state
 - **NEVER** add `'use client'` to `.store.ts` or `.actions.ts` files — they are not React components
 - **NEVER** mutate store directly from components — only through actions
-- **Always** use `import type` for type-only imports in store/actions files
 - **Always** use `useSnapshot()` for reactive reads in components
 - **Always** separate store and actions into two files
 - **Always** create global store with toast + isFormDirty on project setup

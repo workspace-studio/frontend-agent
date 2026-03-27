@@ -1,5 +1,5 @@
 import { Box, ButtonBase, SvgIcon, Tooltip } from '@mui/material';
-import type { ButtonBaseProps } from '@mui/material/ButtonBase';
+import { ButtonBaseProps } from '@mui/material/ButtonBase';
 import cx from 'clsx';
 
 import styles from './ToolbarItem.module.scss';

@@ -1,4 +1,4 @@
-import type { TypographyOptions } from '@mui/material/styles/createTypography';
+import{ TypographyOptions } from '@mui/material/styles/createTypography';
 
 const typography: TypographyOptions = {
   allVariants: {

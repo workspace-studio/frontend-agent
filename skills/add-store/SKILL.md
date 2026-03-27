@@ -24,7 +24,7 @@ Create `src/valtio/{domain}/{domain}.store.ts`:
 
 ```typescript
 import { proxy, useSnapshot } from 'valtio';
-import type { DomainModel } from '@/models/domain.model';
+import{ DomainModel } from '@/models/domain.model';
 
 interface DomainStore {
   items: DomainModel[];

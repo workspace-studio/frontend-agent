@@ -1,7 +1,7 @@
-import type { CreateBookingFormValues } from '@/config/form-models.config';
+import{ CreateBookingFormValues } from '@/config/form-models.config';
 import BookingsService from '@/services/bookings.service';
-import type { BookingsParams } from '@/services/bookings.service';
-import type { PayloadResponse } from '@/types/response.type';
+import{ BookingsParams } from '@/services/bookings.service';
+import{ PayloadResponse } from '@/types/response.type';
 
 import { bookingsStore } from './bookings.store';
 

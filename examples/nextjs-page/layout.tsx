@@ -1,7 +1,7 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 
-import type { Metadata } from 'next';
+import { Metadata } from 'next';
 import { Locale, NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';

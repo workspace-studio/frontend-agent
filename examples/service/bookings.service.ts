@@ -1,9 +1,9 @@
 import { api } from '@/config/axios.config';
 import { SortDirection } from '@/config/constants.config';
-import type { CreateBookingFormValues } from '@/config/form-models.config';
-import type { BookingModel } from '@/models/booking.model';
-import type { ErrorModel } from '@/models/error.model';
-import type { PaginatedResponse, PayloadResponse } from '@/types/response.type';
+import{ CreateBookingFormValues } from '@/config/form-models.config';
+import{ BookingModel } from '@/models/booking.model';
+import{ ErrorModel } from '@/models/error.model';
+import{ PaginatedResponse, PayloadResponse } from '@/types/response.type';
 import { createQueryParams } from '@/utils/static/queryParams';
 
 export interface BookingsParams {

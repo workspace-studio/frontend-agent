@@ -167,7 +167,7 @@ On approval, update theme files. **Figma tokens override existing values — do 
 
    Example:
    ```typescript
-   import type { CSSProperties } from '@mui/material/styles/createTypography';
+   import{ CSSProperties } from '@mui/material/styles/createTypography';
 
    declare module '@mui/material/styles' {
      interface TypographyVariants {

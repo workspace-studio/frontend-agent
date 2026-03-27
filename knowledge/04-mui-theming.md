@@ -48,7 +48,7 @@ export default {
 ## breakpoints.ts
 
 ```typescript
-import type { ThemeOptions } from '@mui/material';
+import{ ThemeOptions } from '@mui/material';
 
 const breakpoints: ThemeOptions['breakpoints'] = {
   values: {
@@ -66,7 +66,7 @@ export default breakpoints;
 ## palette.ts
 
 ```typescript
-import type { ThemeOptions } from '@mui/material';
+import{ ThemeOptions } from '@mui/material';
 import colors from './colors';
 
 const palette: ThemeOptions['palette'] = {
@@ -84,7 +84,7 @@ export default palette;
 ## typography.ts
 
 ```typescript
-import type { TypographyOptions } from '@mui/material/styles/createTypography';
+import{ TypographyOptions } from '@mui/material/styles/createTypography';
 
 const typography: TypographyOptions = {
   allVariants: { lineHeight: 'normal' },
@@ -105,7 +105,7 @@ export default typography;
 When the project uses custom typography variants (e.g., `body3`) or disables unused MUI defaults (e.g., `h4`, `h5`, `h6`, `caption`, `overline`), create `src/types/typings.d.ts`:
 
 ```typescript
-import type { CSSProperties } from '@mui/material/styles/createTypography';
+import{ CSSProperties } from '@mui/material/styles/createTypography';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
