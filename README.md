@@ -188,19 +188,33 @@ The agent reads only the knowledge files relevant to your task, keeping context 
 ```
 src/
 ├── app/                          # App Router
-│   ├── [locale]/                 # Dynamic locale segment
-│   │   ├── layout.tsx            # Root layout (providers, metadata, JSON-LD)
-│   │   ├── providers.tsx         # ThemeProvider, context providers
-│   │   ├── (home)/page.tsx       # Home page → imports from views/
-│   │   └── (public)/             # Public pages (about, contact, blog)
-│   ├── api/                      # API routes
+│   ├── error.tsx                 # Root error fallback (hardcoded EN, no i18n)
+│   ├── not-found.tsx             # Root 404 fallback (hardcoded EN, no i18n)
 │   ├── robots.ts                 # robots.txt generation
-│   └── sitemap.ts                # Sitemap generation
+│   ├── sitemap.ts                # Sitemap generation
+│   └── [locale]/                 # Dynamic locale segment
+│       ├── layout.tsx            # Root layout (providers, metadata, JSON-LD)
+│       ├── providers.tsx         # ThemeProvider + Toast
+│       ├── error.tsx             # Locale error (layout providers available)
+│       ├── not-found.tsx         # Locale 404
+│       ├── [...rest]/page.tsx    # Catch-all → notFound() (required)
+│       ├── (home)/page.tsx       # Home page → imports from views/
+│       └── (public)/             # Public pages (about, contact, blog)
 ├── components/                   # Reusable UI components (PascalCase/)
-│   └── Header/                   # Header.tsx + Header.module.scss + index.ts
+│   ├── Header/                   # Header.tsx + Header.module.scss + index.ts
+│   └── SvgIcons/                 # SVG icons grouped by category
+│       └── Locales/              # EnFlag.tsx, HrFlag.tsx + index.ts
 ├── views/                        # Page-level view components
-│   └── Home/HeroSection/         # Section-level breakdown
-├── i18n/                         # routing.ts, request.ts, navigation.ts
+│   ├── Home/HeroSection/         # Section-level breakdown
+│   ├── ErrorPage/                # useTranslations('errors')
+│   └── NotFoundPage/             # useTranslations('errors')
+├── i18n/                         # routing.ts, request.ts, navigation.ts, global.d.ts
+├── proxy.ts                      # next-intl routing (Next.js 16) or middleware.ts (15)
+├── config/                       # Static data (*.config.ts)
+│   ├── meta.config.ts            # Site metadata
+│   ├── navigation.config.ts      # Nav items, tabs, sidebar links
+│   └── languages.config.ts       # Language picker options
+├── valtio/global/                # Global store (toast, isFormDirty)
 ├── styles/                       # SCSS: globals, mixins, settings, themes/
 └── utils/                        # hooks/, static/
 ```
@@ -214,7 +228,7 @@ src/
 ├── routers/AppRouter.tsx         # Routes with lazy loading + guards
 ├── valtio/                       # Store + actions per domain
 ├── services/                     # Axios service classes
-├── config/                       # Axios, constants, form models
+├── config/                       # Axios, constants, form models, navigation
 ├── i18n/                         # i18next configuration
 ├── locales/                      # en/, hr/, ba/, rs/ JSON files
 ├── styles/                       # SCSS: globals, mixins, settings, themes/
@@ -278,7 +292,7 @@ Specialist tasks run in separate context to keep the main agent clean:
 
 | Rule | Key Constraints |
 |------|----------------|
-| `components.md` | PascalCase, index.ts barrel, SCSS modules, no `any`, no React.memo |
+| `components.md` | PascalCase, index.ts barrel, SCSS modules, SVG icon pattern, config files, no `any`, no React.memo |
 | `styles.md` | `@use` imports, rem-calc(), theme colors, BEM naming |
 | `api.md` | Zod validation, requireAuth(), consistent error format |
 | `git.md` | Flat branch names, `#{issue}: description` commits, no force push |
@@ -425,11 +439,14 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 |---------|----------|
 | **Build fails: "Module not found"** | Check `tsconfig.json` has `@/*` path alias. For Vite, check `vite.config.ts` resolve.alias |
 | **SCSS errors** | Vite: `css.preprocessorOptions.scss.api` should be `'modern'`. Next.js: check `sassOptions` |
-| **Translation key not found** | Next.js: verify import in `request.ts`. React: check `i18n.ts` ns array + all locale JSON files |
+| **Translation key not found** | Next.js: verify import in `request.ts` + `global.d.ts` + `createMessagesDeclaration` array. React: check `i18n.ts` ns array + all locale JSON files |
 | **MUI theme not applying** | Verify `ThemeProvider` wraps app in `providers.tsx` (Next.js) or `App.tsx` (React) |
 | **"use client" errors** | Add `'use client'` at top of file. Only where needed — server components by default |
 | **Valtio store not updating** | Use `useSnapshot()` in components, not proxy directly. Mutations only in actions |
 | **Agent not in /agents** | Run `ls .claude/agents/` — if missing, re-run installer |
+| **404 shows English on /hr routes** | Create `[locale]/[...rest]/page.tsx` catch-all that calls `notFound()` |
+| **`global.d.ts` breaks with linter** | Use relative import `./routing` not `@/i18n/routing` |
+| **Button loses locale on click** | Use `Button component={Link} href="/"` with Link from `@/i18n/navigation` |
 | **Port already in use** | `lsof -i :3000` → `kill <PID>` |
 
 ---
@@ -459,7 +476,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 │     │          │          │                            │
 │  ┌──┴───┐  ┌──┴────┐  ┌──┴──────────┐                 │
 │  │Rules │  │Skills │  │Knowledge    │                 │
-│  │  4   │  │  20   │  │  21 files   │                 │
+│  │  4   │  │  20   │  │  22 files   │                 │
 │  │always│  │on-demand│ │  + 9 examples│                │
 │  └──────┘  └───────┘  └─────────────┘                 │
 └──────────────────────────────────────────────────────┘
@@ -476,9 +493,9 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | 05 | `scss-patterns` | SCSS modules, mixins, rem-calc |
 | 06 | `state-management` | Valtio proxy + actions |
 | 07 | `forms-validation` | react-hook-form patterns |
-| 08 | `i18n-nextintl` | next-intl (Next.js) |
+| 08 | `i18n-nextintl` | next-intl setup, error pages, common pitfalls |
 | 09 | `i18n-i18next` | i18next (React+Vite) |
-| 10 | `nextjs-app-router` | Layouts, pages, metadata, route groups |
+| 10 | `nextjs-app-router` | Layouts, pages, metadata, error/404 architecture |
 | 11 | `react-vite-routing` | React Router, lazy loading, guards |
 | 12 | `api-integration` | Axios config, services, server actions |
 | 13 | `seo-metadata` | Metadata API, sitemaps, JSON-LD, OG |
@@ -495,10 +512,10 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 
 | Example | Contents |
 |---------|----------|
-| `valtio-store/` | Valtio store with proxy, useSnapshot, async CRUD |
+| `valtio-store/` | Valtio store with proxy, useSnapshot, async CRUD + global store (toast) |
 | `service/` | Axios service class with static methods |
 | `theme/` | Complete MUI theme (6 files) |
-| `i18n-nextintl/` | next-intl routing and request config |
+| `i18n-nextintl/` | next-intl routing, request, navigation, global.d.ts, proxy |
 | `i18n-i18next/` | i18next with LanguageDetector |
 | `nextjs-page/` | Page with generateMetadata and view import |
 | `react-view/` | View component with list pattern |
