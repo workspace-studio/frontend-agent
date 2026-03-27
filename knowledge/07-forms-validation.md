@@ -118,12 +118,30 @@ const ContactForm = () => {
 };
 ```
 
-## Form Default Values
+## Form Config Files
 
-Store in `config/forms/form-models.config.ts`:
+### form-models.config.ts — Default values + types
 
 ```typescript
+// src/config/forms/form-models.config.ts
+export interface LoginFormValues {
+  email: string;
+  password: string;
+}
+
+export interface CreateBookingFormValues {
+  name: string;
+  email: string;
+  phone: string;
+  startDate: null;
+  endDate: null;
+}
+
 export const formModels = {
+  login: {
+    email: '',
+    password: '',
+  },
   createBooking: {
     name: '',
     email: '',
@@ -133,6 +151,25 @@ export const formModels = {
   },
 };
 ```
+
+### form-names.config.ts — Form ID constants
+
+```typescript
+// src/config/forms/form-names.config.ts
+export const FORM_NAMES = {
+  LOGIN: 'login-form',
+  REGISTER: 'register-form',
+  CREATE_BOOKING: 'create-booking-form',
+} as const;
+```
+
+### Form usage rules
+
+- `<Form>` — NO generic types (`<Form>` not `<Form<LoginFormValues>>`), always pass `id={FORM_NAMES.LOGIN}` and `mode="onBlur"`
+- `<FormInput>` — use `label` prop (filled variant), NOT `placeholder`
+- Form value interfaces live in `form-models.config.ts` — never define locally in the view
+- Use `useToggleState` hook for password visibility — never manual `useState`
+- NEVER `console.log` form data — security risk with passwords
 
 ## Multi-Step Wizard
 

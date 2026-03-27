@@ -87,19 +87,69 @@ const MyButton = (props) => <Button {...props} variant="contained" />;
 
 ## View Structure
 
-Views are page-level components in `src/views/`:
+Views are page-level components in `src/views/`. Use `*Page` suffix for page-level views (e.g., `LoginPage`, `NotFoundPage`):
 
 ```
 views/
-└── Customers/
-    ├── Customers.tsx           # Main view component
-    ├── Customers.module.scss   # View styles
-    ├── partials/               # Sub-components
-    │   ├── CreateModal.tsx
-    │   ├── DetailDrawer.tsx
-    │   └── DeleteModal.tsx
-    └── index.ts                # Barrel export
+├── Customers/
+│   ├── Customers.tsx           # Main view component
+│   ├── Customers.module.scss   # View styles
+│   ├── partials/               # Sub-components
+│   │   ├── CreateModal.tsx
+│   │   ├── DetailDrawer.tsx
+│   │   └── DeleteModal.tsx
+│   └── index.ts                # Barrel export
+├── LoginPage/
+│   ├── LoginPage.tsx
+│   ├── LoginPage.module.scss
+│   └── index.ts
+└── NotFoundPage/
+    ├── NotFoundPage.tsx
+    └── index.ts
 ```
+
+## Reusable Layout Wrappers
+
+If multiple pages share the same shell (e.g., login + register both have an image panel + content panel), extract a wrapper component:
+
+```tsx
+// src/components/PublicWrapper/PublicWrapper.tsx
+const PublicWrapper = ({ children, header }: { children: React.ReactNode; header?: React.ReactNode }) => (
+  <Stack className={styles.container}>
+    <Box className={styles.imagePanel}>
+      <Image src="/images/auth-bg.webp" alt="..." fill sizes="50vw" className={styles.image} />
+    </Box>
+    <Stack className={styles.contentPanel}>
+      {header}
+      {children}
+    </Stack>
+  </Stack>
+);
+```
+
+**Rules:**
+- Layout files (`layout.tsx`) MUST be server components — extract client logic into a separate client component
+- Never put all layout code directly in the view
+
+## SCSS Class Naming
+
+Top-level class is always `.container`. All other classes nested inside:
+
+```scss
+.container {
+  display: flex;
+
+  .imagePanel {
+    // ...
+  }
+
+  .contentPanel {
+    // ...
+  }
+}
+```
+
+NEVER use `.root` as top-level class name.
 
 ## View Section Pattern
 

@@ -158,7 +158,13 @@ src/
 - **Error/404 pages**: Three-level architecture — root (hardcoded EN inline, no i18n, no views), locale (simple, delegates to views), catch-all `[...rest]/page.tsx` (required for locale 404). `[locale]/error.tsx` is simple — layout providers are still available, do NOT re-wrap. See @knowledge/10-nextjs-app-router.md
 - **Locale-aware links**: Use `Button component={Link} href="/"` with `Link` from `@/i18n/navigation` — plain `Button href="/"` would lose locale prefix on non-default locales
 - **No metadata on not-found**: Next.js does NOT support `metadata` exports from `not-found.tsx` — only from `page.tsx` and `layout.tsx`
-- **Images**: Always use `next/image` with `sizes` prop and configured `remotePatterns`
+- **Images**: Always use `next/image` with WebP format, descriptive `alt`, `sizes` prop with `fill`, SCSS class for `object-fit`. One Image element with responsive CSS — never duplicate for desktop/mobile. Never inline `style={{}}`
+- **Naming**: Page-level views use `*Page` suffix (`LoginPage`, not `LoginView`). Top-level SCSS class is `.container` (not `.root`)
+- **Colors**: NEVER use MUI string references like `color="primary"` — use explicit `color={colors.green500}`. Never hardcode hex in TSX
+- **Typography**: Always add `component` prop for semantic HTML. Use responsive variants: `sx={{ typography: { xs: 'h3', lg: 'h2' } }}`
+- **Layout files**: MUST be server components — extract client logic (`usePathname`, hooks) into separate client component
+- **Forms**: Always create `form-models.config.ts` + `form-names.config.ts`. `<Form>` — no generics, pass `id` + `mode="onBlur"`. `<FormInput>` uses `label` not `placeholder`. Use `useToggleState` for password toggle. NEVER `console.log` form data
+- **Reusable wrappers**: If multiple pages share same shell, extract wrapper component with `children` + config props
 - **View sections start with Container**: Every view section MUST use `<Container component="section">` as root element
 - **Layout groups**: `(home)`, `(public)`, `(simple)` for different layout structures
 - **index.ts pattern**: Every component folder MUST have index.ts:
@@ -166,10 +172,8 @@ src/
   import ComponentName from './ComponentName';
   export default ComponentName;
   ```
-- **Config files**: Static data arrays/objects (nav items, tabs, sidebar links, language options) go in `src/config/*.config.ts`. Export a typed const array. Import type from `@/types/`. Never hardcode these lists inline in components.
-- **Naming**: PascalCase components/files, camelCase hooks, `@/` alias always
-- **Exports**: Always `const X = () => ...` + `export default X` pattern. NEVER use `export default function`. Named exports for non-component values.
-- **Colors**: Import from `@/styles/themes/colors` (TS) or `@/styles/settings/variables` (SCSS)
+- **Config files**: Static data arrays/objects (nav items, tabs, sidebar links, language options) go in `src/config/*.config.ts`. Export a typed const array. Never hardcode inline in components
+- **Exports**: Always `const X = () => ...` + `export default X` pattern. NEVER `export default function`
 - **Shared components**: Before creating a new component, check @examples/shared-components/ for existing ones (Form, Select, DatePicker, Table, ModalRoot, etc.). Copy and adjust SCSS style only.
 - **STRICT TYPING**: NEVER use `any`, `unknown`, or untyped objects. Always define proper interfaces/types.
 - **NO MEMOIZATION**: NEVER use `React.memo`, `useMemo`, or `useCallback`. Write simple, straightforward components.

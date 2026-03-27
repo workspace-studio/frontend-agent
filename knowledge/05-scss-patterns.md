@@ -122,6 +122,35 @@ src/styles/
 />
 ```
 
+## SCSS Class Nesting
+
+Top-level class is ALWAYS `.container` (never `.root`). All other classes nested inside:
+
+```scss
+.container {
+  display: flex;
+  padding: rem-calc(24);
+
+  .title {
+    color: $gray-blue-600;
+  }
+
+  .content {
+    flex: 1;
+  }
+}
+```
+
+## Image Styling
+
+Use SCSS class for `object-fit` — never inline `style={{ objectFit: 'cover' }}`:
+
+```scss
+.image {
+  object-fit: cover;
+}
+```
+
 ## Complete Example
 
 ```scss
@@ -130,7 +159,7 @@ src/styles/
 @use '@/styles/utils/rem-calc' as *;
 @use '@/styles/mixins/breakpoints' as *;
 
-.root {
+.container {
   height: rem-calc(24);
 
   &.error {
@@ -142,15 +171,15 @@ src/styles/
     background-color: $green-50;
     color: $green-600;
   }
-}
 
-.label {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+  .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
 
-  @include media('lg') {
-    max-width: rem-calc(264);
+    @include media('lg') {
+      max-width: rem-calc(264);
+    }
   }
 }
 ```
