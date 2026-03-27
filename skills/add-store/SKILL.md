@@ -10,9 +10,11 @@ Add a Valtio store with actions and service. Usage: `/add-store domain — state
 ## Pre-Work
 
 1. READ @knowledge/06-state-management.md for Valtio patterns
-2. READ @examples/valtio-store/ for reference implementation
+2. READ @examples/valtio-store/ for reference implementation (includes global store examples)
 3. READ @examples/service/ for service class pattern
 4. READ existing stores from `src/valtio/` for project-specific patterns
+
+**Special case — `global` store:** If the user asks to set up a global store (or toast), use the standard global store pattern from @examples/valtio-store/global.* — it includes toast notifications and isFormDirty. Also create the Toast component and SVG icons.
 
 ## Steps
 

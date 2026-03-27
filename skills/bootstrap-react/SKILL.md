@@ -36,7 +36,11 @@ Create `src/styles/themes/` with 6 files (colors, breakpoints, palette, typograp
 
 Create `src/i18n/i18n.ts` with LanguageDetector. Create `src/locales/{locale}/` with JSON files.
 
-### Step 5: Set Up Valtio Auth Store
+### Step 5: Set Up Valtio Global Store
+
+Create `src/valtio/global/global.store.ts` + `global.actions.ts` with toast and isFormDirty (see @examples/valtio-store/global.*). Create `src/types/toast.type.ts`. Create `src/components/Toast/Toast.tsx` with Snackbar + Alert + custom SVG icons. Place `<Toast />` in root providers.
+
+### Step 5b: Set Up Valtio Auth Store
 
 Create `src/valtio/auth/auth.store.ts` + `auth.actions.ts` with token management.
 

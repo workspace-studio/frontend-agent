@@ -32,6 +32,10 @@ yarn add -D @playwright/experimental-ct-react
 
 Create `src/i18n/` with routing.ts, request.ts, navigation.ts, global.d.ts. Create `src/proxy.ts` (was middleware.ts before Next.js 16). Create `messages/{locale}/` with initial JSON files. Configure `next.config.ts` with `withNextIntl`.
 
+### Step 3b: Set Up Global Store
+
+Create `src/valtio/global/global.store.ts` + `global.actions.ts` with toast and isFormDirty (see @examples/valtio-store/global.*). Create `src/types/toast.type.ts`. Create `src/components/Toast/Toast.tsx` with Snackbar + Alert + custom SVG icons. Place `<Toast />` in root layout/providers.
+
 ### Step 4: Set Up MUI Theme
 
 Create `src/styles/themes/` with 6 files (colors, breakpoints, palette, typography, components, index).
