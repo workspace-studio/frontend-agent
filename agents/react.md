@@ -37,6 +37,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/add-store` | `/add-store customers — list, selected, modals, loading` | Adding Valtio store + actions |
 | `/setup-i18n` | `/setup-i18n add-locale ba` | Adding locale or translation keys |
 | `/setup-theme` | `/setup-theme — primary=#fa541c` | Setting up MUI theme |
+| `/setup-forms` | `/setup-forms https://figma.com/.../Input-Fields` | Form system setup (components + MUI input overrides from Figma) |
 | `/add-form` | `/add-form CreateCustomerForm — name, email, phone` | Adding a form with validation |
 | `/add-shared-components` | `/add-shared-components Form FormInput Select` | Copy shared components into project |
 | `/write-tests` | `/write-tests StatusChip` | Write Playwright component tests |

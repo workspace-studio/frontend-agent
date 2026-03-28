@@ -36,6 +36,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/create-view` | `/create-view About — company info page with SEO` | Creating a new page/view |
 | `/setup-i18n` | `/setup-i18n add-locale de` | Adding locale or translation keys |
 | `/setup-theme` | `/setup-theme — primary=#1976d2` | Setting up MUI theme |
+| `/setup-forms` | `/setup-forms https://figma.com/.../Input-Fields` | Form system setup (components + MUI input overrides from Figma) |
 | `/add-form` | `/add-form ContactForm — name, email, message` | Adding a form with validation |
 | `/seo-audit` | `/seo-audit` | SEO audit of the project |
 | `/add-shared-components` | `/add-shared-components Form Select DatePicker` | Copy shared components into project |

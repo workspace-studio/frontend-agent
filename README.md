@@ -111,6 +111,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | `/add-store bookings — list, modals, loading` | Valtio store with actions and service |
 | `/setup-i18n add-locale de` | Add locale or translation keys |
 | `/setup-theme — primary=#1976d2, font=Inter` | Complete MUI theme (6 files) |
+| `/setup-forms https://figma.com/.../Inputs` | Form system — components + MUI input overrides from Figma |
 
 ### Testing
 
