@@ -405,7 +405,7 @@ your-project/
     │   ├── nextjs.md / react.md   # Main agents (loaded per session)
     │   └── component-creator, seo-specialist, theme-implementor,
     │       i18n-specialist, qa-tester, code-reviewer
-    ├── skills/                    # 20 slash commands (loaded on-demand)
+    ├── skills/                    # 21 slash commands (loaded on-demand)
     ├── knowledge/                 # 21 reference files (loaded on-demand)
     ├── examples/                  # 9 working code templates
     ├── rules/                     # 4 enforcement rules (loaded every session)
