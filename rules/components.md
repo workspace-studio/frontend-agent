@@ -53,6 +53,7 @@ paths:
 - All interactive elements keyboard accessible
 - Images have descriptive `alt` text — never empty
 - ARIA labels on IconButton and custom controls — ALWAYS translated via `useTranslations`, never hardcoded English
+- Loading spinners need `aria-label`: `<CircularProgress aria-label={t('loading')} />`
 - Form inputs have associated labels
 - NEVER nest interactive elements (e.g., Link wrapping Button) — use `component={Link}` on the outer element
 - Custom interactive elements (non-MUI) need `tabIndex={0}`, `onKeyDown` for Enter/Space, and proper `role`
@@ -85,7 +86,8 @@ paths:
 - Use `useToggleState` hook for password visibility toggle — never manual `useState` + toggle
 
 ## Security
-- NEVER `console.log` form data or user credentials — security risk
+- NEVER `console.log` form data, user credentials, tokens, or reset codes — especially not in server actions
+- Every `.then()` on a server action needs a `.catch()` — every async call needs try/catch. Without error handling, the UI can hang forever on `CircularProgress`
 
 ## Forbidden
 - NEVER use `React.memo`, `useMemo`, or `useCallback`
@@ -93,4 +95,7 @@ paths:
 - NEVER use `as` type assertions — design types so casts are unnecessary
 - NEVER use `eslint-disable` or `@ts-ignore` — fix the underlying type or lint issue
 - NEVER copy patterns from existing code without validating against these rules — existing code may contain bugs
+- NEVER duplicate a helper/pattern across 3+ files — after the 2nd occurrence, extract to a shared component
+- When touching a file with existing rule violations (e.g., `mode="onSubmit"`), fix them — don't leave known bugs
+- Don't use growing hardcoded pathname lists (`pathname === '/login' || pathname === '/reset-password'`) — use config arrays or invert the logic
 - No prop drilling past 2 levels — use store

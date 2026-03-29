@@ -95,6 +95,9 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] No `dangerouslySetInnerHTML` without DOMPurify sanitization
 - [ ] No `eval()` or `new Function()` usage
 - [ ] Auth tokens stored securely (httpOnly cookies preferred over localStorage)
+- [ ] No `console.log` in server actions — especially not tokens, codes, passwords
+- [ ] Every `.then()` has a `.catch()` — async flows must handle errors, not hang the UI
+- [ ] Loading states have error fallback — `CircularProgress` must not spin forever on failure
 
 ### Accessibility
 - [ ] Semantic HTML (nav, main, section, article, aside)
