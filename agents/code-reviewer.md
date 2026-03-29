@@ -77,13 +77,15 @@ Use the Output Format below. Assign severity to each finding:
 
 ### Styling
 - [ ] SCSS modules + MUI props used for styling (NOT sx prop)
-- [ ] MUI component props used for styling (variant, size, color) instead of sx
+- [ ] `sx` used ONLY for spacing (mt, mb, gap, p) — NOT backgroundColor, fontStyle, color, border
 - [ ] MUI sx and SCSS modules NOT mixed on same element
+- [ ] Top-level SCSS class is `.container` with all others nested inside
+- [ ] No hardcoded hex/rgba in SCSS files or theme files — use variables/tokens
 - [ ] No unnecessary .module.scss files (skip if component has no custom styles)
 - [ ] SCSS uses `@use` imports (not `@import`)
 - [ ] `rem-calc()` used for sizing (not hardcoded px)
 - [ ] Responsive via `@include media()` mixin in SCSS
-- [ ] Colors from theme (not hardcoded hex)
+- [ ] No `color="primary"` string refs — use `color={colors.xxx}`
 
 ### Security
 - [ ] No hardcoded API keys, tokens, or secrets in source code
@@ -97,8 +99,11 @@ Use the Output Format below. Assign severity to each finding:
 ### Accessibility
 - [ ] Semantic HTML (nav, main, section, article, aside)
 - [ ] All interactive elements keyboard accessible
-- [ ] Images have descriptive alt text
-- [ ] ARIA labels on IconButton and custom controls
+- [ ] No nested interactive elements (Link inside Button or vice versa)
+- [ ] Custom interactive elements have tabIndex, onKeyDown, proper role
+- [ ] `aria-haspopup` uses correct value (`"menu"`, `"listbox"`, `"dialog"`)
+- [ ] Images have descriptive alt text — never empty `alt=""`
+- [ ] ARIA labels translated via `useTranslations` — never hardcoded English
 - [ ] Form inputs have associated labels
 - [ ] Color contrast sufficient (WCAG AA)
 
@@ -109,9 +114,16 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] Heavy components wrapped in Suspense
 
 ### i18n
-- [ ] No hardcoded user-facing strings
+- [ ] No hardcoded user-facing strings (including aria-labels and component-level strings like `noOptionsText`)
 - [ ] Translations added to ALL supported locales
 - [ ] Correct namespace used in useTranslations/useTranslation
+- [ ] No Lorem ipsum or placeholder text in committed code
+
+### Forms
+- [ ] `mode="onBlur"` on all forms (NOT `"onSubmit"`)
+- [ ] Form value types defined in `@/types/forms/` (not in config files or inline)
+- [ ] `defaultValues` from `form-models.config.ts` (not inline in views)
+- [ ] Custom controls call `field.onBlur()` in onBlur handler
 
 ### State Management (React)
 - [ ] Valtio used (not Redux/Context for global state)
@@ -120,9 +132,10 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] `useSnapshot()` used for reactive reads
 
 ### TypeScript
-- [ ] No `any` or `unknown` — always define proper interfaces/types
-- [ ] No `as` type assertions — use type guards or proper generics
-- [ ] Proper interfaces for component props
+- [ ] No `any` or `unknown` — use proper library types (`FieldErrors`, `FieldError`, etc.)
+- [ ] No `as` type assertions — design types so casts are unnecessary
+- [ ] No `eslint-disable`, `@ts-ignore`, or `@ts-expect-error` comments
+- [ ] Proper interfaces for component props (exported)
 - [ ] Functions under 50 lines — extract helpers for longer logic
 
 ### Imports

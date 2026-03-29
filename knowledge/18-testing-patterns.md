@@ -231,3 +231,22 @@ yarn test             # Vitest unit tests (if configured)
 - NEVER use `any` in test files
 - Test all meaningful prop variations
 - Test both success and error paths
+
+## Selector Rules
+
+- Use stable selectors: `getByRole`, `getByLabel`, `getByText`, `data-testid` — NEVER select by CSS class names (`[class*="phoneField"]`, `.MuiChip-root`)
+- Avoid positional selectors (`.nth(3)`) — they break when elements are added/removed
+- If no semantic selector exists, add `data-testid` to the component
+
+## Assertion Rules
+
+- Assertions must assert something meaningful — getting a bounding box without comparing values is useless
+- Test the contract (form submits correct data, callback receives correct args), not just DOM presence
+- Test negative paths: invalid input, error states, empty states, boundary conditions
+- Test complex interactions: paste handlers, keyboard navigation, disabled states
+
+## Test Organization
+
+- Smoke tests should be minimal (renders, key elements visible) — do NOT duplicate regression tests
+- No `test.skip()` without a tracking issue URL: `test.skip('TODO: fix flaky picker — #123')`
+- No `console.log` or unused `_data` params in test files

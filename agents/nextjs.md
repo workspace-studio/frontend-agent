@@ -177,6 +177,9 @@ src/
 - **Exports**: Always `const X = () => ...` + `export default X` pattern. NEVER `export default function`
 - **Shared components**: Before creating a new component, check @examples/shared-components/ for existing ones (Form, Select, DatePicker, Table, ModalRoot, etc.). Copy and adjust SCSS style only.
 - **STRICT TYPING**: NEVER use `any`, `unknown`, or untyped objects. Always define proper interfaces/types.
+- **ZERO `as` assertions**: NEVER use `as` type assertions — design types so casts are unnecessary. Use type guards or generics.
+- **No `eslint-disable`**: NEVER use `eslint-disable` or `@ts-ignore` — fix the type or lint issue. These are not shortcuts.
+- **No copying bugs**: When referencing existing code, validate it against rules/knowledge files first. Existing code may contain bugs from previous PRs — always apply the corrected pattern from rules.
 - **NO MEMOIZATION**: NEVER use `React.memo`, `useMemo`, or `useCallback`. Write simple, straightforward components.
 
 ---

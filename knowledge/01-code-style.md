@@ -142,11 +142,14 @@ import Component from '../components/Component';  // ❌
 ## Exports
 
 - **Named exports only** — no default exports (except pages/layouts for Next.js and index.ts barrel files)
+- Barrel exports (index.ts): `import X from './X'; export default X;` — NEVER `export *` or re-export named
 - One component per file
 - File name must match component name
 
 ## Strict Rules
 
-- **NEVER** use `any`, `unknown`, or untyped objects — always define proper interfaces/types
+- **NEVER** use `any`, `unknown`, or untyped objects — use proper library types (e.g., `FieldErrors` from RHF, `React.ChangeEvent<HTMLInputElement>`, `MouseEvent`). If a third-party library lacks types, create a local `.d.ts`
+- **NEVER** use `as` type assertions — design types so casts are unnecessary. Use type guards, generics, or discriminated unions. If the type system requires a cast, the type model is wrong — fix the source
+- **NEVER** use `eslint-disable`, `@ts-ignore`, or `@ts-expect-error` — these mask real issues. Fix the underlying type or lint problem
 - **NEVER** use `React.memo`, `useMemo`, or `useCallback` — write simple, straightforward code
 - **NEVER** use MUI `sx` prop for styling — use SCSS modules + MUI component props

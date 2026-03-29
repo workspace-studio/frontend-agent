@@ -24,17 +24,24 @@ Use MUI `component` prop for semantic elements:
 
 ## ARIA Labels
 
-Add `aria-label` to interactive elements without visible text:
+Add `aria-label` to interactive elements without visible text. **ALWAYS translate aria-labels** — they are user-facing (screen readers read them):
 
 ```tsx
-<IconButton aria-label="Open navigation drawer" onClick={toggleNav}>
+// ✅ Correct — translated
+<IconButton aria-label={t('actions.openNav')} onClick={toggleNav}>
   <MenuIcon />
 </IconButton>
 
-<IconButton aria-label={t('actions.delete')} onClick={handleDelete}>
-  <Trash />
+// ❌ Wrong — hardcoded English
+<IconButton aria-label="Open navigation drawer" onClick={toggleNav}>
+  <MenuIcon />
 </IconButton>
 ```
+
+Use correct `aria-haspopup` values — not just `true`:
+- `aria-haspopup="menu"` — for dropdown menus
+- `aria-haspopup="listbox"` — for select/autocomplete dropdowns
+- `aria-haspopup="dialog"` — for modal triggers
 
 ## Images
 
@@ -52,6 +59,21 @@ For decorative images, use empty alt:
 ```tsx
 <Image src="/decorative-bg.svg" alt="" role="presentation" />
 ```
+
+## Interactive Element Nesting
+
+NEVER nest interactive elements inside other interactive elements:
+- `<Link><Button>Click</Button></Link>` — screen readers announce both, tab order breaks
+- `<Button component={Link} href="/path">Click</Button>` — single interactive element
+
+## Custom Interactive Elements
+
+Non-MUI elements acting as buttons/controls MUST have:
+- Proper `role` attribute (`role="button"`, etc.)
+- `tabIndex={0}` for keyboard focus
+- `onKeyDown` handler for Enter and Space keys
+- Visual focus indicator
+- Browser button reset in SCSS if using `component="button"`: `border: none; background: none; cursor: pointer; padding: 0`
 
 ## Keyboard Navigation
 

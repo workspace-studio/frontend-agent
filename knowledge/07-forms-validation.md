@@ -120,35 +120,39 @@ const ContactForm = () => {
 
 ## Form Config Files
 
-### form-models.config.ts — Default values + types
+### Form value types — in `@/types/forms/`
+
+Form value interfaces belong in `@/types/forms/*.type.ts` — NEVER in config files or inline in views:
+
+```typescript
+// src/types/forms/login.type.ts
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
+
+export default LoginFormValues;
+```
+
+### form-models.config.ts — Default values only
 
 ```typescript
 // src/config/forms/form-models.config.ts
-export interface LoginFormValues {
-  email: string;
-  password: string;
-}
-
-export interface CreateBookingFormValues {
-  name: string;
-  email: string;
-  phone: string;
-  startDate: null;
-  endDate: null;
-}
+import LoginFormValues from '@/types/forms/login.type';
+import CreateBookingFormValues from '@/types/forms/create-booking.type';
 
 export const formModels = {
   login: {
     email: '',
     password: '',
-  },
+  } satisfies LoginFormValues,
   createBooking: {
     name: '',
     email: '',
     phone: '',
     startDate: null,
     endDate: null,
-  },
+  } satisfies CreateBookingFormValues,
 };
 ```
 
@@ -166,8 +170,11 @@ export const FORM_NAMES = {
 ### Form usage rules
 
 - `<Form>` — NO generic types (`<Form>` not `<Form<LoginFormValues>>`), always pass `id={FORM_NAMES.LOGIN}` and `mode="onBlur"`
+- **WARNING: `mode="onBlur"` is MANDATORY.** The agent repeatedly defaults to `mode="onSubmit"` — this is WRONG. Always `mode="onBlur"` for immediate field-level validation.
 - `<FormInput>` — use `label` prop (filled variant), NOT `placeholder`
-- Form value interfaces live in `form-models.config.ts` — never define locally in the view
+- Form value types belong in `@/types/forms/*.type.ts` — NEVER in config files or inline in views
+- `defaultValues` ALWAYS from `formModels` in `form-models.config.ts` — NEVER defined inline in views
+- In custom `renderInput` with Controller, always call `field.onBlur()` — RHF needs it for touched/validation tracking with `mode="onBlur"`
 - Use `useToggleState` hook for password visibility — never manual `useState`
 - NEVER `console.log` form data — security risk with passwords
 

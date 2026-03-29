@@ -178,6 +178,14 @@ import { Link } from '@/i18n/navigation';
 <Link href="/about">{t('nav.about')}</Link>
 ```
 
+## i18n Completeness Rules
+
+- **aria-labels are user-facing** — always use `aria-label={t('actions.openMenu')}`, never hardcoded English
+- **Component-level strings** (`noOptionsText`, `loadingText`, `placeholder` in MUI Autocomplete/Select) MUST use translations
+- **Country/language names** — use `Intl.DisplayNames` API for locale-aware display, not hardcoded English strings
+- **No placeholder content** — never ship Lorem ipsum or TODO text. All user-facing text must come from translation files
+- **Every hardcoded string in JSX is a bug** — if a human can read it (including screen readers), it must go through `useTranslations`/`getTranslations`
+
 ## URL Pattern
 
 With `localePrefix: 'as-needed'`:

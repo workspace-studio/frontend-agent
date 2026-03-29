@@ -150,3 +150,9 @@ export async function submitContactForm(data: ContactFormData) {
   return { success: true };
 }
 ```
+
+### Server Action Rules
+
+- **Always check `response.ok`** before parsing — error pages should not be treated as valid data
+- **Use `cache: 'no-store'`** for per-request data that should not be cached between requests (e.g., geo-detection, user-specific data)
+- **Geo-detection**: use platform headers (`x-vercel-ip-country`, `cf-ipcountry`) from the request via `headers()` — NEVER fetch a geo-IP API from the server (returns the server/data center location, not the user's)
