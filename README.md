@@ -147,7 +147,9 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 
 | Capability | Knowledge File |
 |------------|----------------|
-| App Router pages with metadata, i18n, views pattern | `10-nextjs-app-router.md` |
+| App Router pages, metadata, i18n, error/404 architecture | `10-nextjs-app-router.md` |
+| Middleware auth: route protection, token refresh, cookies | `10-nextjs-app-router.md` |
+| Server actions: useTransition, ActionResponse, typed params | `12-api-integration.md` |
 | Server/client components with MUI, SCSS, translations | `03-component-patterns.md` |
 | SEO: metadata, sitemaps, robots, JSON-LD, OG images | `13-seo-metadata.md` |
 | next-intl routing, messages, locale-aware navigation | `08-i18n-nextintl.md` |
