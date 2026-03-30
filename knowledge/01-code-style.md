@@ -151,5 +151,8 @@ import Component from '../components/Component';  // ❌
 - **NEVER** use `any`, `unknown`, or untyped objects — use proper library types (e.g., `FieldErrors` from RHF, `React.ChangeEvent<HTMLInputElement>`, `MouseEvent`). If a third-party library lacks types, create a local `.d.ts`
 - **NEVER** use `as` type assertions — design types so casts are unnecessary. Use type guards, generics, or discriminated unions. If the type system requires a cast, the type model is wrong — fix the source
 - **NEVER** use `eslint-disable`, `@ts-ignore`, or `@ts-expect-error` — these mask real issues. Fix the underlying type or lint problem
+- **NEVER** use `typeof`/`keyof`/`as Record`/`as keyof typeof` to introspect config at runtime — use explicit data instead. If you need type gymnastics, the approach is wrong
+- **One generic response type** (`ActionResponse<T>`) for all server actions — never create per-action aliases (`LoginResult`, `RegisterResult`)
+- **Inline one-use helpers** — if a function is used once and is a one-liner, inline it. Don't over-extract
 - **NEVER** use `React.memo`, `useMemo`, or `useCallback` — write simple, straightforward code
 - **NEVER** use MUI `sx` prop for styling — use SCSS modules + MUI component props

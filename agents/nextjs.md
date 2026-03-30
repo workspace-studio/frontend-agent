@@ -178,6 +178,10 @@ src/
 - **Shared components**: Before creating a new component, check @examples/shared-components/ for existing ones (Form, Select, DatePicker, Table, ModalRoot, etc.). Copy and adjust SCSS style only.
 - **STRICT TYPING**: NEVER use `any`, `unknown`, or untyped objects. Always define proper interfaces/types.
 - **ZERO `as` assertions**: NEVER use `as` type assertions — design types so casts are unnecessary. Use type guards or generics.
+- **Server actions**: `useTransition` + direct `await` + typed params. NEVER `useActionState` + `useEffect` + `FormData`. See @knowledge/12-api-integration.md
+- **No type gymnastics**: if you need `typeof`/`keyof`/`as Record`/`as keyof typeof`, the approach is wrong. Use explicit data
+- **Config splitting**: separate `auth.config.ts`, `routes.config.ts` from `constants.config.ts` — don't dump everything in one file
+- **Middleware auth**: guard `process.env`, include ALL locale route variants in route arrays, `secure` cookie via `NODE_ENV` not hardcoded `true`
 - **No `eslint-disable`**: NEVER use `eslint-disable` or `@ts-ignore` — fix the type or lint issue. These are not shortcuts.
 - **No copying bugs**: When referencing existing code, validate it against rules/knowledge files first. Existing code may contain bugs from previous PRs — always apply the corrected pattern from rules.
 - **NO MEMOIZATION**: NEVER use `React.memo`, `useMemo`, or `useCallback`. Write simple, straightforward components.

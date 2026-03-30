@@ -133,28 +133,88 @@ export type PayloadResponse<T> = {
 
 ## Next.js — Server Actions
 
+### Response Type
+
+Use one generic `ActionResponse<T>` for all server actions — NEVER create per-action interfaces (`LoginResult`, `RegisterResult`, etc.):
+
 ```typescript
-// src/actions/contact.actions.ts
+// src/types/response.type.ts
+type ActionResponse<T = Record<string, unknown>> = {
+  success: boolean;
+  message?: string;
+  data?: T;
+};
+
+export default ActionResponse;
+```
+
+### Server Action Pattern
+
+Typed params, try/catch, `cache: 'no-store'` on auth/validation endpoints:
+
+```typescript
+// src/actions/auth.actions.ts
 'use server';
 
-export async function submitContactForm(data: ContactFormData) {
-  const response = await fetch(`${process.env.API_URL}/contact`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(data),
-  });
+import ActionResponse from '@/types/response.type';
 
-  if (!response.ok) throw new Error('Failed to submit');
+export const login = async (email: string, password: string): Promise<ActionResponse> => {
+  try {
+    const response = await fetch(`${process.env.API_URL}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+      cache: 'no-store',
+    });
 
-  revalidatePath('/contact');
-  return { success: true };
-}
+    if (!response.ok) {
+      const error = await response.json().catch(() => null);
+      return { success: false, message: error?.message || 'Login failed' };
+    }
+
+    const data = await response.json();
+    // set cookies, revalidate, etc.
+    return { success: true };
+  } catch {
+    return { success: false, message: 'An unexpected error occurred' };
+  }
+};
 ```
+
+### View Form Handler Pattern
+
+Use `useTransition` + direct `await` — NEVER `useActionState` + `useEffect` + `FormData`:
+
+```tsx
+// View component
+const [isPending, startTransition] = useTransition();
+
+const handleSubmit = (data: LoginFormValues) => {
+  startTransition(async () => {
+    const result = await login(data.email, data.password);
+
+    if (result.success) {
+      router.push('/');
+    } else {
+      showToast({ status: 'error', text: result.message || t('loginFailed') });
+    }
+  });
+};
+```
+
+**Why `useTransition`:**
+- Auto-manages `isPending` — no manual `setLoading(true/false)`, no cleanup risk
+- Server actions are called directly with typed params — no `FormData` conversion
+- Result is handled immediately — no `useEffect` watching state changes
 
 ### Server Action Rules
 
-- **Always check `response.ok`** before parsing — error pages should not be treated as valid data
-- **Use `cache: 'no-store'`** for per-request data that should not be cached between requests (e.g., geo-detection, user-specific data)
-- **Geo-detection**: use platform headers (`x-vercel-ip-country`, `cf-ipcountry`) from the request via `headers()` — NEVER fetch a geo-IP API from the server (returns the server/data center location, not the user's)
-- **NEVER `console.log`** in server actions — especially not tokens, codes, passwords, or user data
-- **Client-side calls to server actions** must always handle errors: `.then().catch()` or try/catch. Without `.catch()`, a failed server action silently rejects and the UI hangs on a loading spinner forever
+- **Typed params** — `login(email, password)` not `login(_state, formData)`. FormData is for progressive enhancement; typed params are cleaner
+- **Always check `response.ok`** — error pages should not be treated as valid data
+- **`cache: 'no-store'`** on ALL auth/validation fetches — not just some. Be consistent
+- **Guard `process.env`** — missing env vars should return gracefully: `if (!process.env.API_URL) return { success: false, message: '...' }`
+- **Geo-detection**: use platform headers (`x-vercel-ip-country`) — NEVER fetch geo-IP API from server
+- **NEVER `console.log`** in server actions — especially not tokens, codes, passwords
+- **One `ActionResponse<T>`** for all actions — never create `LoginResult`, `RegisterResult`, etc.
+- **NEVER use `useActionState` + `useEffect`** — use `useTransition` + direct `await` instead
+- **NEVER use `useState` for loading** when calling server actions — `useTransition` gives you `isPending` for free

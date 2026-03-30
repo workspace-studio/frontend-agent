@@ -230,6 +230,75 @@ src/views/
 - Only `[locale]/error.tsx` and `[locale]/not-found.tsx` delegate to views
 - Next.js does NOT support `metadata` exports from `not-found.tsx` — only from `page.tsx` and `layout.tsx`
 
+## Middleware Auth (proxy.ts / middleware.ts)
+
+Route protection, token refresh, and cookie management in the i18n middleware.
+
+### Route Config
+
+All route arrays in `src/config/routes.config.ts` — explicit, including ALL locale variants:
+
+```typescript
+// src/config/routes.config.ts
+export const PROTECTED_ROUTES = ['/', '/reserve', '/rezerviraj', '/bookings', '/rezervacije', '/profile', '/profil'];
+export const LOGIN_PATHS = { en: '/login', hr: '/prijava' };
+export const PUBLIC_ONLY_ROUTES = ['/login', '/prijava', '/register', '/registracija'];
+```
+
+NEVER resolve locale routes dynamically from `routing.pathnames` with `typeof`/`keyof`/`as Record` — use explicit arrays.
+
+### Token Management
+
+```typescript
+// src/utils/tokenUtils.ts
+import 'server-only'; // Prevents client bundle leakage
+
+// Cookie options
+const cookieOptions = {
+  httpOnly: true,
+  sameSite: 'lax' as const,
+  secure: process.env.NODE_ENV === 'production', // NEVER hardcode true — breaks localhost
+  path: '/',
+};
+```
+
+### Middleware Pattern
+
+```typescript
+// src/proxy.ts (Next.js 16) or src/middleware.ts (Next.js 15)
+const handleAuth = async (request: NextRequest, intlResponse: NextResponse) => {
+  const accessToken = request.cookies.get('accessToken')?.value;
+  const refreshToken = request.cookies.get('refreshToken')?.value;
+  const pathname = request.nextUrl.pathname;
+  const locale = extractLocale(pathname);
+
+  // Public-only routes (login, register) — redirect to home if already logged in
+  if (PUBLIC_ONLY_ROUTES.some(r => pathname.endsWith(r)) && accessToken) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  // Protected routes — redirect to login if not authenticated
+  if (PROTECTED_ROUTES.some(r => pathname.endsWith(r)) && !accessToken) {
+    if (refreshToken) {
+      const newToken = await refreshAccessToken(refreshToken);
+      if (newToken) { /* set cookie, continue */ }
+    }
+    return NextResponse.redirect(new URL(LOGIN_PATHS[locale] || '/login', request.url));
+  }
+
+  return intlResponse;
+};
+```
+
+### Rules
+
+- Guard `process.env.API_URL` — missing env var should return gracefully, not throw or cause redirect loops
+- `secure` cookie: `process.env.NODE_ENV === 'production'` — NEVER hardcode `true`
+- Protected routes must include ALL locale variants — `/bookings` AND `/rezervacije`
+- `server-only` on token utils to prevent client bundle leakage
+- `clearTokenCookies` on logout regardless of backend API response
+- `revalidatePath('/', 'layout')` after logout to invalidate cached pages
+
 ## View Section Pattern
 
 Every view section MUST start with a `Container` component using `component="section"`:

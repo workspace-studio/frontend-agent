@@ -94,6 +94,9 @@ paths:
 - NEVER use `any` or `unknown` — use proper library types (e.g., `FieldErrors`, `FieldError` from RHF)
 - NEVER use `as` type assertions — design types so casts are unnecessary
 - NEVER use `eslint-disable` or `@ts-ignore` — fix the underlying type or lint issue
+- NEVER use `typeof`/`keyof`/`as Record`/`as keyof typeof` for runtime type introspection — use explicit data
+- NEVER create per-action response types (`LoginResult`, `RegisterResult`) — use one `ActionResponse<T>`
+- NEVER use `useActionState` + `useEffect` for form submission — use `useTransition` + direct `await`
 - NEVER copy patterns from existing code without validating against these rules — existing code may contain bugs. Common bugs copied between files: hardcoded `aria-label`, `sx={{ backgroundColor }}`, `mode="onSubmit"`, inline `defaultValues`
 - NEVER duplicate a helper/pattern across 3+ files — after the 2nd occurrence, extract to a shared component
 - When touching a file, FIX ALL existing rule violations in that file — `mode="onSubmit"` → `"onBlur"`, hardcoded `aria-label` → translated, `sx` abuse → SCSS class, missing `component` prop → add it, `.root` → `.container`, inline `defaultValues` → config
