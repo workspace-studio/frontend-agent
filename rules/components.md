@@ -23,8 +23,8 @@ paths:
 
 ## Styling
 - Use SCSS modules + MUI component props (variant, size, color)
-- MUI `sx` prop ONLY for spacing (mt, mb, gap, p) AND responsive typography (`sx={{ typography: { lg: 'h2' } }}`)
-- `sx` NEVER for backgroundColor, fontStyle, color, border — those go in SCSS or theme override
+- MUI `sx` prop ONLY for: `mt`, `mb`, `gap`, `p`, `px`, `py`, `mx`, `my`, `typography: { lg: 'h2' }`. NOTHING ELSE.
+- `sx` NEVER for: `width`, `height`, `borderRadius`, `backgroundColor`, `color`, `fontStyle`, `border`, `'&:hover'`. Use SCSS class with `rem-calc()` instead.
 - NEVER mix sx and SCSS on same element
 - Only use MUI component variants defined in the design system — if `typings.d.ts` disables a variant (e.g., `outlined: false`), do NOT use it; if a custom variant exists (e.g., `containedSecondary`), use it instead of ad-hoc styling
 - Use `cx` from `clsx` for className merging — NEVER template literals or string concatenation
@@ -94,8 +94,8 @@ paths:
 - NEVER use `any` or `unknown` — use proper library types (e.g., `FieldErrors`, `FieldError` from RHF)
 - NEVER use `as` type assertions — design types so casts are unnecessary
 - NEVER use `eslint-disable` or `@ts-ignore` — fix the underlying type or lint issue
-- NEVER copy patterns from existing code without validating against these rules — existing code may contain bugs
+- NEVER copy patterns from existing code without validating against these rules — existing code may contain bugs. Common bugs copied between files: hardcoded `aria-label`, `sx={{ backgroundColor }}`, `mode="onSubmit"`, inline `defaultValues`
 - NEVER duplicate a helper/pattern across 3+ files — after the 2nd occurrence, extract to a shared component
-- When touching a file with existing rule violations (e.g., `mode="onSubmit"`), fix them — don't leave known bugs
-- Don't use growing hardcoded pathname lists (`pathname === '/login' || pathname === '/reset-password'`) — use config arrays or invert the logic
+- When touching a file, FIX ALL existing rule violations in that file — `mode="onSubmit"` → `"onBlur"`, hardcoded `aria-label` → translated, `sx` abuse → SCSS class, missing `component` prop → add it, `.root` → `.container`, inline `defaultValues` → config
+- Don't use growing hardcoded pathname lists or inline arrays — put them in `src/config/*.config.ts`
 - No prop drilling past 2 levels — use store
