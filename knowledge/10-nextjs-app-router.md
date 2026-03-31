@@ -298,6 +298,8 @@ const handleAuth = async (request: NextRequest, intlResponse: NextResponse) => {
 - `server-only` on token utils to prevent client bundle leakage
 - `clearTokenCookies` on logout regardless of backend API response
 - `revalidatePath('/', 'layout')` after logout to invalidate cached pages
+- Cookie `maxAge` MUST match backend JWT expiry — access token 15min → `maxAge: 60 * 15`. Mismatched maxAge causes expired cookies to linger → middleware doesn't refresh → 401 everywhere
+- `getLoggedInUser` does ONE thing: read cookie, fetch `/auth/me`, return user or null. Middleware handles token refresh — don't add refresh/redirect logic to this utility
 
 ## View Section Pattern
 

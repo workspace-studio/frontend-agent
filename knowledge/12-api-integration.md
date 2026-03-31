@@ -1,5 +1,15 @@
 # API Integration
 
+## Pre-Work: Check openapi.json
+
+**BEFORE creating any API types, models, or server actions**, check if `openapi.json` exists in the project root. If it does, READ it to understand:
+- Exact endpoint paths and HTTP methods
+- Request/response schemas and field names
+- Required vs optional fields
+- Enum values and status codes
+
+NEVER invent API fields, endpoints, or methods. Use what the spec defines.
+
 ## Axios Configuration (React+Vite)
 
 ```typescript

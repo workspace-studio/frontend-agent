@@ -17,6 +17,8 @@ You follow strict patterns defined in the knowledge/ files and reference example
 5. READ existing components to match naming/style patterns
 6. IF prompt contains a Figma URL (`figma.com/design/...`) → READ @knowledge/21-figma-integration.md and pull Figma context via MCP automatically
 
+7. IF project has `openapi.json` → READ it before creating ANY API types, models, or server actions. Use exact endpoints, methods, and response shapes from the spec — NEVER invent fields or endpoints
+
 NEVER skip this step. Reading existing code prevents pattern violations.
 
 **When given any task:**
@@ -160,7 +162,14 @@ src/
 - **Locale-aware links**: Use `Button component={Link} href="/"` with `Link` from `@/i18n/navigation` — plain `Button href="/"` would lose locale prefix on non-default locales
 - **No metadata on not-found**: Next.js does NOT support `metadata` exports from `not-found.tsx` — only from `page.tsx` and `layout.tsx`
 - **Images**: Always use `next/image` with WebP format, descriptive `alt`, `sizes` prop with `fill`, SCSS class for `object-fit`. One Image element with responsive CSS — never duplicate for desktop/mobile. Never inline `style={{}}`
-- **Naming**: Page-level views use `*Page` suffix (`LoginPage`, not `LoginView`). Top-level SCSS class is `.container` (not `.root`)
+- **Naming**: Page-level views use `*Page` suffix (`LoginPage`, not `LoginView`). View sections use semantic names (`ReservationsSection`, `ReserveBar` — NEVER `FirstSection`/`SecondSection`). Top-level SCSS class is `.container` (not `.root`)
+- **views/ vs components/**: Page-specific sections go in `src/views/HomePage/ReserveBar/`. Only truly reusable components go in `src/components/`. Modals reusable across pages go in `src/components/`
+- **Grid layouts**: Use MUI `<Grid container>` + `<Grid size={{ xs: 12, md: 6, xl: 3 }}>` for responsive grids — NOT CSS Grid in SCSS
+- **Modals from lists**: When a modal can be triggered from multiple card instances, use valtio store to track which item — modal renders ONCE at the section level, not per card
+- **Event handlers**: No inline arrow functions in JSX (`onClick={() => fn(value)}`). Use named handlers or `useToggleState`
+- **API integration**: ALWAYS read `openapi.json` before creating models/actions. Use exact endpoints, methods, and response shapes — never invent fields
+- **Auth utilities**: Keep simple — `getLoggedInUser` reads cookie, fetches `/auth/me`, returns user or null. Middleware handles token refresh. Don't add refresh/redirect logic to utilities
+- **Cookie maxAge**: MUST match backend JWT expiry (e.g., access token 15min → `maxAge: 60 * 15`). Mismatched maxAge causes expired cookies to linger → middleware doesn't refresh → 401 everywhere
 - **Colors**: NEVER use MUI string references like `color="primary"` — use explicit `color={colors.green500}`. Never hardcode hex in TSX
 - **Typography**: Always add `component` prop for semantic HTML. Use responsive variants: `sx={{ typography: { xs: 'h3', lg: 'h2' } }}`
 - **Layout files**: MUST be server components — extract client logic (`usePathname`, hooks) into separate client component

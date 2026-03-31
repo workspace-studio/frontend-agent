@@ -18,8 +18,14 @@ paths:
 
 ## Naming
 - Page-level views use `*Page` suffix: `LoginPage`, `NotFoundPage` (NOT `*View`)
+- View sections use semantic names: `ReservationsSection`, `ReserveBar` — NEVER `FirstSection`/`SecondSection`
 - Top-level SCSS class is `.container` (NOT `.root`)
 - All SCSS classes nested inside `.container`
+
+## File Location
+- Page-specific sections → `src/views/HomePage/ReserveBar/` (not `src/components/`)
+- Reusable components (used on 2+ pages) → `src/components/`
+- Modals reusable across pages → `src/components/`
 
 ## Styling
 - Use SCSS modules + MUI component props (variant, size, color)
@@ -101,4 +107,7 @@ paths:
 - NEVER duplicate a helper/pattern across 3+ files — after the 2nd occurrence, extract to a shared component
 - When touching a file, FIX ALL existing rule violations in that file — `mode="onSubmit"` → `"onBlur"`, hardcoded `aria-label` → translated, `sx` abuse → SCSS class, missing `component` prop → add it, `.root` → `.container`, inline `defaultValues` → config
 - Don't use growing hardcoded pathname lists or inline arrays — put them in `src/config/*.config.ts`
+- No inline arrow functions in JSX event handlers (`onClick={() => fn(value)}`) — use named handlers or `useToggleState`
+- Modals triggered from list items (cards) → valtio store tracks which item, modal renders ONCE at section level — not per card
+- Responsive grid layouts → MUI `<Grid container>` + `<Grid size={{ xs, md, xl }}>` — NEVER CSS Grid in SCSS
 - No prop drilling past 2 levels — use store
