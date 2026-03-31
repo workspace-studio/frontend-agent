@@ -162,7 +162,7 @@ src/
 - **Locale-aware links**: Use `Button component={Link} href="/"` with `Link` from `@/i18n/navigation` — plain `Button href="/"` would lose locale prefix on non-default locales
 - **No metadata on not-found**: Next.js does NOT support `metadata` exports from `not-found.tsx` — only from `page.tsx` and `layout.tsx`
 - **Images**: Always use `next/image` with WebP format, descriptive `alt`, `sizes` prop with `fill`, SCSS class for `object-fit`. One Image element with responsive CSS — never duplicate for desktop/mobile. Never inline `style={{}}`
-- **Naming**: Page-level views use `*Page` suffix (`LoginPage`, not `LoginView`). View sections use semantic names (`ReservationsSection`, `ReserveBar` — NEVER `FirstSection`/`SecondSection`). Top-level SCSS class is `.container` (not `.root`)
+- **Naming**: Single-section views → `*Page` suffix (`LoginPage`, `ErrorPage`). Multi-section views → plain folder name (`Home/`, `MyBookings/`) with semantic section subfolders. NEVER `FirstSection`/`SecondSection`. Top-level SCSS class is `.container` (not `.root`)
 - **views/ vs components/**: Page-specific sections go in `src/views/HomePage/ReserveBar/`. Only truly reusable components go in `src/components/`. Modals reusable across pages go in `src/components/`
 - **Grid layouts**: Use MUI `<Grid container>` + `<Grid size={{ xs: 12, md: 6, xl: 3 }}>` for responsive grids — NOT CSS Grid in SCSS
 - **Modals from lists**: When a modal can be triggered from multiple card instances, use valtio store to track which item — modal renders ONCE at the section level, not per card

@@ -87,24 +87,40 @@ const MyButton = (props) => <Button {...props} variant="contained" />;
 
 ## View Structure
 
-Views are page-level components in `src/views/`. Use `*Page` suffix for page-level views (e.g., `LoginPage`, `NotFoundPage`):
+Views are page-level components in `src/views/`. Two patterns based on complexity:
 
+**Single-section views** — `*Page` suffix, one `.tsx` file:
 ```
 views/
-├── Customers/
-│   ├── Customers.tsx           # Main view component
-│   ├── Customers.module.scss   # View styles
-│   ├── partials/               # Sub-components
-│   │   ├── CreateModal.tsx
-│   │   ├── DetailDrawer.tsx
-│   │   └── DeleteModal.tsx
-│   └── index.ts                # Barrel export
 ├── LoginPage/
 │   ├── LoginPage.tsx
 │   ├── LoginPage.module.scss
 │   └── index.ts
+├── ErrorPage/
+│   └── ...
 └── NotFoundPage/
-    ├── NotFoundPage.tsx
+    └── ...
+```
+
+**Multi-section views** — plain folder name, semantic section subfolders:
+```
+views/
+├── Home/
+│   ├── ReservationsSection/
+│   │   ├── ReservationsSection.tsx
+│   │   ├── ReservationsSection.module.scss
+│   │   └── index.ts
+│   └── ReserveBar/
+│       ├── ReserveBar.tsx
+│       └── index.ts
+├── MyBookings/
+│   ├── ActiveSection/
+│   └── PastSection/
+└── Customers/
+    ├── Customers.tsx
+    ├── partials/               # Sub-components (modals, drawers)
+    │   ├── CreateModal.tsx
+    │   └── DeleteModal.tsx
     └── index.ts
 ```
 

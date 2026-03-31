@@ -17,13 +17,11 @@ paths:
 - NEVER expose `sx` prop passthrough in reusable component interfaces — consumers style via `className` or dedicated props only
 
 ## Naming
-- Page-level views use `*Page` suffix: `LoginPage`, `NotFoundPage` (NOT `*View`)
 - View sections use semantic names: `ReservationsSection`, `ReserveBar` — NEVER `FirstSection`/`SecondSection`
 - Top-level SCSS class is `.container` (NOT `.root`)
 - All SCSS classes nested inside `.container`
 
 ## File Location
-- Page-specific sections → `src/views/HomePage/ReserveBar/` (not `src/components/`)
 - Reusable components (used on 2+ pages) → `src/components/`
 - Modals reusable across pages → `src/components/`
 
