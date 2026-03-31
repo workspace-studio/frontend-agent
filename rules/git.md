@@ -14,6 +14,7 @@ paths:
 - With issue: `#{issue_number}: {description}`
 - Without issue: conventional format (`feat:`, `fix:`, `refactor:`, etc.)
 - Stage specific files — NEVER use `git add -A` or `git add .`
+- ALWAYS run `git status` before staging — files may have been moved/renamed by the user between edits
 
 ## Safety
 - NEVER force push

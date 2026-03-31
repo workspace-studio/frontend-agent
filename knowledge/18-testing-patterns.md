@@ -250,3 +250,4 @@ yarn test             # Vitest unit tests (if configured)
 - Smoke tests should be minimal (renders, key elements visible) — do NOT duplicate regression tests
 - No `test.skip()` without a tracking issue URL: `test.skip('TODO: fix flaky picker — #123')`
 - No `console.log` or unused `_data` params in test files
+- When replacing placeholder pages with real content, proactively find and update E2E tests that assert on the old placeholder text — don't wait for tests to fail

@@ -59,6 +59,7 @@ paths:
 - All interactive elements keyboard accessible
 - Images have descriptive `alt` text — never empty
 - ARIA labels on IconButton and custom controls — ALWAYS translated via `useTranslations`, never hardcoded English
+- WCAG contrast: if background is lighter than `gray500`, text MUST be dark — never white text on light badge/chip
 - Loading spinners need `aria-label`: `<CircularProgress aria-label={t('loading')} />`
 - Form inputs have associated labels
 - NEVER nest interactive elements (e.g., Link wrapping Button) — use `component={Link}` on the outer element
