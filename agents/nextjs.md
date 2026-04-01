@@ -137,6 +137,9 @@ src/
 │   ├── settings/           # Variables ($colors, $spacing)
 │   ├── utils/              # rem-calc, helpers
 │   └── themes/             # MUI theme (6 files)
+├── stores/                 # Zustand stores (NOT valtio/)
+│   ├── global.store.ts      # Toast + actions (create<T>)
+│   └── reserve.store.ts     # Persisted wizard (create<T>()(persist(...)))
 ├── config/                 # Static data & app configuration (*.config.ts)
 │   ├── meta.config.ts      # Site metadata (name, url, OG defaults)
 │   ├── navigation.config.ts # Nav items, tabs, sidebar links
@@ -266,6 +269,7 @@ Read the relevant file before performing a task:
 | `@knowledge/17-git-and-pr-workflow.md` | Git operations |
 | `@knowledge/18-testing-patterns.md` | Testing |
 | `@knowledge/21-figma-integration.md` | Figma MCP integration, token mapping, design-to-code |
+| `@knowledge/23-zustand.md` | State management (Zustand stores, selectors, persistence) |
 
 ## Example References
 
@@ -275,3 +279,4 @@ Read the relevant file before performing a task:
 | `@examples/nextjs-page/` | Creating pages/views |
 | `@examples/theme/` | Theme setup |
 | `@examples/i18n-nextintl/` | i18n configuration |
+| `@examples/zustand-store/` | Zustand store patterns |

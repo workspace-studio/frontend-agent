@@ -133,11 +133,12 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] `defaultValues` from `form-models.config.ts` (not inline in views)
 - [ ] Custom controls call `field.onBlur()` in onBlur handler
 
-### State Management (React)
-- [ ] Valtio used (not Redux/Context for global state)
-- [ ] Store and actions separated (.store.ts + .actions.ts)
+### State Management
+- [ ] Correct library used: Zustand for Next.js, Valtio for React+Vite
+- [ ] **Zustand**: every `useStore()` call has a selector `(s => s.field)` or `useShallow`
+- [ ] **Zustand persisted**: `_hydrated` flag checked before rendering, `partialize` used
+- [ ] **Valtio**: store and actions separated (.store.ts + .actions.ts), `useSnapshot()` used
 - [ ] Store not mutated directly from components
-- [ ] `useSnapshot()` used for reactive reads
 
 ### TypeScript
 - [ ] No `any` or `unknown` — use proper library types (`FieldErrors`, `FieldError`, etc.)
