@@ -189,6 +189,10 @@ src/
 - **ZERO `as` assertions**: NEVER use `as` type assertions — design types so casts are unnecessary. Use type guards or generics.
 - **Server actions**: `useTransition` + direct `await` + typed params. NEVER `useActionState` + `useEffect` + `FormData`. See @knowledge/12-api-integration.md
 - **No type gymnastics**: if you need `typeof`/`keyof`/`as Record`/`as keyof typeof`, the approach is wrong. Use explicit data
+- **No `ButtonBase`**: use `Box component="button"` + SCSS reset + `type="button"`. ButtonBase adds unwanted ripple/padding
+- **MUI inline styles**: Stack/Grid system props generate inline styles — NEVER override `direction`/`spacing`/`alignItems` via SCSS. Use responsive prop syntax: `direction={{ xs: 'column', lg: 'row' }}`
+- **Server action security**: NEVER accept `userId` from client — derive server-side via `getLoggedInUser()`. Client params can be tampered
+- **Figma values are placeholders**: numbers, dates, codes in Figma are sample data — always check API model for the actual field name and render dynamically
 - **Config splitting**: separate `auth.config.ts`, `routes.config.ts` from `constants.config.ts` — don't dump everything in one file
 - **Middleware auth**: guard `process.env`, include ALL locale route variants in route arrays, `secure` cookie via `NODE_ENV` not hardcoded `true`
 - **No `eslint-disable`**: NEVER use `eslint-disable` or `@ts-ignore` — fix the type or lint issue. These are not shortcuts.

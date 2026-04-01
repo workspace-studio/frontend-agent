@@ -96,19 +96,24 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] No `eval()` or `new Function()` usage
 - [ ] Auth tokens stored securely (httpOnly cookies preferred over localStorage)
 - [ ] No `console.log` in server actions — especially not tokens, codes, passwords
+- [ ] Server actions NEVER accept `userId` from client — derive server-side via `getLoggedInUser()`
 - [ ] Every `.then()` has a `.catch()` — async flows must handle errors, not hang the UI
 - [ ] Loading states have error fallback — `CircularProgress` must not spin forever on failure
 
 ### Accessibility
 - [ ] Semantic HTML (nav, main, section, article, aside)
 - [ ] All interactive elements keyboard accessible
+- [ ] `Box component="button"` has `type="button"` — prevents form submission
+- [ ] Toggle/selectable elements have `aria-pressed={selected}`
+- [ ] Icon-only buttons have `aria-label={translatedName}`
 - [ ] No nested interactive elements (Link inside Button or vice versa)
 - [ ] Custom interactive elements have tabIndex, onKeyDown, proper role
 - [ ] `aria-haspopup` uses correct value (`"menu"`, `"listbox"`, `"dialog"`)
-- [ ] Images have descriptive alt text — never empty `alt=""`
+- [ ] Images have descriptive translated alt text — never empty `alt=""`
 - [ ] ARIA labels translated via `useTranslations` — never hardcoded English
 - [ ] Form inputs have associated labels
-- [ ] Color contrast sufficient (WCAG AA)
+- [ ] Color contrast sufficient (WCAG AA) — light bg → dark text
+- [ ] No `ButtonBase` — use `Box component="button"` + SCSS reset
 
 ### Performance
 - [ ] `next/image` used (not `<img>`) with `sizes` prop (Next.js)
