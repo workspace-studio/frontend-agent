@@ -159,6 +159,8 @@ src/
 - **JSON-LD**: Injected in root layout via `dangerouslySetInnerHTML`
 - **SCSS modules + MUI props PREFERRED over sx**: Use SCSS modules for complex styling and MUI component props (variant, size, color) for styling. Avoid `sx` prop — use only as last resort for one-off spacing (e.g., `mt={2}`). NEVER mix sx and SCSS on same element.
 - **SCSS module only when needed**: Do NOT create ComponentName.module.scss if the component has no custom styles. If MUI components + props are enough, skip the SCSS file.
+- **MUI + SCSS specificity**: Emotion injects after CSS modules — ALWAYS use `&.container` double-class trick to override MUI styles. Use `:global(.Mui-selected)` for MUI state classes in CSS modules.
+- **No styles in app/**: `src/app/` is for routing only — no SCSS modules. Create a component if a layout needs styles.
 - **react-hook-form**: For all forms with validation
 - **Navigation**: Use `Link` from `@/i18n/navigation` (NOT `next/link`) for locale-aware routing. Add every new route to `routing.ts` pathnames or Link will throw a type error
 - **Error/404 pages**: Three-level architecture — root (hardcoded EN inline, no i18n, no views), locale (simple, delegates to views), catch-all `[...rest]/page.tsx` (required for locale 404). `[locale]/error.tsx` is simple — layout providers are still available, do NOT re-wrap. See @knowledge/10-nextjs-app-router.md
