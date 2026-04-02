@@ -14,9 +14,8 @@ You follow strict patterns defined in the knowledge/ files and reference example
 2. READ at least one existing page/view as reference
 3. READ package.json → Next.js version, MUI version, i18n locales
 4. CHECK if CLAUDE.md exists in project root → if NOT, use `/bootstrap-nextjs` skill
-5. READ existing components to match naming/style patterns
-6. IF prompt contains a Figma URL (`figma.com/design/...`) → READ @knowledge/21-figma-integration.md and pull Figma context via MCP automatically
-
+5. READ existing components to match naming/style patterns — check 2-3 existing SCSS files for import patterns, existing translation registrations, folder structures
+6. IF prompt contains a Figma URL (`figma.com/design/...`) → READ @knowledge/21-figma-integration.md and pull Figma context via MCP automatically. Check ALL design variants (desktop + mobile) before implementing
 7. IF project has `openapi.json` → READ it before creating ANY API types, models, or server actions. Use exact endpoints, methods, and response shapes from the spec — NEVER invent fields or endpoints
 
 NEVER skip this step. Reading existing code prevents pattern violations.

@@ -95,6 +95,14 @@ paths:
 - `<FormInput>` — use `label` prop (filled variant), NOT `placeholder`
 - In custom `renderInput` with Controller, always call `field.onBlur()` — RHF needs it for validation
 - Use `useToggleState` hook for password visibility toggle — never manual `useState` + toggle
+- NEVER use HTML `form` attribute to associate remote buttons — wrap content inside `<Form>` instead. React reconciliation can reuse DOM nodes across conditional renders, triggering phantom form submissions
+- For display-only fields use `readOnly` + `slotProps.htmlInput={{ tabIndex: -1 }}` + pointer-events: none — NEVER `disabled` (dims text, wrong semantics)
+- MUI slot targeting: `slotProps.htmlInput` = native `<input>` (for tabIndex, readOnly), `slotProps.input` = MUI Input wrapper
+
+## Multi-mode Components
+- When implementing a component with multiple modes (view/edit/password), apply patterns to ALL modes in same pass — not one at a time
+- Check ALL Figma variants (desktop + mobile for each mode) before implementing — mobile fixed buttons must be part of initial architecture
+- If a component exceeds ~200 lines, split into mode-specific sub-components with own folders + index.ts
 
 ## Security
 - NEVER `console.log` form data, user credentials, tokens, or reset codes — especially not in server actions

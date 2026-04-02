@@ -131,7 +131,7 @@ Each namespace is a separate JSON file. **Never nest error keys inside common.js
 
 ## New Namespace Checklist
 
-When adding a new namespace (e.g., `booking`):
+Adding a namespace is an **atomic 5-file operation**. Missing any one causes cascading type failures:
 
 1. Create `messages/en/booking.json` and `messages/hr/booking.json`
 2. Add import to `src/i18n/request.ts`:
@@ -146,6 +146,7 @@ When adding a new namespace (e.g., `booking`):
    ```js
    './messages/en/booking.json',
    ```
+5. Verify `messages/en/booking.d.json.ts` is auto-generated after build — if missing, the type resolves to `any` and poisons ALL `useTranslations()` calls across the app
 
 ## Usage
 
