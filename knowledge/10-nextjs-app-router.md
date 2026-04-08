@@ -300,6 +300,10 @@ const handleAuth = async (request: NextRequest, intlResponse: NextResponse) => {
 - `revalidatePath('/', 'layout')` after logout to invalidate cached pages
 - Cookie `maxAge` MUST match backend JWT expiry — access token 15min → `maxAge: 60 * 15`. Mismatched maxAge causes expired cookies to linger → middleware doesn't refresh → 401 everywhere
 - `getLoggedInUser` does ONE thing: read cookie, fetch `/auth/me`, return user or null. Middleware handles token refresh — don't add refresh/redirect logic to this utility
+- When adding role-based routes, implement bidirectional protection in same commit — admin can't access user routes AND user can't access admin routes
+- Check if needed data exists in JWT payload before making API calls — decode locally with `atob()`, don't call `/auth/me` unnecessarily
+- Follow Next.js two-layer auth: optimistic checks in proxy (JWT decode, 0ms), secure checks in DAL (`verifyAdmin()` with `React.cache()` + API call)
+- Use `redirect` from `next/navigation` for server-side code — NOT from `@/i18n/navigation` (doesn't return `never`, middleware handles locale routing)
 
 ## View Section Pattern
 

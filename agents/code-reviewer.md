@@ -99,6 +99,7 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] Server actions NEVER accept `userId` from client — derive server-side via `getLoggedInUser()`
 - [ ] Every `.then()` has a `.catch()` — async flows must handle errors, not hang the UI
 - [ ] Loading states have error fallback — `CircularProgress` must not spin forever on failure
+- [ ] Server actions with sensitive data (passwords, tokens) use object param, not separate strings
 
 ### Accessibility
 - [ ] Semantic HTML (nav, main, section, article, aside)
@@ -145,7 +146,13 @@ Use the Output Format below. Assign severity to each finding:
 - [ ] No `as` type assertions — design types so casts are unnecessary
 - [ ] No `eslint-disable`, `@ts-ignore`, or `@ts-expect-error` comments
 - [ ] Proper interfaces for component props (exported)
+- [ ] `interface` for object shapes, `type` for unions/primitives
+- [ ] `JSON.parse()` and `response.json()` return values typed explicitly
 - [ ] Functions under 50 lines — extract helpers for longer logic
+
+### Dead Code
+- [ ] No unused exports — grep for exports that are never imported
+- [ ] No orphaned routes after rename/move — check routing config + all references
 
 ### Imports
 - [ ] `@/` alias used (never `../`)

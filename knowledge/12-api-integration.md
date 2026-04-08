@@ -228,3 +228,6 @@ const handleSubmit = (data: LoginFormValues) => {
 - **One `ActionResponse<T>`** for all actions — never create `LoginResult`, `RegisterResult`, etc.
 - **NEVER use `useActionState` + `useEffect`** — use `useTransition` + direct `await` instead
 - **NEVER use `useState` for loading** when calling server actions — `useTransition` gives you `isPending` for free
+- **Sensitive params as object** — `login({ email, password })` not `login(email, password)`. Next.js dev server logs separate string args in terminal — object params log as `{...}`
+- **Never return hardcoded user-facing strings** — return `{ success: false }` and let client use translated fallback like `t('loginFailed')`
+- **Always type `JSON.parse()` and `response.json()`** return values explicitly — never leave as implicit `any`

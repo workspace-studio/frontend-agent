@@ -154,5 +154,6 @@ import Component from '../components/Component';  // ❌
 - **NEVER** use `typeof`/`keyof`/`as Record`/`as keyof typeof` to introspect config at runtime — use explicit data instead. If you need type gymnastics, the approach is wrong
 - **One generic response type** (`ActionResponse<T>`) for all server actions — never create per-action aliases (`LoginResult`, `RegisterResult`)
 - **Inline one-use helpers** — if a function is used once and is a one-liner, inline it. Don't over-extract
+- Use `interface` for object shapes, `type` for unions/intersections/primitives — be consistent across codebase
 - **NEVER** use `React.memo`, `useMemo`, or `useCallback` — write simple, straightforward code
 - **NEVER** use MUI `sx` prop for styling — use SCSS modules + MUI component props

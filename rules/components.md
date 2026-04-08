@@ -108,6 +108,7 @@ paths:
 - NEVER `console.log` form data, user credentials, tokens, or reset codes — especially not in server actions
 - Every `.then()` on a server action needs a `.catch()` — every async call needs try/catch. Without error handling, the UI can hang forever on `CircularProgress`
 - Server actions that mutate (POST/PUT/DELETE) MUST derive user identity server-side via `getLoggedInUser()` — NEVER accept `userId` as a client parameter (can be tampered)
+- Server actions with sensitive data (passwords, tokens, codes) MUST use single object param: `login({ email, password })` — never `login(email, password)`. Next.js dev server logs separate args in terminal
 
 ## Forbidden
 - NEVER use `React.memo`, `useMemo`, or `useCallback`
@@ -126,6 +127,8 @@ paths:
 - When touching a file, FIX ALL existing rule violations in that file — `mode="onSubmit"` → `"onBlur"`, hardcoded `aria-label` → translated, `sx` abuse → SCSS class, missing `component` prop → add it, `.root` → `.container`, inline `defaultValues` → config
 - Don't use growing hardcoded pathname lists or inline arrays — put them in `src/config/*.config.ts`
 - No inline arrow functions in JSX event handlers — use handler factories: `const handleClick = (id: string) => () => action(id)`
+- When renaming/moving routes or functions, grep for ALL references and clean up in same commit — no dead code, no orphaned routes
+- `redirect` from `next/navigation` for server-side code — NOT from `@/i18n/navigation` (doesn't return `never`, breaks TypeScript narrowing)
 - Components that always appear with a specific label should include it inside — parent's `.map()` should be clean
 - Modals triggered from list items (cards) → valtio store tracks which item, modal renders ONCE at section level — not per card
 - Responsive grid layouts → MUI `<Grid container>` + `<Grid size={{ xs, md, xl }}>` — NEVER CSS Grid in SCSS
