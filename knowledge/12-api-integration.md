@@ -10,6 +10,14 @@
 
 NEVER invent API fields, endpoints, or methods. Use what the spec defines.
 
+### WARNING: Local openapi.json can be stale
+
+If a backend repo exists in the workspace (e.g. `../znjan-ws/`, `../*-ws`, `../backend`), READ the backend DTOs + Prisma schema INSTEAD of relying solely on the frontend's local `openapi.json`. Local copies can be out of sync after backend changes — this has caused runtime enum validation errors in past PRs.
+
+Backend DTOs with class-validator decorators (`@IsEnum`, `@ApiProperty`, `@IsOptional`) are the authoritative source for field names, enum values, and required/optional flags.
+
+See `@knowledge/24-api-alignment.md` for the full cross-repo alignment workflow.
+
 ## Axios Configuration (React+Vite)
 
 ```typescript

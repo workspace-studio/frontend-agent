@@ -172,6 +172,9 @@ src/
 - **Modals from lists**: When a modal can be triggered from multiple card instances, use valtio store to track which item — modal renders ONCE at the section level, not per card
 - **Event handlers**: No inline arrow functions in JSX (`onClick={() => fn(value)}`). Use named handlers or `useToggleState`
 - **API integration**: ALWAYS read `openapi.json` before creating models/actions. Use exact endpoints, methods, and response shapes — never invent fields
+- **Cross-repo alignment**: If a backend repo exists in the workspace (`../*-ws`, `../backend`), read backend DTOs + Prisma schema — local `openapi.json` can be stale. Spawn parallel Explore subagents (one per repo) for simultaneous research. See `@knowledge/24-api-alignment.md`
+- **Change list first**: For API alignment tasks touching 3+ files, present a numbered change list BEFORE editing any code. Never remove visible UI elements (table columns, card fields) without asking — product decisions require confirmation
+- **Skeleton sync**: When adding/removing/reordering table columns, ALWAYS update the standalone `*Skeleton.tsx` or `loading.tsx` in the same view dir — it's SEPARATE from `Table`'s built-in `showSkeleton`
 - **Auth utilities**: Keep simple — `getLoggedInUser` reads cookie, fetches `/auth/me`, returns user or null. Middleware handles token refresh. Don't add refresh/redirect logic to utilities
 - **Cookie maxAge**: MUST match backend JWT expiry (e.g., access token 15min → `maxAge: 60 * 15`). Mismatched maxAge causes expired cookies to linger → middleware doesn't refresh → 401 everywhere
 - **Colors**: NEVER use MUI string references like `color="primary"` — use explicit `color={colors.green500}`. Never hardcode hex in TSX
@@ -271,6 +274,7 @@ Read the relevant file before performing a task:
 | `@knowledge/18-testing-patterns.md` | Testing |
 | `@knowledge/21-figma-integration.md` | Figma MCP integration, token mapping, design-to-code |
 | `@knowledge/23-zustand.md` | State management (Zustand stores, selectors, persistence) |
+| `@knowledge/24-api-alignment.md` | Cross-repo API alignment (backend DTOs, Prisma, change list workflow) |
 
 ## Example References
 

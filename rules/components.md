@@ -104,6 +104,12 @@ paths:
 - Check ALL Figma variants (desktop + mobile for each mode) before implementing — mobile fixed buttons must be part of initial architecture
 - If a component exceeds ~200 lines, split into mode-specific sub-components with own folders + index.ts
 
+## Table / DataDisplay
+- When adding, removing, or reordering table columns: ALWAYS update the corresponding skeleton/loading component in the same view directory
+- Grep for `Skeleton` in the view directory after any column config change
+- Standalone skeleton components (`loading.tsx`, `*Skeleton.tsx`) are SEPARATE from the `Table` component's built-in `showSkeleton` — both need updating
+- Skeleton column count, widths, and variant types (text/rounded/circular) must match the real table
+
 ## Security
 - NEVER `console.log` form data, user credentials, tokens, or reset codes — especially not in server actions
 - Every `.then()` on a server action needs a `.catch()` — every async call needs try/catch. Without error handling, the UI can hang forever on `CircularProgress`
@@ -132,4 +138,6 @@ paths:
 - Components that always appear with a specific label should include it inside — parent's `.map()` should be clean
 - Modals triggered from list items (cards) → valtio store tracks which item, modal renders ONCE at section level — not per card
 - Responsive grid layouts → MUI `<Grid container>` + `<Grid size={{ xs, md, xl }}>` — NEVER CSS Grid in SCSS
+- NEVER remove visible UI elements (table columns, card fields, chips, labels) based on a spec diff alone — it's a product decision, ALWAYS ask first
+- For API alignment tasks touching 3+ files, present a numbered change list BEFORE editing any code — get user confirmation to prevent edit→reject→re-edit loops. See `@knowledge/24-api-alignment.md`
 - No prop drilling past 2 levels — use store
