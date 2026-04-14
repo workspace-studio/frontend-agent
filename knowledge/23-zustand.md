@@ -162,6 +162,70 @@ useEffect(() => {
 }, []);
 ```
 
+## Race-Safe Async Actions
+
+Any store action that fetches data based on user input (court change, search, date pick) MUST guard against stale writes. Rapid user actions trigger multiple in-flight requests — the last to start may not be the last to resolve.
+
+```typescript
+// src/stores/admin-bookings.store.ts
+let slotsRequestId = 0;
+
+const useAdminBookingsStore = create<AdminBookingsState>(set => ({
+  slots: [],
+
+  fetchSlots: (courtId, date) => {
+    slotsRequestId += 1;
+    const currentRequestId = slotsRequestId;
+    set({ slots: null });
+
+    getAvailableSlots(courtId, date)
+      .then(slots => {
+        if (currentRequestId === slotsRequestId) set({ slots });
+      })
+      .catch(() => {
+        if (currentRequestId === slotsRequestId) set({ slots: [] });
+      });
+  },
+
+  closeCreateModal: () => {
+    slotsRequestId += 1; // invalidates any in-flight request
+    set({ createModalOpen: false, slots: [] });
+  },
+}));
+```
+
+**Module-level `requestId`** (not in store state) avoids re-renders on counter increment.
+
+### Hook variant
+
+```tsx
+const requestIdRef = useRef<number>(0);
+
+const fetchUsers = useRef(
+  debounce(async (search: string) => {
+    requestIdRef.current += 1;
+    const currentId = requestIdRef.current;
+    try {
+      const result = await getUsers({ search });
+      if (currentId === requestIdRef.current) setUsers(result.entities);
+    } catch {
+      if (currentId === requestIdRef.current) setUsers([]);
+    }
+  }, 300)
+);
+
+// Cleanup on modal close / unmount
+useEffect(() => {
+  if (!isOpen) {
+    fetchUsers.current.cancel();
+    requestIdRef.current += 1; // invalidate in-flight
+    setUsers(initialUsers);
+  }
+}, [isOpen, initialUsers]);
+```
+
+**Debounce alone doesn't prevent races** — two debounced calls 300ms apart still race. Always combine debounce with a request ID guard, or use `AbortController` to cancel the underlying network request.
+
 ## Global Store (ALWAYS created)
 
 Every Next.js project MUST have a `global` store with toast. See @examples/zustand-store/global.store.ts.

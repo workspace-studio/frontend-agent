@@ -175,6 +175,10 @@ src/
 - **Cross-repo alignment**: If a backend repo exists in the workspace (`../*-ws`, `../backend`), read backend DTOs + Prisma schema — local `openapi.json` can be stale. Spawn parallel Explore subagents (one per repo) for simultaneous research. See `@knowledge/24-api-alignment.md`
 - **Change list first**: For API alignment tasks touching 3+ files, present a numbered change list BEFORE editing any code. Never remove visible UI elements (table columns, card fields) without asking — product decisions require confirmation
 - **Skeleton sync**: When adding/removing/reordering table columns, ALWAYS update the standalone `*Skeleton.tsx` or `loading.tsx` in the same view dir — it's SEPARATE from `Table`'s built-in `showSkeleton`
+- **Race conditions**: Any async fetch triggered by user input (search, field change) MUST guard against stale writes with a request ID counter or `AbortController`. Debounce alone doesn't prevent races. See `@knowledge/23-zustand.md`
+- **MUI X customization**: For DatePicker/DataGrid internals, use theme overrides in `components.ts` (`MuiPickersDay`, `MuiPickersCalendarHeader`) FIRST, SCSS module with `:global()` SECOND. NEVER inline `sx` for component internals — `sx` stays whitelist-only
+- **Import graph planning**: Shared code between siblings goes in a NEW shared file (`X/shared.styles.ts`), NEVER exported from the parent — that creates `parent → child → parent` circular imports
+- **No render-function hooks**: Hooks return data/handlers, components return JSX. A hook returning JSX (`useUserAutocomplete → renderUserInput`) breaks DevTools and testability — use a proper component instead
 - **Auth utilities**: Keep simple — `getLoggedInUser` reads cookie, fetches `/auth/me`, returns user or null. Middleware handles token refresh. Don't add refresh/redirect logic to utilities
 - **Cookie maxAge**: MUST match backend JWT expiry (e.g., access token 15min → `maxAge: 60 * 15`). Mismatched maxAge causes expired cookies to linger → middleware doesn't refresh → 401 everywhere
 - **Colors**: NEVER use MUI string references like `color="primary"` — use explicit `color={colors.green500}`. Never hardcode hex in TSX

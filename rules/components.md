@@ -110,10 +110,17 @@ paths:
 - Standalone skeleton components (`loading.tsx`, `*Skeleton.tsx`) are SEPARATE from the `Table` component's built-in `showSkeleton` — both need updating
 - Skeleton column count, widths, and variant types (text/rounded/circular) must match the real table
 
+## Async / Race Conditions
+- Any hook or store action that fetches data based on user input (search, field change, filter) MUST guard against stale writes with a request ID counter — debounce alone doesn't prevent races
+- Store actions: module-level `let requestId = 0` + capture `currentRequestId` per call + guard the write. NEVER put request ID in store state (causes re-renders)
+- Hooks: `useRef<number>(0)` + same pattern + cleanup in `useEffect` on unmount/close: invalidate the ref and reset state
+- Prefer `AbortController` over request ID guard when possible — it cancels the network request, not just the write
+- See `@knowledge/23-zustand.md` for full race-safe async pattern
+
 ## Security
 - NEVER `console.log` form data, user credentials, tokens, or reset codes — especially not in server actions
 - Every `.then()` on a server action needs a `.catch()` — every async call needs try/catch. Without error handling, the UI can hang forever on `CircularProgress`
-- Server actions that mutate (POST/PUT/DELETE) MUST derive user identity server-side via `getLoggedInUser()` — NEVER accept `userId` as a client parameter (can be tampered)
+- Server actions that mutate (POST/PUT/DELETE) MUST derive user identity server-side via `getLoggedInUser()` — NEVER accept `userId` as a client parameter (can be tampered). EXCEPTION: admin actions acting on other users pass `userId` — `verifyAdmin()` guard provides authorization
 - Server actions with sensitive data (passwords, tokens, codes) MUST use single object param: `login({ email, password })` — never `login(email, password)`. Next.js dev server logs separate args in terminal
 
 ## Forbidden
@@ -140,4 +147,7 @@ paths:
 - Responsive grid layouts → MUI `<Grid container>` + `<Grid size={{ xs, md, xl }}>` — NEVER CSS Grid in SCSS
 - NEVER remove visible UI elements (table columns, card fields, chips, labels) based on a spec diff alone — it's a product decision, ALWAYS ask first
 - For API alignment tasks touching 3+ files, present a numbered change list BEFORE editing any code — get user confirmation to prevent edit→reject→re-edit loops. See `@knowledge/24-api-alignment.md`
+- NEVER hooks returning JSX (render functions) — use proper components. Hooks return data/handlers, components return JSX. Render-function hooks break React DevTools and testability
+- Plan import graph BEFORE extracting shared code: shared code between siblings goes in a NEW shared file (`src/components/X/shared.styles.ts`), NEVER exported from the parent — that creates circular `parent → child → parent` imports
+- For MUI X components (DatePicker, DataGrid, etc.) requiring deep customization: use theme overrides in `components.ts` (`MuiPickersDay`, `MuiPickersCalendarHeader`, etc.) FIRST, SCSS module with `:global()` SECOND. NEVER fall back to inline `sx` for component internals
 - No prop drilling past 2 levels — use store
