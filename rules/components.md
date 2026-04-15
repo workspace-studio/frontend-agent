@@ -9,7 +9,8 @@ paths:
 
 ## Structure
 - PascalCase file and folder names
-- Every component folder has `index.ts`: `import X from './X'; export default X;`
+- Every component MUST live in its own folder with `index.ts`: `import X from './X'; export default X;`
+- NEVER place a `.tsx` file loose inside another component's folder — always create a subfolder (`ComponentName/ComponentName.tsx` + `ComponentName/index.ts`). Applies to view partials, form sub-components, modal children, everything
 - SCSS module ONLY if component has custom styles — skip if MUI props suffice
 - Props interface exported from component file
 - When using MUI component as building block, extend its Props type (e.g., `interface StatusChipProps extends ChipProps`) and add custom props as needed
