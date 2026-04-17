@@ -23,6 +23,9 @@ paths:
 - MUI Emotion styles inject AFTER CSS modules in `<head>` — equal specificity = Emotion wins
 - ALWAYS use double-class specificity trick to override MUI: `&.container { background-color: $white; }` — never assume a single-class selector will work
 - MUI state classes (`.Mui-selected`, `.Mui-focused`, `.Mui-disabled`) are global — wrap in `:global()` inside CSS modules: `&:global(.Mui-selected) { ... }`
+- Third-party libraries (ApexCharts, etc.) apply inline `style=""` — `!important` is the correct and ONLY way to override inline styles. Don't fight it, document why it's needed
+- NEVER use `all: unset` to override third-party styles — it destroys ALL properties including positioning (`top`, `left`, `position`), not just visual ones
+- After refactoring component markup, grep for orphaned SCSS classes in the module — dead CSS accumulates silently
 
 ## Sticky/Fixed Layout
 - Define shared heights as SCSS variables: `$header-height`, `$progress-bar-height`, `$bottom-tab-height`

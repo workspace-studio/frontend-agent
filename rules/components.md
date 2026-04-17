@@ -12,7 +12,7 @@ paths:
 - Every component MUST live in its own folder with `index.ts`: `import X from './X'; export default X;`
 - NEVER place a `.tsx` file loose inside another component's folder — always create a subfolder (`ComponentName/ComponentName.tsx` + `ComponentName/index.ts`). Applies to view partials, form sub-components, modal children, everything
 - SCSS module ONLY if component has custom styles — skip if MUI props suffice
-- Props interface exported from component file
+- Props interface exported from component file — name MUST match `{ComponentName}Props` (never copy-paste artifacts like `SearchPageProps` on a Dashboard component)
 - When using MUI component as building block, extend its Props type (e.g., `interface StatusChipProps extends ChipProps`) and add custom props as needed
 - NEVER use raw HTML elements (`<div>`, `<header>`, `<nav>`, `<span>`, `<section>`) — always use MUI equivalents: `Box`, `Stack`, `AppBar`, `Toolbar`, `Container`, `Typography`, etc. Use the `component` prop for semantic HTML (e.g., `<Stack component="nav">`, `<Container component="section">`, `<Typography component="h2">`)
 - NEVER expose `sx` prop passthrough in reusable component interfaces — consumers style via `className` or dedicated props only
@@ -28,7 +28,8 @@ paths:
 
 ## Styling
 - Use SCSS modules + MUI component props (variant, size, color)
-- MUI `sx` prop ONLY for: `mt`, `mb`, `gap`, `p`, `px`, `py`, `mx`, `my`, `typography: { lg: 'h2' }`. NOTHING ELSE.
+- MUI spacing ONLY via shorthands: `mt`, `mb`, `ml`, `mr`, `mx`, `my`, `pt`, `pb`, `pl`, `pr`, `px`, `py`, `p`, `gap`. NEVER full names like `paddingBottom`, `marginTop`
+- MUI `sx` prop ONLY for spacing shorthands above + `typography: { lg: 'h2' }`. NOTHING ELSE.
 - `sx` NEVER for: `width`, `height`, `borderRadius`, `backgroundColor`, `color`, `fontStyle`, `border`, `'&:hover'`, `minHeight`. Use SCSS class with `rem-calc()` instead.
 - NEVER mix sx and SCSS on same element
 - MUI Stack/Grid system props (`direction`, `spacing`, `alignItems`) generate inline styles — NEVER override them via SCSS. Use responsive prop syntax instead: `direction={{ xs: 'column', lg: 'row' }}`
@@ -68,6 +69,7 @@ paths:
 - NEVER nest interactive elements (e.g., Link wrapping Button) — use `component={Link}` on the outer element
 - Custom interactive elements (non-MUI) need `tabIndex={0}`, `onKeyDown` for Enter/Space, and proper `role`
 - Use correct `aria-haspopup` values: `"menu"` for menus, `"listbox"` for select/autocomplete, `"dialog"` for modals
+- Buttons that open Popover/Dialog MUST have `aria-expanded={Boolean(anchorEl)}` alongside `aria-haspopup`
 - Wizard/stepper: move focus to new step's heading on step transition
 
 ## Config Data
@@ -122,6 +124,8 @@ paths:
 - NEVER `console.log` form data, user credentials, tokens, or reset codes — especially not in server actions
 - Every `.then()` on a server action needs a `.catch()` — every async call needs try/catch. Without error handling, the UI can hang forever on `CircularProgress`
 - Server actions that mutate (POST/PUT/DELETE) MUST derive user identity server-side via `getLoggedInUser()` — NEVER accept `userId` as a client parameter (can be tampered). EXCEPTION: admin actions acting on other users pass `userId` — `verifyAdmin()` guard provides authorization
+- HTML template strings rendered in the DOM (e.g., ApexCharts `tooltip.custom`) MUST escape all interpolated values with `escapeHtml()` — treat like `dangerouslySetInnerHTML`
+- URL search params are untrusted input — validate format (regex) AND semantic correctness (`dayjs.isValid()`) before passing to server actions
 - Server actions with sensitive data (passwords, tokens, codes) MUST use single object param: `login({ email, password })` — never `login(email, password)`. Next.js dev server logs separate args in terminal
 
 ## Forbidden
