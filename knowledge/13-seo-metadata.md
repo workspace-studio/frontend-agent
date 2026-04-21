@@ -117,19 +117,81 @@ export async function GET() {
 
 ## JSON-LD Structured Data
 
-Injected in root layout:
+Use `schema-dts` types for type safety. Injected via a `JsonLd` component:
 
 ```tsx
-<script type="application/ld+json"
-  dangerouslySetInnerHTML={{ __html: JSON.stringify({
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Company Name',
-    url: 'https://example.com',
-    logo: 'https://example.com/logo.png',
-  }) }}
-/>
+// src/components/JsonLd/JsonLd.tsx
+'use client';
+import { Graph, WithContext, Thing } from 'schema-dts';
+
+interface JsonLdProps {
+  schema: Graph | WithContext<Thing>;
+}
+
+const JsonLd = ({ schema }: JsonLdProps) => (
+  <script
+    type="application/ld+json"
+    dangerouslySetInnerHTML={{
+      __html: JSON.stringify(schema).replace(/</g, '\\u003c'),
+    }}
+  />
+);
 ```
+
+**XSS escape is mandatory** — `.replace(/</g, '\\u003c')` prevents `</script>` injection.
+
+### Rules for JSON-LD
+
+- ALL schema content goes through translation keys — `t('sportsLocationName')`, `t('amenityTennisCourts')`. NEVER hardcode names/descriptions per locale
+- `availableLanguage` MUST be dynamic from `routing.locales`: `routing.locales as unknown as string[]`
+- For Schema.org types not fully covered by `schema-dts` (e.g., `SportsActivityLocation` with `amenityFeature`): use untyped object literal + `as const` on `@type` + cast final return as `as Graph`. NEVER use `any` — ask user first
+- Verify business names against Google Maps before finalizing — don't invent organizational structures ("sports center") that don't exist
+
+## Dynamic Language Alternates
+
+Never hardcode language mappings. Generate dynamically from `routing.locales`:
+
+```typescript
+const buildAlternateLanguages = (path: string) => ({
+  'x-default': `${meta.url}${path}`,
+  ...routing.locales.reduce((acc, loc) => {
+    acc[loc] = loc === routing.defaultLocale ? `${meta.url}${path}` : `${meta.url}/${loc}${path}`;
+    return acc;
+  }, {} as Record<string, string>),
+});
+```
+
+## Locale Type from routing
+
+In `src/i18n/routing.ts`:
+
+```typescript
+export const routing = defineRouting({
+  locales: ['en', 'hr'] as const, // `as const` enables tuple-to-union inference
+  defaultLocale: 'en',
+});
+
+export type Locale = (typeof routing.locales)[number]; // 'en' | 'hr'
+```
+
+Use `Locale` everywhere — NEVER hardcode `'en' | 'hr'` union. For locale-keyed objects: `Partial<Record<Locale | 'x-default', string>>`.
+
+## Content Rules
+
+- NEVER use `locale === 'hr' ? A : B` pattern — always use translation keys
+- All schema content (names, descriptions, amenity labels) goes in `messages/<locale>/common.json` under `base` namespace
+- Verify location names, addresses, and geo coordinates against authoritative source (Google Maps link from user)
+- Don't invent organizational names — ask user for exact business name
+
+## SEO Validation Checklist
+
+Before marking SEO work as done:
+- [ ] JSON-LD validated in https://search.google.com/test/rich-results for ALL locales
+- [ ] Sitemap XML validated with https://www.xml-sitemaps.com/validate-xml-sitemap.html
+- [ ] OpenGraph preview checked with https://www.opengraph.xyz/
+- [ ] Alternate language tags tested in Google Search Console
+- [ ] Logo/favicon rendering visually confirmed with user
+- [ ] All user-facing copy (titles, descriptions) reviewed by stakeholder — especially non-English translations
 
 ## OG Image
 

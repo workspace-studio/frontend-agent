@@ -125,12 +125,13 @@ paths:
 - Every `.then()` on a server action needs a `.catch()` — every async call needs try/catch. Without error handling, the UI can hang forever on `CircularProgress`
 - Server actions that mutate (POST/PUT/DELETE) MUST derive user identity server-side via `getLoggedInUser()` — NEVER accept `userId` as a client parameter (can be tampered). EXCEPTION: admin actions acting on other users pass `userId` — `verifyAdmin()` guard provides authorization
 - HTML template strings rendered in the DOM (e.g., ApexCharts `tooltip.custom`) MUST escape all interpolated values with `escapeHtml()` — treat like `dangerouslySetInnerHTML`
+- JSON-LD `dangerouslySetInnerHTML` MUST escape `<` via `.replace(/</g, '\\u003c')` — prevents `</script>` injection
 - URL search params are untrusted input — validate format (regex) AND semantic correctness (`dayjs.isValid()`) before passing to server actions
 - Server actions with sensitive data (passwords, tokens, codes) MUST use single object param: `login({ email, password })` — never `login(email, password)`. Next.js dev server logs separate args in terminal
 
 ## Forbidden
 - NEVER use `React.memo`, `useMemo`, or `useCallback`
-- NEVER use `any` or `unknown` — use proper library types (e.g., `FieldErrors`, `FieldError` from RHF)
+- NEVER use `any` or `unknown` — use proper library types (e.g., `FieldErrors`, `FieldError` from RHF). If a third-party type library has incomplete coverage (e.g., `schema-dts` missing Schema.org properties), ASK the user first — use untyped object literal + `as Type` cast as an alternative, never silently add `any`
 - NEVER use `as` type assertions — design types so casts are unnecessary
 - NEVER use `eslint-disable` or `@ts-ignore` — fix the underlying type or lint issue
 - NEVER use `typeof`/`keyof`/`as Record`/`as keyof typeof` for runtime type introspection — use explicit data
@@ -144,6 +145,9 @@ paths:
 - NEVER duplicate a helper/pattern across 3+ files — after the 2nd occurrence, extract to a shared component
 - When touching a file, FIX ALL existing rule violations in that file — `mode="onSubmit"` → `"onBlur"`, hardcoded `aria-label` → translated, `sx` abuse → SCSS class, missing `component` prop → add it, `.root` → `.container`, inline `defaultValues` → config
 - Don't use growing hardcoded pathname lists or inline arrays — put them in `src/config/*.config.ts`
+- NEVER use `locale === 'hr' ? A : B` pattern — always use translation keys. Locale-keyed objects use `Partial<Record<Locale, T>>` with `Locale` derived from `routing.locales`
+- Locales array in `routing.ts` MUST use `as const` to enable `(typeof routing.locales)[number]` inference for `Locale` type
+- Dynamic locale mappings generated via `routing.locales.reduce()` — NEVER hardcoded object literals keyed by locale
 - No inline arrow functions in JSX event handlers — use handler factories: `const handleClick = (id: string) => () => action(id)`
 - When renaming/moving routes or functions, grep for ALL references and clean up in same commit — no dead code, no orphaned routes
 - `redirect` from `next/navigation` for server-side code — NOT from `@/i18n/navigation` (doesn't return `never`, breaks TypeScript narrowing)
