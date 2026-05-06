@@ -139,6 +139,15 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | `/seo-audit` | Full SEO audit (Next.js) |
 | `/deploy` | Deploy to Vercel with pre-flight checks |
 
+### AI Agent Protocols
+
+| Command | Description |
+|---------|-------------|
+| `/agent-protocols-audit` | Audit API Catalog, Content Signals, Markdown negotiation |
+| `/setup-api-catalog` | Add RFC 9727 API Catalog at `/.well-known/api-catalog` |
+| `/setup-content-signals` | Add `Content-Signal:` directives to robots.txt |
+| `/setup-markdown-negotiation` | Serve markdown via `Accept: text/markdown` |
+
 ---
 
 ## 3. Capabilities
@@ -154,6 +163,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | SEO: metadata, sitemaps, robots, JSON-LD, OG images | `13-seo-metadata.md` |
 | next-intl routing, messages, locale-aware navigation | `08-i18n-nextintl.md` |
 | API routes, middleware, validation | `20-api-routes.md` |
+| AI agent protocols: API Catalog, Content Signals, Markdown negotiation | `25-agent-protocols.md` |
 
 ### React+Vite
 
@@ -288,6 +298,7 @@ Specialist tasks run in separate context to keep the main agent clean:
 | `i18n-specialist` | i18n configuration and translations |
 | `qa-tester` | Playwright E2E test writing |
 | `code-reviewer` | Code review (read-only) |
+| `agent-protocols-specialist` | API Catalog, Content Signals, Markdown negotiation |
 
 ### Rules (Always Enforced)
 
@@ -510,6 +521,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | 19 | `shared-components` | Form, FormInput, Select, DatePicker |
 | 20 | `api-routes` | Next.js API routes, middleware |
 | 21 | `figma-integration` | Figma MCP, token mapping, Code Connect |
+| 25 | `agent-protocols` | API Catalog (RFC 9727), Content Signals, Markdown negotiation |
 
 ### Example Templates (9)
 
