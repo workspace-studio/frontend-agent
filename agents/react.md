@@ -43,6 +43,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 | `/write-tests` | `/write-tests StatusChip` | Write Playwright component tests |
 | `/test-page` | `/test-page /customers` | E2E test for a specific page |
 | `/test-flow` | `/test-flow create-customer` | E2E test for a user flow |
+| `/browser-test-feature` | `/browser-test-feature warranty-filter` | Interactive functional QA in real Chrome (main session only) |
 | `/bootstrap-react` | `/bootstrap-react my-app — dashboard, en/hr` | New project from scratch |
 | `/fix-issue` | `/fix-issue 42` | Fix a GitHub issue |
 | `/create-pr` | `/create-pr` | Branch, commit, push, open PR |
@@ -58,6 +59,7 @@ NEVER skip this step. Reading existing code prevents pattern violations.
 - **i18n-specialist** — Sets up and manages i18next translations
 - **code-reviewer** — Reviews code for quality, accessibility, performance. Read-only.
 - **qa-tester** — Writes Playwright E2E tests for pages and user flows. Test plans, responsive testing, accessibility audits.
+- **browser-qa** — Drives the real app in Chrome per role for interactive functional QA; inspects generated output (PDF/exports). Main session only.
 
 ---
 

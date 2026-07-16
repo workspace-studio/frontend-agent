@@ -120,6 +120,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | `/write-tests Header` | Playwright component tests |
 | `/test-page /pricing` | Playwright E2E test for a page |
 | `/test-flow checkout` | Playwright E2E test for a user flow |
+| `/browser-test-feature warranty-filter` | Interactive functional QA — drive the real app in Chrome per role, inspect generated output (main session only) |
 
 ### Figma Integration
 
@@ -297,6 +298,7 @@ Specialist tasks run in separate context to keep the main agent clean:
 | `theme-implementor` | MUI theme setup |
 | `i18n-specialist` | i18n configuration and translations |
 | `qa-tester` | Playwright E2E test writing |
+| `browser-qa` | Interactive functional QA — drives the real app in Chrome per role (main session only) |
 | `code-reviewer` | Code review (read-only) |
 | `agent-protocols-specialist` | API Catalog, Content Signals, Markdown negotiation |
 
@@ -414,12 +416,13 @@ Produce a structured review with critical issues, warnings, and suggestions.
 your-project/
 ├── CLAUDE.md                      # Project context (auto-generated)
 └── .claude/
-    ├── agents/                    # 2 main + 6 subagents
+    ├── agents/                    # 2 main + 8 subagents
     │   ├── nextjs.md / react.md   # Main agents (loaded per session)
     │   └── component-creator, seo-specialist, theme-implementor,
-    │       i18n-specialist, qa-tester, code-reviewer
-    ├── skills/                    # 21 slash commands (loaded on-demand)
-    ├── knowledge/                 # 21 reference files (loaded on-demand)
+    │       i18n-specialist, qa-tester, browser-qa, code-reviewer,
+    │       agent-protocols-specialist
+    ├── skills/                    # 22 slash commands (loaded on-demand)
+    ├── knowledge/                 # 22 reference files (loaded on-demand)
     ├── examples/                  # 9 working code templates
     ├── rules/                     # 4 enforcement rules (loaded every session)
     │   └── components, styles, api, git
