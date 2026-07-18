@@ -1,7 +1,7 @@
 import { ElementType } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Box, ChipProps, Divider, Grid2 as Grid, Stack, Typography } from '@mui/material';
+import { Box, ChipProps, Divider, Grid, Stack, Typography } from '@mui/material';
 
 import Avatar from '@/components/Avatar';
 import MeatballsMenu from '@/components/MeatballsMenu';

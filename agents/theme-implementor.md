@@ -37,7 +37,7 @@ Read these for reference standards:
    - `typography.ts` — fontFamily, variant definitions (h1-h3, body1-3, button)
    - When setting up typography, download font `.woff2` files to `public/fonts/` (Next.js) or `src/assets/fonts/` (React+Vite) and create `@font-face` in `src/styles/globals/fonts.scss`. NEVER use Google Fonts links, CDN, or `next/font/google`.
    - `components.ts` — MUI component overrides (MuiButton, MuiTextField, MuiDialog, etc.)
-   - `index.ts` — `createTheme({ breakpoints, components, palette, typography })`
+   - `index.ts` — `createTheme({ cssVariables: true, breakpoints, components, palette, typography })` (v9: CSS theme variables on — enables `theme.vars` and no-flicker dark mode later)
 3. **Ensure ThemeProvider** wraps the app:
    - Next.js: in `src/app/[locale]/providers.tsx`
    - React: in `src/App.tsx` or equivalent
@@ -63,8 +63,8 @@ const palette: ThemeOptions['palette'] = {
   primary: { main: colors.primary500, contrastText: colors.white },
 };
 
-// typography.ts — Font definitions
-const typography: TypographyOptions = {
+// typography.ts — Font definitions (v9 type import: from '@mui/material/styles')
+const typography: TypographyVariantsOptions = {
   fontFamily: 'Inter, sans-serif',
   h1: { fontSize: '32px', fontWeight: 700 },
 };
@@ -74,8 +74,8 @@ const overrides: ThemeOptions['components'] = {
   MuiButton: { styleOverrides: { root: { borderRadius: 8 } } },
 };
 
-// index.ts — Composition
-export default createTheme({ breakpoints, components, palette, typography });
+// index.ts — Composition (v9)
+export default createTheme({ cssVariables: true, breakpoints, components, palette, typography });
 ```
 
 ## Mandatory Rules

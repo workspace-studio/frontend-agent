@@ -19,7 +19,7 @@ const gridBaseSx = {
     margin: 'auto',
     textTransform: 'capitalize',
   },
-  '& .MuiPickersDay-hiddenDaySpacingFiller': { flex: 1, margin: 'auto' },
+  '& .MuiPickerDay-fillerCell': { flex: 1, margin: 'auto' },
   '& .MuiDayCalendar-weekContainer': { margin: 0 },
   '& .MuiDayCalendar-monthContainer': { display: 'flex', flexDirection: 'column', gap: '8px' },
 };

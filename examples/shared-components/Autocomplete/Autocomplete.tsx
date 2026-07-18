@@ -81,10 +81,10 @@ const Autocomplete: React.FC<AutocompleteProps> = ({
               {...params}
               {...restTextFieldProps}
               slotProps={{
-                ...params,
+                ...params.slotProps,
                 ...slotProps,
                 input: {
-                  ...params.InputProps,
+                  ...params.slotProps?.input,
                   ...slotProps?.input,
                 },
               }}

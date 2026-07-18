@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Checkbox, FormControl, FormControlLabel, FormLabel, Grid2 as Grid, Typography } from '@mui/material';
+import { Checkbox, FormControl, FormControlLabel, FormLabel, Grid, Typography } from '@mui/material';
 
 import CheckboxChecked from '@/components/SvgIcons/CheckboxChecked';
 import CheckboxUnchecked from '@/components/SvgIcons/CheckboxUnchecked';

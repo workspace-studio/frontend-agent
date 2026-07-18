@@ -1,6 +1,6 @@
-import{ TypographyOptions } from '@mui/material/styles/createTypography';
+import type { TypographyVariantsOptions } from '@mui/material/styles';
 
-const typography: TypographyOptions = {
+const typography: TypographyVariantsOptions = {
   allVariants: {
     lineHeight: 'normal',
   },

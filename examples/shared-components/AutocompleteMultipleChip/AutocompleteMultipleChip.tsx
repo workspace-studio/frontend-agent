@@ -147,9 +147,9 @@ const AutocompleteMultipleChip = ({
         getOptionLabel={option => option.label}
         noOptionsText={t('no-matches')}
         disabled={disabled}
-        renderTags={(tagValue, getTagProps) =>
-          tagValue.map((option, index) => {
-            const { key, onDelete, ...chipProps } = getTagProps({ index });
+        renderValue={(selectedValues, getItemProps) =>
+          selectedValues.map((option, index) => {
+            const { key, onDelete, ...chipProps } = getItemProps({ index });
 
             return (
               <Chip
@@ -177,8 +177,7 @@ const AutocompleteMultipleChip = ({
             helperText={helperText}
             slotProps={{
               input: {
-                ...params.InputProps,
-                startAdornment: params.InputProps.startAdornment,
+                ...params.slotProps?.input,
               },
             }}
           />

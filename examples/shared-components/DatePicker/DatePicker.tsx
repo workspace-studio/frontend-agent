@@ -3,8 +3,8 @@ import {
   DatePicker as MuiDatePicker,
   DatePickerProps as MuiDatePickerProps,
   LocalizationProvider,
-  PickersDay,
-  PickersDayProps,
+  PickerDay,
+  PickerDayProps,
 } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import i18n from 'i18next';
@@ -61,7 +61,7 @@ export const pickerDaySx = {
     color: colors.white,
     '&:hover': { backgroundColor: colors.accentActive },
   },
-  '&.MuiPickersDay-today:not(.Mui-selected)': {
+  '&.MuiPickerDay-today:not(.Mui-selected)': {
     backgroundColor: colors.bgHover,
     color: colors.textPrimary,
     border: 'none',
@@ -74,9 +74,9 @@ export const getHeaderSlotProps = (calendarHeaderFormat?: string) => ({
   sx: calendarHeaderSx,
 });
 
-export const CustomDaySlot = (dayProps: PickersDayProps) => (
+export const CustomDaySlot = (dayProps: PickerDayProps) => (
   <Stack flex={1} justifyContent="center" alignItems="center">
-    <PickersDay {...dayProps} sx={pickerDaySx} />
+    <PickerDay {...dayProps} sx={pickerDaySx} />
   </Stack>
 );
 
@@ -175,7 +175,7 @@ const DatePicker = ({
                   flex: 1,
                   textTransform: 'capitalize',
                 },
-                '& .MuiPickersDay-hiddenDaySpacingFiller': { flex: 1 },
+                '& .MuiPickerDay-fillerCell': { flex: 1 },
                 '& .MuiDayCalendar-weekContainer': { margin: 0 },
                 '& .MuiDayCalendar-monthContainer': { display: 'flex', flexDirection: 'column', gap: '8px' },
               },

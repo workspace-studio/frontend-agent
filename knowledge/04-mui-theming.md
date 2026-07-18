@@ -1,4 +1,6 @@
-# MUI Theming
+# MUI Theming (Material UI v9)
+
+Current major: **v9** (9.2.0). Note: there is NO Material UI v8 — versioning jumped v7 → v9 to align with MUI X. Upgrading an older project first → @knowledge/27-mui-v9-migration.md.
 
 ## Theme Structure
 
@@ -11,12 +13,12 @@ themes/
 ├── palette.ts         # MUI palette mapping
 ├── typography.ts      # Font variants
 ├── components.ts      # Component overrides
-└── index.ts           # Theme composition
+└── index.ts           # Theme composition (cssVariables: true)
 ```
 
 ## colors.ts
 
-Define project color constants organized by hue:
+Define project color constants organized by hue (Figma group names preserved exactly):
 
 ```typescript
 export default {
@@ -83,10 +85,12 @@ export default palette;
 
 ## typography.ts
 
-```typescript
-import{ TypographyOptions } from '@mui/material/styles/createTypography';
+v9 type import comes from `@mui/material/styles` — the old deep import `@mui/material/styles/createTypography` is private API; don't use it:
 
-const typography: TypographyOptions = {
+```typescript
+import type { TypographyVariantsOptions } from '@mui/material/styles';
+
+const typography: TypographyVariantsOptions = {
   allVariants: { lineHeight: 'normal' },
   fontFamily: 'Inter, sans-serif',
   h1: { fontSize: '32px', fontWeight: 700, lineHeight: '110%', fontFamily: 'Poppins, sans-serif' },
@@ -105,7 +109,7 @@ export default typography;
 When the project uses custom typography variants (e.g., `body3`) or disables unused MUI defaults (e.g., `h4`, `h5`, `h6`, `caption`, `overline`), create `src/types/typings.d.ts`:
 
 ```typescript
-import{ CSSProperties } from '@mui/material/styles/createTypography';
+import type { CSSProperties } from 'react';
 
 declare module '@mui/material/styles' {
   interface TypographyVariants {
@@ -130,6 +134,7 @@ declare module '@mui/material/Typography' {
 
 - Disable any MUI default variant NOT used in the project's design system
 - Add any custom variant that exists in Figma but not in MUI defaults
+- Using `theme.vars` in TypeScript? Add once (e.g., in typings.d.ts): `import type {} from '@mui/material/themeCssVarsAugmentation';`
 
 Apply the same pattern to **any MUI component with variant overrides** (Button, Chip, TextField, etc.):
 
@@ -150,6 +155,11 @@ declare module '@mui/material/Button' {
 ## components.ts
 
 Override MUI components for consistent look. Import both `colors` and `typography` for use in overrides.
+
+**v9 notes for overrides:**
+- `styleOverrides.root` accepts a callback `({ theme, ownerState }) => ({ ... })` — use it when an override needs theme values, and reference `theme.vars.palette.*` inside (resolves to `var(--mui-...)`)
+- Composed CSS classes are REMOVED on: Alert, Button, ButtonGroup, Chip, CircularProgress, Dialog, Drawer, ImageListItemBar, LinearProgress, PaginationItem, Select, Slider, StepConnector, TableSortLabel, Tab, Tabs, ToggleButtonGroup. `.MuiButton-textPrimary` no longer exists — target `.MuiButton-text.MuiButton-colorPrimary`, or better: the `variants: [{ props, style }]` array. (IconButton's `.MuiIconButton-colorPrimary` is NOT affected.)
+- `MuiTouchRipple` is no longer a theme components key — style ripples via `MuiButtonBase` + `& .MuiTouchRipple-root`
 
 ### Button & IconButton
 
@@ -249,27 +259,67 @@ MuiFormControl: {
 },
 ```
 
+**Usage side (v9):** the per-instance equivalents are `slotProps.input`, `slotProps.htmlInput`, `slotProps.inputLabel`, `slotProps.formHelperText` — the old `InputProps`/`inputProps`/`InputLabelProps`/`FormHelperTextProps` props are REMOVED.
+
 See `@examples/theme/components.ts` for a complete working implementation.
 
-## index.ts
+## index.ts — theme composition (v9)
+
+Enable **CSS theme variables** — the v9-era standard. The theme is emitted as CSS custom properties (`--mui-palette-primary-main`, …), `theme.vars` becomes available in overrides/sx, and dark mode (if ever added) switches without SSR flicker:
 
 ```typescript
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+
 import breakpoints from './breakpoints';
 import components from './components';
 import palette from './palette';
 import typography from './typography';
 
-const theme = createTheme({ breakpoints, components, palette, typography });
+const theme = createTheme({
+  cssVariables: true,
+  breakpoints,
+  components,
+  palette,
+  typography,
+});
+
 export default theme;
 ```
 
+- In overrides/sx prefer `theme.vars.palette.primary.main` over `theme.palette.primary.main`; outside a provider use the fallback `(theme.vars || theme).palette.primary.main`
+- v9 derives hover/overlay colors with native `color-mix()` — no precomputed alternates needed
+- Configurable: `cssVariables: { cssVarPrefix: 'app', colorSchemeSelector: 'class' }`
+
+### Dark mode (only when the design defines it)
+
+```typescript
+const theme = createTheme({
+  cssVariables: { colorSchemeSelector: 'class' },
+  colorSchemes: { light: true, dark: true }, // or full palettes per scheme
+});
+```
+
+- In component styles: `theme.applyStyles('dark', { ... })` — NEVER `theme.palette.mode === 'dark'` checks (SSR flicker)
+- Toggling: `useColorScheme()` → `{ mode, setMode }`
+- SSR (Next.js): render `<InitColorSchemeScript attribute="class" />` first inside `<body>` in the root layout
+
 ## ThemeProvider Wiring
 
-**Next.js** — in `src/app/[locale]/providers.tsx`:
+**Next.js (App Router)** — two pieces. Emotion cache for streaming SSR in `src/app/layout.tsx` (`yarn add @mui/material-nextjs @emotion/cache`):
+
+```tsx
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'; // same path serves Next 15/16
+
+<body>
+  <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+</body>
+```
+
+Theme in `src/app/[locale]/providers.tsx`:
+
 ```tsx
 'use client';
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/styles/themes';
 
 const Providers = ({ children }) => (
@@ -277,9 +327,12 @@ const Providers = ({ children }) => (
 );
 ```
 
-**React** — in `src/App.tsx`:
+Next.js 16 note: wrap `next/link` in a small client component before passing it to MUI's `component` prop.
+
+**React (Vite)** — in `src/App.tsx`:
+
 ```tsx
-import { ThemeProvider } from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/styles/themes';
 
 const App = () => (
@@ -288,3 +341,7 @@ const App = () => (
   </ThemeProvider>
 );
 ```
+
+## Engine notes
+
+Emotion is still the styled engine in v9 (`@emotion/react` + `@emotion/styled` peers unchanged). Pigment CSS (zero-runtime) is officially **on hold** — do not adopt it. React 17/18/19 all supported; TypeScript ≥ 4.9.

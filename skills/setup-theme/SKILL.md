@@ -1,6 +1,6 @@
 ---
 name: setup-theme
-description: Set up a complete MUI theme with colors, breakpoints, palette, typography, and component overrides
+description: Set up a complete MUI v9 theme with colors, breakpoints, palette, typography, and component overrides
 ---
 
 # Setup Theme
@@ -9,9 +9,10 @@ Set up a complete MUI theme. Usage: `/setup-theme — primary=#1976d2, font=Inte
 
 ## Pre-Work
 
-1. READ @knowledge/04-mui-theming.md for theme patterns
+1. READ @knowledge/04-mui-theming.md for theme patterns (MUI v9 — cssVariables, slotProps era)
 2. READ @examples/theme/ for reference implementation
 3. CHECK if `src/styles/themes/` already exists
+4. CHECK installed MUI major in package.json — a v5/v6/v7 project gets migrated FIRST (@knowledge/27-mui-v9-migration.md), never a v9 theme on an old install
 
 ## Steps
 
@@ -61,11 +62,12 @@ Map colors to MUI palette roles (primary, secondary, error, warning, success, in
 
 ### Step 6: Create typography.ts
 
-Define fontFamily and variant overrides (h1, h2, h3, body1, body2, button).
+Define fontFamily and variant overrides (h1, h2, h3, body1, body2, button). v9 type import:
+`import type { TypographyVariantsOptions } from '@mui/material/styles';` — NEVER the old `@mui/material/styles/createTypography` deep import.
 
 ### Step 7: Create typings.d.ts (if needed)
 
-If the theme uses custom variants (e.g., `body3`) or doesn't use some MUI defaults (e.g., `h4`, `h5`, `h6`, `caption`, `overline`), generate `src/types/typings.d.ts` to add/disable variants. See @knowledge/04-mui-theming.md for the exact pattern.
+If the theme uses custom variants (e.g., `body3`) or doesn't use some MUI defaults (e.g., `h4`, `h5`, `h6`, `caption`, `overline`), generate `src/types/typings.d.ts` to add/disable variants. See @knowledge/04-mui-theming.md for the exact pattern (CSSProperties comes from `react`). Add `import type {} from '@mui/material/themeCssVarsAugmentation';` when overrides reference `theme.vars`.
 
 ### Step 8: Create components.ts
 
@@ -85,22 +87,26 @@ Override MUI components. Disable ripple and elevation by default. Each component
 
 **Other:** MuiPaper, MuiDialog, MuiTypography, MuiChip, MuiTab, etc.
 
+**v9 rules:** no composed classes in selectors (`.MuiButton-textPrimary` is gone — use `.MuiButton-text.MuiButton-colorPrimary` or the `variants: []` array); theme-value-dependent overrides use the `({ theme }) => ({...})` callback with `theme.vars.*`.
+
 ### Step 9: Create index.ts
 
 ```typescript
-import { createTheme } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 import breakpoints from './breakpoints';
 import components from './components';
 import palette from './palette';
 import typography from './typography';
 
-const theme = createTheme({ breakpoints, components, palette, typography });
+const theme = createTheme({ cssVariables: true, breakpoints, components, palette, typography });
 export default theme;
 ```
 
+`cssVariables: true` is the house default — enables `theme.vars`, `color-mix()`-derived states, and flicker-free color schemes later. Dark mode ONLY when the design defines it: `colorSchemes` + `theme.applyStyles('dark', ...)` + `<InitColorSchemeScript />` (see @knowledge/04-mui-theming.md).
+
 ### Step 10: Wire ThemeProvider
 
-- Next.js: wrap in `src/app/[locale]/providers.tsx`
+- Next.js: `AppRouterCacheProvider` (from `@mui/material-nextjs/v15-appRouter`) in `src/app/layout.tsx`, theme in `src/app/[locale]/providers.tsx`
 - React: wrap in `src/App.tsx`
 
 ### Step 11: Validate
