@@ -287,12 +287,14 @@ Every task follows the same pattern:
 
 ### Automation (Hooks)
 
-The installer configures hooks in `.claude/settings.json`:
+The installer writes `.claude/hooks/*.sh` and wires them in `.claude/settings.json`:
 
-| Trigger | Action |
-|---------|--------|
-| File edited (.tsx/.ts) | Auto-runs `npx eslint --fix` |
-| `git commit` | Runs `yarn build && yarn lint` — blocks commit on failure |
+| Trigger | Script | Action |
+|---------|--------|--------|
+| `Edit` / `Write` / `MultiEdit` | `frontend-lint-file.sh` | ESLint `--fix` on the edited file only (Stylelint for scss). Blocks on lint errors, warns on `console.log`, stays silent on anything else. A broken toolchain warns instead of blocking |
+| `Bash` | `frontend-guard-bash.sh` | Blocks `--no-verify` and bare force pushes. Nothing else — the repo's own husky/lefthook hooks and CI are the build gate, so nothing slow runs here |
+
+`matcher` is a **string** (`"Edit|Write"`), never an object. An object matcher makes Claude Code skip the entire settings file. Re-running the installer moves an invalid settings.json aside as `.claude/settings.json.bak` and writes a valid one.
 
 ### Subagents (Isolated Context)
 
@@ -433,7 +435,8 @@ your-project/
     ├── examples/                  # 11 working code templates
     ├── rules/                     # 4 enforcement rules (loaded every session)
     │   └── components, styles, api, git
-    └── settings.json              # Hooks (auto-lint, pre-commit validation)
+    ├── hooks/                     # 2 hook scripts (file lint gate, bash guard)
+    └── settings.json              # Hook wiring
 ```
 
 **How it loads:**

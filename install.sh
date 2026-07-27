@@ -61,48 +61,44 @@ cp "$SOURCE_DIR/knowledge/"*.md .claude/knowledge/
 cp -r "$SOURCE_DIR/examples/"* .claude/examples/ 2>/dev/null || true
 cp "$SOURCE_DIR/rules/"*.md .claude/rules/ 2>/dev/null || true
 
-# --- Install settings.json with hooks (only if not exists) ---
+# --- Install hook scripts + settings.json ---
+mkdir -p .claude/hooks
+cp "$SOURCE_DIR/hooks/"*.sh .claude/hooks/ 2>/dev/null || true
+chmod +x .claude/hooks/*.sh 2>/dev/null || true
+
+# Migrate settings written by older installers (object matchers are invalid and
+# make Claude Code skip the whole file)
+if [ -f ".claude/settings.json" ] && grep -q '"matcher"[[:space:]]*:[[:space:]]*{' .claude/settings.json; then
+    mv .claude/settings.json .claude/settings.json.bak
+    echo "Replaced invalid hook settings (old file kept as .claude/settings.json.bak)"
+fi
+
 if [ ! -f ".claude/settings.json" ]; then
     cat > .claude/settings.json << 'SETTINGS_EOF'
 {
   "hooks": {
     "PostToolUse": [
       {
-        "matcher": { "tool": "Edit" },
-        "hooks": [{
-          "type": "command",
-          "command": "npx eslint --fix $FILEPATH 2>/dev/null || true"
-        }]
-      },
-      {
-        "matcher": { "tool": "Edit|Write" },
-        "hooks": [{
-          "type": "command",
-          "command": "npx tsc --noEmit --pretty false 2>&1 | head -20 || true"
-        }]
-      },
-      {
-        "matcher": { "tool": "Edit|Write" },
-        "hooks": [{
-          "type": "command",
-          "command": "grep -n 'console\\.log' $FILEPATH 2>/dev/null && echo 'WARNING: console.log found — remove before committing' || true"
-        }]
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/frontend-lint-file.sh\"",
+            "timeout": 90
+          }
+        ]
       }
     ],
     "PreToolUse": [
       {
-        "matcher": { "tool": "Bash", "command": "git commit" },
-        "hooks": [{
-          "type": "command",
-          "command": "yarn build --quiet 2>/dev/null && yarn lint --quiet 2>/dev/null"
-        }]
-      },
-      {
-        "matcher": { "tool": "Bash", "command": "--no-verify" },
-        "hooks": [{
-          "type": "command",
-          "command": "echo 'BLOCKED: --no-verify is not allowed. Always run hooks.' && exit 2"
-        }]
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR/.claude/hooks/frontend-guard-bash.sh\"",
+            "timeout": 10
+          }
+        ]
       }
     ]
   }
@@ -183,7 +179,7 @@ echo "  Skills:    $(find .claude/skills -name 'SKILL.md' 2>/dev/null | wc -l | 
 echo "  Knowledge: $(ls .claude/knowledge/*.md 2>/dev/null | wc -l | tr -d ' ') files"
 echo "  Examples:  $(find .claude/examples -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l | tr -d ' ') directories"
 echo "  Rules:     $(ls .claude/rules/*.md 2>/dev/null | wc -l | tr -d ' ') files"
-echo "  Hooks:     $([ -f .claude/settings.json ] && echo 'yes' || echo 'no')"
+echo "  Hooks:     $(ls .claude/hooks/*.sh 2>/dev/null | wc -l | tr -d ' ') scripts + $([ -f .claude/settings.json ] && echo 'settings.json' || echo 'no settings')"
 echo "  Figma MCP: $FIGMA_MCP"
 echo "  CLAUDE.md: $([ -f CLAUDE.md ] && echo "present ($STACK)" || echo 'skipped')"
 echo ""
