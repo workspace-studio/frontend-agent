@@ -104,6 +104,13 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | `/add-form ContactForm — name, email, message` | react-hook-form form with validation |
 | `/add-shared-components` | Copy shared library (Form, FormInput, Select, DatePicker) |
 
+### Content
+
+| Command | Description |
+|---------|-------------|
+| `/add-blog — categories: development, design, ai` | Install the markdown blog system (Next.js): `files/` structure, md pipeline, typed categories, localized slug maps, listing + detail routes, JSON-LD, sitemap |
+| `/create-blog` | Add one post from pasted text — md per locale with full translations, the two slug map entries, banner/card images, nothing else in the diff |
+
 ### State & Configuration
 
 | Command | Description |
@@ -421,9 +428,9 @@ your-project/
     │   └── component-creator, seo-specialist, theme-implementor,
     │       i18n-specialist, qa-tester, browser-qa, code-reviewer,
     │       agent-protocols-specialist
-    ├── skills/                    # 22 slash commands (loaded on-demand)
-    ├── knowledge/                 # 22 reference files (loaded on-demand)
-    ├── examples/                  # 9 working code templates
+    ├── skills/                    # 28 slash commands (loaded on-demand)
+    ├── knowledge/                 # 28 reference files (loaded on-demand)
+    ├── examples/                  # 11 working code templates
     ├── rules/                     # 4 enforcement rules (loaded every session)
     │   └── components, styles, api, git
     └── settings.json              # Hooks (auto-lint, pre-commit validation)

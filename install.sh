@@ -43,7 +43,7 @@ echo "Detected stack: $STACK"
 
 # --- Create directory structure ---
 mkdir -p .claude/{agents,knowledge,examples,rules}
-for skill in create-component create-view add-store setup-i18n setup-theme add-form add-shared-components seo-audit bootstrap-nextjs bootstrap-react write-tests test-page test-flow browser-test-feature fix-issue create-pr refactor deploy figma-to-component sync-tokens figma-review; do
+for skill in create-component create-view add-blog create-blog add-store setup-i18n setup-theme add-form add-shared-components seo-audit bootstrap-nextjs bootstrap-react write-tests test-page test-flow browser-test-feature fix-issue create-pr refactor deploy figma-to-component sync-tokens figma-review; do
     mkdir -p ".claude/skills/$skill"
 done
 
@@ -188,7 +188,7 @@ echo "  Figma MCP: $FIGMA_MCP"
 echo "  CLAUDE.md: $([ -f CLAUDE.md ] && echo "present ($STACK)" || echo 'skipped')"
 echo ""
 if [ "$STACK" = "nextjs" ]; then
-    echo "  Skills: /create-component /create-view /setup-i18n /setup-theme /add-form /seo-audit /write-tests /browser-test-feature /bootstrap-nextjs /fix-issue /create-pr /refactor /deploy /figma-to-component /sync-tokens /figma-review"
+    echo "  Skills: /create-component /create-view /add-blog /create-blog /setup-i18n /setup-theme /add-form /seo-audit /write-tests /browser-test-feature /bootstrap-nextjs /fix-issue /create-pr /refactor /deploy /figma-to-component /sync-tokens /figma-review"
 else
     echo "  Skills: /create-component /create-view /add-store /setup-i18n /setup-theme /add-form /write-tests /browser-test-feature /bootstrap-react /fix-issue /create-pr /refactor /deploy /figma-to-component /sync-tokens /figma-review"
 fi
