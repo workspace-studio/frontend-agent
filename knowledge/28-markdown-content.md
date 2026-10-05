@@ -86,7 +86,7 @@ The frontmatter `slug` is the canonical key (the default-locale slug, identical 
 ## Images
 
 - Post images: `public/images/blog/{imageSlug}/banner.webp` + `card.webp` — BOTH required per post, shared across locales via imageSlug; in-content images live in the same folder and are referenced as `/images/blog/{imageSlug}/name.webp`
-- Always `.webp`; convert on ingest (`npx sharp-cli -i in.png -o banner.webp` or a sharp one-liner). Sensible sizes: banner ~1600×900 (16:9), card ~800×450 — match whatever the existing posts use, read one first
+- Always `.webp`; convert on ingest (`npx sharp-cli -i in.png -o banner.webp` or a sharp one-liner). Sizes: do not trust a fixed number — read the pixel size of an existing post's `banner.webp` and `card.webp` and match it (the current Workspace posts use 2312×882 and 660×608, not 16:9). Ready-made assets from the design flow arrive in `.blog-assets/{slug}/` and are used unchanged
 - New author → avatar to `public/images/avatars/{first-name}.webp`
 
 ## Discovery artifacts — what a post owes beyond the HTML page

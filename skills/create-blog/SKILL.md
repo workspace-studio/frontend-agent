@@ -25,7 +25,7 @@ Usage: `/create-blog` then paste the post, or `/create-blog Post title`
 - **Categories** — offer the union values as choices. A value outside the union is a deliberate type extension, confirm it explicitly before touching `blog.type.ts`
 - **Author** — offer the authors found in existing posts; a new author needs name, role, and an avatar into `public/images/avatars/`
 - **Featured** — default false
-- **Image** — a file or path from the user if there is one. Otherwise **generate placeholders**: flat colour `banner.webp` + `card.webp` at the right dimensions so every referenced path resolves and the build stays green. Placeholders are the normal case here, not a failure — list them in the report and in the PR body as TODO replace. Never fill the gap with stock or AI imagery, and never ship a post pointing at a file that does not exist
+- **Image** — an **assets folder** `.blog-assets/{slug}/` if it exists (`banner.webp`, `card.webp`, `inner-*.webp`, optional `assets.json` with alt texts; produced by the marketing plugin's `/blog-assets`): use those files as they are, do not re-crop or re-encode them. Otherwise a file or path from the user if there is one. Otherwise **generate placeholders**: flat colour `banner.webp` + `card.webp` at the right dimensions so every referenced path resolves and the build stays green. Placeholders are the normal case here, not a failure — list them in the report and in the PR body as TODO replace. Never fill the gap with stock or AI imagery, and never ship a post pointing at a file that does not exist
 - **Date** — today unless told otherwise
 
 ### Step 2: Slugs (canonical + one per locale)
@@ -41,8 +41,9 @@ src/files/blog/{default}/{slug}.md
 src/files/blog/{other}/{translated-filename}.md   # SAME canonical slug in frontmatter
 src/i18n/routing.ts                               # pathnames: '/blog/{en-slug}': { hr: '/blog/{hr-slug}' }
 src/config/slugs.config.ts                        # blogPostsSlugMap: { id: '{slug}', slugs: { en, hr, … } }
-public/images/blog/{imageSlug}/banner.webp        # ~1600×900, match existing posts
-public/images/blog/{imageSlug}/card.webp          # ~800×450
+public/images/blog/{imageSlug}/banner.webp        # same pixel size as the existing posts' banners (read one, no fixed number)
+public/images/blog/{imageSlug}/card.webp          # same pixel size as the existing posts' cards
+public/images/blog/{imageSlug}/{name}.webp        # optional in-content images (from the assets folder)
 ```
 
 - **Both maps are mandatory, one entry per locale each.** Skip them and the post still renders on the default locale while the localized URL 404s — and nothing fails the build, so this is the step to check twice
@@ -51,10 +52,11 @@ public/images/blog/{imageSlug}/card.webp          # ~800×450
 - Frontmatter exactly per the contract in @knowledge/28-markdown-content.md; @examples/markdown/post-template.md is the skeleton
 - Body: headings start at `##`, GFM allowed, in-content images referenced as `/images/blog/{imageSlug}/name.webp` with alt text that describes the frame, internal links relative and localized
 - Provided image → convert and crop to webp banner + card with sharp
+- **Assets folder present** → copy `banner.webp`, `card.webp` and `inner-*.webp` to `public/images/blog/{imageSlug}/`, give the inner images descriptive file names, and insert each one into **every locale's file** at the place the brief (or `assets.json`) names, in the same order, with real alt text (describing the frame, never the post title). Confirm the pixel size of banner and card matches the existing posts. Never commit `.blog-assets/` (exclude it via `.git/info/exclude`)
 - **Translate the post in full into every locale in `routing.locales`** — the whole body, not a summary, in that locale's register. Croatian posts read as Croatian, not as translated English. Technical terms and code stay as they are. If a locale can't be translated well, say which one and why rather than shipping filler
 
 ### Step 4: Validate + ship
 
 `yarn build && yarn lint`, then open **each locale's URL**: the post appears in the listing, the localized detail route renders, metadata and JSON-LD are present, and the language switcher moves between the two URLs. A localized URL that 404s means a missing map entry from Step 3, nothing else.
 
-Then offer `/create-pr`. The diff must contain ONLY the six paths above, plus `blog.type.ts` if a category was deliberately added. Anything else means stop and explain — routes, sitemap and feeds derive the post automatically, so a post PR that edits them is a sign the system is broken.
+Then offer `/create-pr`. The diff must contain ONLY the paths above (the six core ones plus any in-content images), plus `blog.type.ts` if a category was deliberately added. Anything else means stop and explain — routes, sitemap and feeds derive the post automatically, so a post PR that edits them is a sign the system is broken.

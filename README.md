@@ -109,7 +109,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 | Command | Description |
 |---------|-------------|
 | `/add-blog — categories: development, design, ai` | Install the markdown blog system (Next.js): `files/` structure, md pipeline, typed categories, localized slug maps, listing + detail routes, JSON-LD, sitemap |
-| `/create-blog` | Add one post from pasted text — md per locale with full translations, the two slug map entries, banner/card images, nothing else in the diff |
+| `/create-blog` | Add one post from pasted text — md per locale with full translations, the two slug map entries, banner/card images (placeholders, or the ready assets from `.blog-assets/{slug}/`), nothing else in the diff |
 
 ### State & Configuration
 
