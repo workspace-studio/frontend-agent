@@ -106,7 +106,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 
 ### Content
 
-Blog posts (writing, translating, the post in the repo, Figma assets, branch and push) are **not part of frontend-agent**: they live in the `blog` plugin of [ai-marketplace](https://github.com/workspace-studio/ai-marketplace) (`/plugin install blog@ai-marketplace`; `/setup-blog`, `/create-blog`, `/blog-assets`, `/publish-blog`).
+Blog posts (writing, translating, the post in the repo, Figma assets, branch and push) are **not part of frontend-agent**: they live in the `blog` plugin of [ai-marketplace](https://github.com/workspace-studio/ai-marketplace) (`/plugin install blog@ai-marketplace`; `/blog-draft`, `/blog-create`, `/blog-assets`, `/blog-publish`, `/blog-setup`).
 
 ### State & Configuration
 
