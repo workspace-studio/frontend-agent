@@ -106,10 +106,7 @@ curl -fsSL https://raw.githubusercontent.com/workspace-studio/frontend-agent/mai
 
 ### Content
 
-| Command | Description |
-|---------|-------------|
-| `/add-blog — categories: development, design, ai` | Install the markdown blog system (Next.js): `files/` structure, md pipeline, typed categories, localized slug maps, listing + detail routes, JSON-LD, sitemap |
-| `/create-blog` | Add one post from pasted text — md per locale with full translations, the two slug map entries, banner/card images, nothing else in the diff |
+Blog posts (writing, translating, the post in the repo, Figma assets, branch and push) are **not part of frontend-agent**: they live in the `blog` plugin of [ai-marketplace](https://github.com/workspace-studio/ai-marketplace) (`/plugin install blog@ai-marketplace`; `/setup-blog`, `/create-blog`, `/blog-assets`, `/publish-blog`).
 
 ### State & Configuration
 
